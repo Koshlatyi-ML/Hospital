@@ -1,5 +1,7 @@
 package domain;
 
+import dao.metadata.Column;
+
 public abstract class Person extends IdHolder {
     @Column("name")
     private String name;

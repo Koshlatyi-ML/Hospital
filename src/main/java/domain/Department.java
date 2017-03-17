@@ -1,5 +1,8 @@
 package domain;
 
+import dao.metadata.Column;
+import dao.metadata.OneToMany;
+
 import java.util.List;
 import java.util.Objects;
 

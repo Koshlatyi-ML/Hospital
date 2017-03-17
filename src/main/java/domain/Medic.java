@@ -1,5 +1,7 @@
 package domain;
 
+import dao.metadata.OneToMany;
+
 import java.util.List;
 
 public class Medic extends Person {
