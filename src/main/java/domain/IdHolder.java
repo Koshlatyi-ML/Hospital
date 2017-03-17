@@ -1,5 +1,7 @@
 package domain;
 
+import dao.metadata.Id;
+
 import java.util.Objects;
 
 public abstract class IdHolder {

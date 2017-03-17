@@ -1,5 +1,8 @@
 package domain;
 
+import dao.metadata.Column;
+import dao.metadata.OneToOne;
+
 import java.time.ZonedDateTime;
 
 public class Therapy extends IdHolder {
