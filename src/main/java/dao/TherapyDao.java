@@ -1,4 +1,6 @@
 package dao;
 
-public interface TherapyDao {
+import domain.Therapy;
+
+public interface TherapyDao extends Dao<Therapy> {
 }

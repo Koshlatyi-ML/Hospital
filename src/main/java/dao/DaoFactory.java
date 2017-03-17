@@ -1,4 +1,4 @@
 package dao;
 
-public class DaoFactory {
+public abstract class DaoFactory {
 }

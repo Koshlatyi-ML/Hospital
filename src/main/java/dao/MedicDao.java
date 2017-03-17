@@ -1,4 +1,6 @@
 package dao;
 
-public interface MedicDao {
+import domain.Medic;
+
+public interface MedicDao extends Dao<Medic> {
 }

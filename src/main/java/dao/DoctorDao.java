@@ -1,4 +1,6 @@
 package dao;
 
-public interface DoctorDao {
+import domain.Doctor;
+
+public interface DoctorDao extends Dao<Doctor> {
 }
