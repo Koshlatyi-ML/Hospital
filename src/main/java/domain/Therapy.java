@@ -3,10 +3,28 @@ package domain;
 import java.time.ZonedDateTime;
 
 public class Therapy extends IdHolder {
+    private String name;
+    private String description;
     private Type type;
     private ZonedDateTime appointmentDateTime;
     private ZonedDateTime completeDateTime;
     private Patient patient;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Type getType() {
         return type;
@@ -48,6 +66,16 @@ public class Therapy extends IdHolder {
 
     public static class Builder<T extends Therapy, B extends Builder>
             extends IdHolder.Builder<T, B> {
+
+        public Builder<T, B> setName(String name) {
+            instance.setName(name);
+            return this;
+        }
+
+        public Builder<T, B> setDescription(String description) {
+            instance.setDescription(description);
+            return this;
+        }
 
         public Builder<T, B> setType(Type type) {
             instance.setType(type);
