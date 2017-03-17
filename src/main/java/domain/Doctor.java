@@ -3,7 +3,9 @@ package domain;
 import java.util.List;
 
 public class Doctor extends Medic {
+    @OneToMany("doctor_id")
     private List<Patient> patients;
+    @OneToMany("performer_id")
     private List<Therapy> surgicalOperations;
 
     private Doctor() {}

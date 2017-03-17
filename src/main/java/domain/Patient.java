@@ -1,21 +1,24 @@
 package domain;
 
 public class Patient extends Person {
-    private String compliants;
+    @Column("compliants")
+    private String complaints;
+    @Column("diagnosis")
     private String diagnosis;
     //    private Doctor doctor;
+    @Column("state")
     private State state;
 
     private Patient() {
         state = State.APPLYIED;
     }
 
-    public String getCompliants() {
-        return compliants;
+    public String getComplaints() {
+        return complaints;
     }
 
-    public void setCompliants(String compliants) {
-        this.compliants = compliants;
+    public void setComplaints(String complaints) {
+        this.complaints = complaints;
     }
 
     public String getDiagnosis() {
@@ -46,7 +49,7 @@ public class Patient extends Person {
         }
 
         public Builder setCompliants(String compliants) {
-            instance.setCompliants(compliants);
+            instance.setComplaints(compliants);
             return this;
         }
 

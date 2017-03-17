@@ -1,7 +1,9 @@
 package domain;
 
 public abstract class Person extends IdHolder {
+    @Column("name")
     private String name;
+    @Column("surname")
     private String surname;
 
     public String getName() {
