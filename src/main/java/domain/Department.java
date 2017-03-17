@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class Department extends IdHolder {
+    @Column("name")
     private String name;
+    @OneToMany("department_id")
     private List<Doctor> doctors;
+    @OneToMany("department_id")
     private List<Medic> medics;
 
     private Department() {}
