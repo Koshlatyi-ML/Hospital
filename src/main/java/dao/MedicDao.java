@@ -1,6 +1,6 @@
 package dao;
 
-import domain.Medic;
+import domain.model.Medic;
 
 public interface MedicDao extends CrudDao<Medic>,
         DepartmentMemberDao<Medic> {}
