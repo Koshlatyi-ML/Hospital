@@ -1,6 +1,6 @@
 package domain;
 
-import dao.metadata.Column;
+import dao.jdbc.metadata.Column;
 
 public class Patient extends Person {
     @Column("compliants")

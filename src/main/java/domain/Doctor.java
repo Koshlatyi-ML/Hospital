@@ -1,6 +1,6 @@
 package domain;
 
-import dao.metadata.OneToMany;
+import dao.jdbc.metadata.OneToMany;
 
 import java.util.List;
 

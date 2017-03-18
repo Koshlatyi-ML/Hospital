@@ -1,6 +1,6 @@
 package domain;
 
-import dao.metadata.Id;
+import dao.jdbc.metadata.Id;
 
 import java.util.Objects;
 
