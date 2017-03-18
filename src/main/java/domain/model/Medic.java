@@ -1,4 +1,4 @@
-package domain;
+package domain.model;
 
 import dao.jdbc.metadata.OneToMany;
 

@@ -1,7 +1,8 @@
-package domain;
+package domain.model;
 
 import dao.jdbc.metadata.Column;
 import dao.jdbc.metadata.OneToMany;
+import domain.IdHolder;
 
 import java.util.List;
 import java.util.Objects;
