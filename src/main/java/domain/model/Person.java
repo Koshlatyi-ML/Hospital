@@ -1,12 +1,9 @@
 package domain.model;
 
-import dao.jdbc.metadata.Column;
 import domain.IdHolder;
 
 public abstract class Person extends IdHolder {
-    @Column("name")
     private String name;
-    @Column("surname")
     private String surname;
 
     public String getName() {

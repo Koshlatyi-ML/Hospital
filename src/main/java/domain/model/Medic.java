@@ -1,13 +1,9 @@
 package domain.model;
 
-import dao.jdbc.metadata.OneToMany;
-
 import java.util.List;
 
 public class Medic extends Person {
-    @OneToMany("performer_id")
     private List<Therapy> pharmacotherapies;
-    @OneToMany("performer_id")
     private List<Therapy> physiotherapies;
 
     Medic() {}

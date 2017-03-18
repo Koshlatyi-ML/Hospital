@@ -1,23 +1,16 @@
 package domain.model;
 
-import dao.jdbc.metadata.Column;
-import dao.jdbc.metadata.OneToOne;
 import domain.IdHolder;
+import domain.model.Patient;
 
 import java.time.ZonedDateTime;
 
 public class Therapy extends IdHolder {
-    @Column("name")
     private String name;
-    @Column("description")
     private String description;
-    @Column("type")
     private Type type;
-    @Column("appointment_date")
     private ZonedDateTime appointmentDateTime;
-    @Column("complete_date")
     private ZonedDateTime completeDateTime;
-    @OneToOne("patient_id")
     private Patient patient;
 
     public String getName() {
