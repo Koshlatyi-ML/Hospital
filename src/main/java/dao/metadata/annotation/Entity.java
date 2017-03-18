@@ -1,4 +1,4 @@
-package dao.jdbc.metadata.annotation;
+package dao.metadata.annotation;
 
 public @interface Entity {
     Class value();

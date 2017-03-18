@@ -1,15 +1,15 @@
 package domain.model;
 
-import dao.jdbc.metadata.annotation.OneToMany;
-import dao.jdbc.metadata.annotation.Table;
+import dao.metadata.annotation.OneToMany;
+import dao.metadata.annotation.Table;
 
 import java.util.List;
 
 @Table("doctors")
 public class Doctor extends Medic {
-    @OneToMany("doctor_id")
+    @OneToMany(table = "patients", foreignKey = "doctor_id")
     private List<Patient> patients;
-    @OneToMany("performer_id")
+    @OneToMany(table = "therapies", foreignKey = "performer_id")
     private List<Therapy> surgicalOperations;
 
     private Doctor() {}

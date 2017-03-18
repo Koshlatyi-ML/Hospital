@@ -1,8 +1,8 @@
 package domain.model;
 
-import dao.jdbc.metadata.annotation.Column;
-import dao.jdbc.metadata.annotation.OneToOne;
-import dao.jdbc.metadata.annotation.Table;
+import dao.metadata.annotation.Column;
+import dao.metadata.annotation.OneToOne;
+import dao.metadata.annotation.Table;
 import domain.IdHolder;
 
 import java.time.ZonedDateTime;
@@ -19,7 +19,7 @@ public class Therapy extends IdHolder {
     private ZonedDateTime appointmentDateTime;
     @Column("complete_date")
     private ZonedDateTime completeDateTime;
-    @OneToOne("patient_id")
+    @OneToOne(table = "patients", foreignKey = "patient_id")
     private Patient patient;
 
     public String getName() {
