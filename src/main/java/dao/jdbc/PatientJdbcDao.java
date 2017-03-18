@@ -1,11 +1,12 @@
 package dao.jdbc;
 
 import dao.PatientDao;
+import dao.jdbc.metadata.annotation.Entity;
 import domain.model.Patient;
 
 import java.util.List;
-import java.util.Optional;
 
+@Entity(Patient.class)
 public class PatientJdbcDao extends PersonJdbcDao<Patient>
         implements PatientDao {
 

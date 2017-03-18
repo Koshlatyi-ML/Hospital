@@ -1,8 +1,11 @@
 package domain;
 
+import dao.jdbc.metadata.annotation.Id;
+
 import java.util.Objects;
 
 public abstract class IdHolder {
+    @Id("id")
     private long id;
 
     public long getId() {

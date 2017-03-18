@@ -1,12 +1,13 @@
 package dao.jdbc;
 
 import dao.TherapyDao;
+import dao.jdbc.metadata.annotation.Entity;
 import domain.model.Therapy;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
+@Entity(Therapy.class)
 public class TherapyJdbcDao extends CrudJdbcDao<Therapy> implements TherapyDao {
 
     @Override

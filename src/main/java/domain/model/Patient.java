@@ -1,9 +1,16 @@
 package domain.model;
 
+import dao.jdbc.metadata.annotation.Column;
+import dao.jdbc.metadata.annotation.Table;
+
+@Table("patients")
 public class Patient extends Person {
+    @Column("compliants")
     private String complaints;
+    @Column("diagnosis")
     private String diagnosis;
     //    private Doctor doctor;
+    @Column("state")
     private State state;
 
     private Patient() {
