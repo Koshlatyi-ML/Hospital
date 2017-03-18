@@ -1,7 +1,7 @@
 package domain;
 
-import dao.metadata.Column;
-import dao.metadata.OneToOne;
+import dao.jdbc.metadata.Column;
+import dao.jdbc.metadata.OneToOne;
 
 import java.time.ZonedDateTime;
 

@@ -1,6 +1,6 @@
 package domain;
 
-import dao.metadata.Column;
+import dao.jdbc.metadata.Column;
 
 public abstract class Person extends IdHolder {
     @Column("name")
