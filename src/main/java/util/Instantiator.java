@@ -17,7 +17,7 @@ public class Instantiator {
                 .getDeclaredAnnotation(Implementation.class);
 
 
-        Class<? extends T> clazz = implementationAnnot.clazz();
+        Class<? extends T> clazz = implementationAnnot.value();
         try {
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
