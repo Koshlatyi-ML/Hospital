@@ -1,14 +1,9 @@
-package domain;
-
-import dao.jdbc.metadata.Column;
+package domain.model;
 
 public class Patient extends Person {
-    @Column("compliants")
     private String complaints;
-    @Column("diagnosis")
     private String diagnosis;
     //    private Doctor doctor;
-    @Column("state")
     private State state;
 
     private Patient() {
