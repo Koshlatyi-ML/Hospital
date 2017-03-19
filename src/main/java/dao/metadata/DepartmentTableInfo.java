@@ -29,8 +29,8 @@ public class DepartmentTableInfo extends IdHolderTableInfo {
                 = TableInfoUtils.loadFieldColumnMap(entityClass);
 
         DepartmentTableInfo tableInfo = new DepartmentTableInfo();
-        tableInfo.setTableName(TableInfoUtils.loadTableName(entityClass));
-        IdHolderTableInfo.fillTableInfo(tableInfo);
+        tableInfo.setTableName(TableInfoUtils.getTableName(entityClass));
+        fillTableInfo(tableInfo);
         tableInfo.setNameColumn(fieldColumnMap.get("name"));
         // arranging get all cols logic
 

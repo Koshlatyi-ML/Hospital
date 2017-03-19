@@ -42,6 +42,6 @@ public abstract class IdHolderTableInfo implements TableInfo {
     static void fillTableInfo(IdHolderTableInfo tableInfo) {
         Class entityClass = IdHolderTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
-        tableInfo.setIdColumnName(TableInfoUtils.loadIdColumnName(entityClass));
+        tableInfo.setIdColumnName(TableInfoUtils.getdColumnName(entityClass));
     }
 }

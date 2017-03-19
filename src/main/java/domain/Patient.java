@@ -1,4 +1,4 @@
-package domain.model;
+package domain;
 
 import dao.metadata.annotation.Column;
 import dao.metadata.annotation.Table;

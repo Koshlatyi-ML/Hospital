@@ -1,11 +1,13 @@
-package domain.model;
+package domain;
 
+import dao.metadata.annotation.Inherit;
 import dao.metadata.annotation.OneToMany;
 import dao.metadata.annotation.Table;
 
 import java.util.List;
 
 @Table("medics")
+@Inherit(table = "stuff", foreignKey = "stuff_id")
 public class Medic extends Person {
     @OneToMany(table = "therapies", foreignKey = "performer_id")
     private List<Therapy> pharmacotherapies;

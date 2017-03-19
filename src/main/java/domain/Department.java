@@ -1,9 +1,8 @@
-package domain.model;
+package domain;
 
 import dao.metadata.annotation.Column;
 import dao.metadata.annotation.OneToMany;
 import dao.metadata.annotation.Table;
-import domain.IdHolder;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,9 +11,8 @@ import java.util.Objects;
 public class Department extends IdHolder {
     @Column("name")
     private String name;
-    @OneToMany(table = "doctors", foreignKey = "department_id")
+    @OneToMany(table = "stuff", foreignKey = "department_id")
     private List<Doctor> doctors;
-    @OneToMany(table = "medics", foreignKey = "department_id")
     private List<Medic> medics;
 
     private Department() {}
