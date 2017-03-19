@@ -28,7 +28,7 @@ public abstract class Person extends IdHolder {
             extends IdHolder.Builder<T, B> {
 
         protected Builder(T person) {
-            instance = person;
+            super(person);
         }
 
         public Builder<T, B> setId(long id) {

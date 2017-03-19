@@ -9,9 +9,9 @@ import java.util.Objects;
 public class Department extends IdHolder {
     @Column("name")
     private String name;
-    @OneToMany("department_id")
+    @OneToMany(table = "doctors", foreignKey = "department_id")
     private List<Doctor> doctors;
-    @OneToMany("department_id")
+    @OneToMany(table = "medics", foreignKey = "department_id")
     private List<Medic> medics;
 
     private Department() {}
@@ -42,7 +42,7 @@ public class Department extends IdHolder {
 
     public static class Builder extends IdHolder.Builder<Department, Builder> {
         public Builder() {
-            instance = new Department();
+            super(new Department());
         }
 
         public Builder setId(long id) {
