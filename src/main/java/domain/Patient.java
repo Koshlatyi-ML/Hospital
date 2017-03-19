@@ -5,7 +5,7 @@ import dao.metadata.annotation.Table;
 
 @Table("patients")
 public class Patient extends Person {
-    @Column("compliants")
+    @Column("complaints")
     private String complaints;
     @Column("diagnosis")
     private String diagnosis;

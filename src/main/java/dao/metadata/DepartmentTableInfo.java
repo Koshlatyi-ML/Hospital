@@ -22,16 +22,17 @@ public class DepartmentTableInfo extends IdHolderTableInfo {
     }
 
     public static DepartmentTableInfo createDepartmentTableInfo() {
+        DepartmentTableInfo tableInfo = new DepartmentTableInfo();
+        fillTableInfo(tableInfo);
+
         Class entityClass = DepartmentTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
+        tableInfo.setTableName(TableInfoUtils.getTableName(entityClass));
 
         Map<String, String> fieldColumnMap
                 = TableInfoUtils.loadFieldColumnMap(entityClass);
-
-        DepartmentTableInfo tableInfo = new DepartmentTableInfo();
-        tableInfo.setTableName(TableInfoUtils.getTableName(entityClass));
-        fillTableInfo(tableInfo);
         tableInfo.setNameColumn(fieldColumnMap.get("name"));
+
         // arranging get all cols logic
 
         return tableInfo;
