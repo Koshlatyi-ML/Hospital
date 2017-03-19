@@ -1,11 +1,17 @@
 package dao;
 
 import dao.jdbc.JdbcDaoFactory;
-import util.Implementation;
-import util.Instantiator;
+import util.load.Implementation;
+import util.load.Instantiator;
 
 @Implementation(JdbcDaoFactory.class)
 public abstract class DaoFactory {
+    protected DepartmentDao departmentDao;
+    protected DoctorDao doctorDao;
+    protected MedicDao medicDao;
+    protected PatientDao patientDao;
+    protected TherapyDao therapyDao;
+
     private static final DaoFactory INSTANCE
             = Instantiator.getInstance().loadInstance(DaoFactory.class);
 

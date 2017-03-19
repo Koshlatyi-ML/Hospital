@@ -1,6 +1,6 @@
 package dao;
 
-import domain.model.Doctor;
+import domain.Doctor;
 import java.util.Optional;
 
 public interface DoctorDao extends CrudDao<Doctor>,

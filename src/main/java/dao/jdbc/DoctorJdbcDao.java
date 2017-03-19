@@ -1,14 +1,15 @@
 package dao.jdbc;
 
 import dao.DoctorDao;
-import dao.jdbc.metadata.annotation.Entity;
-import domain.model.Doctor;
+import dao.metadata.DoctorTableInfo;
+import dao.metadata.annotation.Entity;
+import domain.Doctor;
 
 import java.util.List;
 import java.util.Optional;
 
 @Entity(Doctor.class)
-public class DoctorJdbcDao extends PersonJdbcDao<Doctor>
+public class DoctorJdbcDao extends PersonJdbcDao<Doctor, DoctorTableInfo>
         implements DoctorDao {
     @Override
     public List<Doctor> findByDepartmentId(long id) {

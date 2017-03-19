@@ -1,14 +1,19 @@
 package dao.jdbc;
 
 import dao.DepartmentDao;
-import dao.jdbc.metadata.annotation.Entity;
-import domain.model.Department;
+import dao.metadata.DepartmentTableInfo;
+import dao.metadata.annotation.Entity;
+import domain.Department;
 
 import java.util.Optional;
 
-@Entity(Department.class)
-public class DepartmentJdbcDao extends CrudJdbcDao<Department>
-        implements DepartmentDao {
+public class DepartmentJdbcDao extends CrudJdbcDao<Department,
+        DepartmentTableInfo> implements DepartmentDao {
+
+    public DepartmentJdbcDao() {
+        tableInfo
+                = DepartmentTableInfo.createDepartmentTableInfo();
+    }
 
     @Override
     public Optional<Department> findByName() {

@@ -1,6 +1,6 @@
 package dao;
 
-import domain.model.Person;
+import domain.Person;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,6 @@
 package dao;
 
-import domain.model.Therapy;
+import domain.Therapy;
 
 import java.time.ZonedDateTime;
 import java.util.List;

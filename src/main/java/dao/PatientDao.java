@@ -1,6 +1,6 @@
 package dao;
 
-import domain.model.Patient;
+import domain.Patient;
 
 import java.util.List;
 

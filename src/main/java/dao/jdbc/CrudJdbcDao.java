@@ -1,31 +1,33 @@
 package dao.jdbc;
 
 import dao.CrudDao;
+import dao.metadata.IdHolderTableInfo;
 import domain.IdHolder;
 
 import java.util.List;
 import java.util.Optional;
 
-public abstract class CrudJdbcDao<T extends IdHolder>
-        implements CrudDao<T> {
+public abstract class CrudJdbcDao<E extends IdHolder,
+        T extends IdHolderTableInfo> implements CrudDao<E> {
+    protected T tableInfo;
 
     @Override
-    public Optional<T> find(int id) {
+    public Optional<E> find(int id) {
         return null;
     }
 
     @Override
-    public List<T> findAll() {
+    public List<E> findAll() {
         return null;
     }
 
     @Override
-    public void create(T entity) {
+    public void create(E entity) {
 
     }
 
     @Override
-    public void update(T entity) {
+    public void update(E entity) {
 
     }
 

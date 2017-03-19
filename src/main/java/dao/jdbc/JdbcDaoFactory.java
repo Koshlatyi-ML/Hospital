@@ -3,6 +3,7 @@ package dao.jdbc;
 import dao.*;
 
 public class JdbcDaoFactory extends DaoFactory {
+
     @Override
     public DepartmentDao getDepartmentDao() {
         return null;
