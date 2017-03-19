@@ -1,4 +1,4 @@
-package util;
+package util.load;
 
 public class LoadInstanceException extends RuntimeException {
     public LoadInstanceException() {

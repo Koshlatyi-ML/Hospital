@@ -1,6 +1,6 @@
-package domain;
+package util;
 
-public abstract class EntityBuilder<T> {
+public abstract class AbstractBuilder<T> {
     protected T instance;
     public T build() {
         return instance;

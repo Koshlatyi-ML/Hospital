@@ -1,6 +1,4 @@
-package util;
-
-import java.lang.annotation.Annotation;
+package util.load;
 
 public class Instantiator {
     private static Instantiator instance = new Instantiator();
@@ -21,7 +19,7 @@ public class Instantiator {
         try {
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new LoadInstanceException(e);
+            throw new RuntimeException(e);
         }
     }
 

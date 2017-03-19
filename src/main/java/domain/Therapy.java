@@ -1,9 +1,8 @@
-package domain.model;
+package domain;
 
 import dao.metadata.annotation.Column;
 import dao.metadata.annotation.OneToOne;
 import dao.metadata.annotation.Table;
-import domain.IdHolder;
 
 import java.time.ZonedDateTime;
 
@@ -76,35 +75,39 @@ public class Therapy extends IdHolder {
         SURGERY_OPERATION;
     }
 
-    public static class Builder<T extends Therapy, B extends Builder>
-            extends IdHolder.Builder<T, B> {
+    public static class Builder
+            extends IdHolder.Builder<Therapy, Builder> {
 
-        public Builder<T, B> setName(String name) {
+        public Builder(){
+            super(new Therapy());
+        }
+
+        public Builder setName(String name) {
             instance.setName(name);
             return this;
         }
 
-        public Builder<T, B> setDescription(String description) {
+        public Builder setDescription(String description) {
             instance.setDescription(description);
             return this;
         }
 
-        public Builder<T, B> setType(Type type) {
+        public Builder setType(Type type) {
             instance.setType(type);
             return this;
         }
 
-        public Builder<T, B> setAppointmentDateTime(ZonedDateTime time) {
+        public Builder setAppointmentDateTime(ZonedDateTime time) {
             instance.setAppointmentDateTime(time);
             return this;
         }
 
-        public Builder<T, B> setCompleteDateTime(ZonedDateTime time) {
+        public Builder setCompleteDateTime(ZonedDateTime time) {
             instance.setCompleteDateTime(time);
             return this;
         }
 
-        public Builder<T, B> setPatient(Patient patient) {
+        public Builder setPatient(Patient patient) {
             instance.setPatient(patient);
             return this;
         }

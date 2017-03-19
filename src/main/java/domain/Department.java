@@ -45,7 +45,7 @@ public class Department extends IdHolder {
 
     public static class Builder extends IdHolder.Builder<Department, Builder> {
         public Builder() {
-            instance = new Department();
+            super(new Department());
         }
 
         public Builder setId(long id) {

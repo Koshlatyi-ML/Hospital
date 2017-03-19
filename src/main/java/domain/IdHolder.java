@@ -1,6 +1,7 @@
 package domain;
 
 import dao.metadata.annotation.Id;
+import util.AbstractBuilder;
 
 import java.util.Objects;
 
@@ -17,9 +18,13 @@ public abstract class IdHolder {
     }
 
     public static class Builder<T extends IdHolder, B extends Builder>
-            extends EntityBuilder<T> {
+            extends AbstractBuilder<T> {
 
-        public Builder<T, B> setId(long id) {
+        protected Builder(T idHolder) {
+            instance = idHolder;
+        }
+
+        public Builder setId(long id) {
             instance.setId(id);
             return this;
         }
