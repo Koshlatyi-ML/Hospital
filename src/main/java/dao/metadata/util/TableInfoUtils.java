@@ -37,9 +37,9 @@ public class TableInfoUtils {
     }
 
     public static String getInheritedByTableName(Class<?> entityClass) {
-        Class<?> inheritor = StuffTableInfo.class
+        Class<?> derivedClass = StuffTableInfo.class
                 .getDeclaredAnnotation(InheritedBy.class).value();
-        return inheritor.getDeclaredAnnotation(Inherit.class).table();
+        return derivedClass.getDeclaredAnnotation(Inherit.class).table();
     }
 
     public static OneToOne getOneToOneRelation(Class<?> entityClass,

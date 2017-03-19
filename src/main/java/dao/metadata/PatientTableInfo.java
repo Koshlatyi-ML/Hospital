@@ -65,9 +65,9 @@ public class PatientTableInfo extends PersonTableInfo {
         tableInfo.setDiagnosisColumn(fieldColumnMap.get("diagnosis"));
         tableInfo.setStateColumn(fieldColumnMap.get("state"));
 
-        OneToMany oneToManyAnnot
+        OneToMany doctorToPatientAnnot
                 = TableInfoUtils.getOneToManyRelation(Doctor.class, tableName);
-        tableInfo.setDoctorIdColumn(oneToManyAnnot.foreignKey());
+        tableInfo.setDoctorIdColumn(doctorToPatientAnnot.foreignKey());
 
         // arranging get all cols logic
 

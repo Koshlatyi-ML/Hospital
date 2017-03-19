@@ -18,7 +18,7 @@ public class Therapy extends IdHolder {
     private ZonedDateTime appointmentDateTime;
     @Column("complete_date")
     private ZonedDateTime completeDateTime;
-    @OneToOne(table = "patients", foreignKey = "patient_id")
+    @Column("patient_id")
     private Patient patient;
 
     public String getName() {
