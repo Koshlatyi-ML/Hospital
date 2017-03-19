@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public abstract class CrudJdbcDao<E extends IdHolder,
         T extends IdHolderTableInfo> implements CrudDao<E> {
-    protected T tableInfo;
+    protected T ownTableInfo;
 
     @Override
     public Optional<E> find(int id) {

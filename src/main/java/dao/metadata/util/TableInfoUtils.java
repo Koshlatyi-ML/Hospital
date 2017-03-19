@@ -2,10 +2,13 @@ package dao.metadata.util;
 
 import dao.metadata.StuffTableInfo;
 import dao.metadata.annotation.*;
-import domain.Department;
+import dao.metadata.annotation.Column;
+import dao.metadata.annotation.Id;
+import dao.metadata.annotation.Inherit;
+import dao.metadata.annotation.OneToMany;
+import dao.metadata.annotation.InheritedBy;
 import util.ReflectionUtils;
 
-import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -27,7 +30,7 @@ public class TableInfoUtils {
         return entityClass.getDeclaredAnnotation(Table.class).value();
     }
 
-    public static String getdColumnName(Class<?> entityClass) {
+    public static String getIdColumnName(Class<?> entityClass) {
         return Stream.of(entityClass.getDeclaredFields())
                 .filter(field -> ReflectionUtils.hasDeclaredAnnotation(
                         field, Id.class))

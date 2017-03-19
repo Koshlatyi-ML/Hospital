@@ -15,7 +15,7 @@ public abstract class PersonTableInfo extends IdHolderTableInfo {
         return nameColumn;
     }
 
-    protected void setNameColumn(String nameColumn) {
+    void setNameColumn(String nameColumn) {
         this.nameColumn = nameColumn;
     }
 
@@ -23,19 +23,25 @@ public abstract class PersonTableInfo extends IdHolderTableInfo {
         return surnameColumn;
     }
 
-    protected void setSurnameColumn(String surnameColumn) {
+    void setSurnameColumn(String surnameColumn) {
         this.surnameColumn = surnameColumn;
     }
 
     public static void fillTableInfo(PersonTableInfo tableInfo) {
+        IdHolderTableInfo.fillTableInfo(tableInfo);
+
         Class entityClass = PersonTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
 
         Map<String, String> fieldColumnMap
                 = TableInfoUtils.loadFieldColumnMap(entityClass);
 
-        IdHolderTableInfo.fillTableInfo(tableInfo);
-        tableInfo.setNameColumn(fieldColumnMap.get("name"));
-        tableInfo.setSurnameColumn(fieldColumnMap.get("surname"));
+        String column = fieldColumnMap.get("name");
+        tableInfo.setNameColumn(column);
+        tableInfo.getColumnNames().add(column);
+
+        column = fieldColumnMap.get("surname");
+        tableInfo.setSurnameColumn(column);
+        tableInfo.getColumnNames().add(column);
     }
 }

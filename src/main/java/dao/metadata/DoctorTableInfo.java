@@ -5,23 +5,15 @@ import dao.metadata.annotation.Inherit;
 import dao.metadata.util.TableInfoUtils;
 import domain.Doctor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(Doctor.class)
-public class DoctorTableInfo extends StuffTableInfo {
-    private String stuffIdColumn;
-
+public class DoctorTableInfo extends IdHolderTableInfo {
     DoctorTableInfo() { }
-
-    public String getStuffIdColumn() {
-        return stuffIdColumn;
-    }
-
-    public void setStuffIdColumn(String stuffIdColumn) {
-        this.stuffIdColumn = stuffIdColumn;
-    }
 
     public static DoctorTableInfo createDoctorTableInfo() {
         DoctorTableInfo tableInfo = new DoctorTableInfo();
-        fillTableInfo(tableInfo);
 
         Class<?> entityClass = DoctorTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
@@ -29,9 +21,11 @@ public class DoctorTableInfo extends StuffTableInfo {
 
         String stuffId = entityClass.getDeclaredAnnotation(Inherit.class)
                 .foreignKey();
-        tableInfo.setStuffIdColumn(stuffId);
+        tableInfo.setIdColumnName(stuffId);
 
-        // arranging get all cols logic
+        List<String> columnNames = new ArrayList<>();
+        columnNames.add(stuffId);
+        tableInfo.setColumnNames(columnNames);
 
         return tableInfo;
     }

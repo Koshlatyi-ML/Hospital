@@ -3,7 +3,6 @@ package dao.metadata;
 import dao.metadata.annotation.Entity;
 import dao.metadata.annotation.OneToMany;
 import dao.metadata.util.TableInfoUtils;
-import domain.Department;
 import domain.Doctor;
 import domain.Patient;
 
@@ -16,13 +15,13 @@ public class PatientTableInfo extends PersonTableInfo {
     private String complaintsColumn;
     private String stateColumn;
 
-    public PatientTableInfo() {}
+    PatientTableInfo() {}
 
     public String getDoctorIdColumn() {
         return doctorIdColumn;
     }
 
-    public void setDoctorIdColumn(String doctorIdColumn) {
+    void setDoctorIdColumn(String doctorIdColumn) {
         this.doctorIdColumn = doctorIdColumn;
     }
 
@@ -30,7 +29,7 @@ public class PatientTableInfo extends PersonTableInfo {
         return diagnosisColumn;
     }
 
-    public void setDiagnosisColumn(String diagnosisColumn) {
+    void setDiagnosisColumn(String diagnosisColumn) {
         this.diagnosisColumn = diagnosisColumn;
     }
 
@@ -38,7 +37,7 @@ public class PatientTableInfo extends PersonTableInfo {
         return complaintsColumn;
     }
 
-    public void setComplaintsColumn(String complaintsColumn) {
+    void setComplaintsColumn(String complaintsColumn) {
         this.complaintsColumn = complaintsColumn;
     }
 
@@ -46,7 +45,7 @@ public class PatientTableInfo extends PersonTableInfo {
         return stateColumn;
     }
 
-    public void setStateColumn(String stateColumn) {
+    void setStateColumn(String stateColumn) {
         this.stateColumn = stateColumn;
     }
 
@@ -59,17 +58,27 @@ public class PatientTableInfo extends PersonTableInfo {
         String tableName = TableInfoUtils.getTableName(entityClass);
         tableInfo.setTableName(TableInfoUtils.getTableName(entityClass));
 
-        Map<String, String> fieldColumnMap
-                = TableInfoUtils.loadFieldColumnMap(entityClass);
-        tableInfo.setComplaintsColumn(fieldColumnMap.get("complaints"));
-        tableInfo.setDiagnosisColumn(fieldColumnMap.get("diagnosis"));
-        tableInfo.setStateColumn(fieldColumnMap.get("state"));
-
         OneToMany doctorToPatientAnnot
                 = TableInfoUtils.getOneToManyRelation(Doctor.class, tableName);
-        tableInfo.setDoctorIdColumn(doctorToPatientAnnot.foreignKey());
 
-        // arranging get all cols logic
+        String column = doctorToPatientAnnot.foreignKey();
+        tableInfo.setDoctorIdColumn(column);
+        tableInfo.getColumnNames().add(column);
+
+        Map<String, String> fieldColumnMap
+                = TableInfoUtils.loadFieldColumnMap(entityClass);
+
+        column = fieldColumnMap.get("complaints");
+        tableInfo.setComplaintsColumn(column);
+        tableInfo.getColumnNames().add(column);
+
+        column = fieldColumnMap.get("diagnosis");
+        tableInfo.setDiagnosisColumn(column);
+        tableInfo.getColumnNames().add(column);
+
+        column = fieldColumnMap.get("state");
+        tableInfo.setStateColumn(column);
+        tableInfo.getColumnNames().add(column);
 
         return tableInfo;
     }

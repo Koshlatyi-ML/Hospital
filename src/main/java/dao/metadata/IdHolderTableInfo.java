@@ -4,6 +4,7 @@ import dao.metadata.annotation.Entity;
 import dao.metadata.util.TableInfoUtils;
 import domain.IdHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(IdHolder.class)
@@ -17,7 +18,7 @@ public abstract class IdHolderTableInfo implements TableInfo {
         return tableName;
     }
 
-    protected void setTableName(String tableName) {
+    void setTableName(String tableName) {
         this.tableName = tableName;
     }
 
@@ -26,7 +27,7 @@ public abstract class IdHolderTableInfo implements TableInfo {
         return idColumnName;
     }
 
-    protected void setIdColumnName(String idColumnName) {
+    void setIdColumnName(String idColumnName) {
         this.idColumnName = idColumnName;
     }
 
@@ -35,13 +36,19 @@ public abstract class IdHolderTableInfo implements TableInfo {
         return columnNames;
     }
 
-    protected void setColumnNames(List<String> columnNames) {
+    void setColumnNames(List<String> columnNames) {
         this.columnNames = columnNames;
     }
 
     static void fillTableInfo(IdHolderTableInfo tableInfo) {
         Class entityClass = IdHolderTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
-        tableInfo.setIdColumnName(TableInfoUtils.getdColumnName(entityClass));
+
+        String idColumn = TableInfoUtils.getIdColumnName(entityClass);
+        tableInfo.setIdColumnName(idColumn);
+
+        List<String> columnNames = new ArrayList<>();
+        columnNames.add(idColumn);
+        tableInfo.setColumnNames(columnNames);
     }
 }

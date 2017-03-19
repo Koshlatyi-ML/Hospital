@@ -10,14 +10,13 @@ import domain.Medic;
 public class StuffTableInfo extends PersonTableInfo {
     private String departmentIdColumn;
 
-    protected StuffTableInfo() {
-    }
+    StuffTableInfo() {}
 
     public String getDepartmentIdColumn() {
         return departmentIdColumn;
     }
 
-    public void setDepartmentIdColumn(String departmentIdColumn) {
+    void setDepartmentIdColumn(String departmentIdColumn) {
         this.departmentIdColumn = departmentIdColumn;
     }
 
@@ -39,14 +38,14 @@ public class StuffTableInfo extends PersonTableInfo {
 
         String tableName
                 = TableInfoUtils.getInheritedByTableName(StuffTableInfo.class);
-
         tableInfo.setTableName(tableName);
 
-        OneToMany oneToManyAnnot
+        OneToMany departmentToStuffAnnot
                 = TableInfoUtils.getOneToManyRelation(Department.class, tableName);
-        tableInfo.setDepartmentIdColumn(oneToManyAnnot.foreignKey());
 
-        //column names logic
+        String column = departmentToStuffAnnot.foreignKey();
+        tableInfo.setDepartmentIdColumn(column);
+        tableInfo.getColumnNames().add(column);
 
         return tableInfo;
     }

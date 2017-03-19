@@ -10,14 +10,13 @@ import java.util.Map;
 public class DepartmentTableInfo extends IdHolderTableInfo {
     private String nameColumn;
 
-    private DepartmentTableInfo() {
-    }
+    DepartmentTableInfo() {}
 
     public String getNameColumn() {
         return nameColumn;
     }
 
-    protected void setNameColumn(String nameColumn) {
+    void setNameColumn(String nameColumn) {
         this.nameColumn = nameColumn;
     }
 
@@ -31,9 +30,10 @@ public class DepartmentTableInfo extends IdHolderTableInfo {
 
         Map<String, String> fieldColumnMap
                 = TableInfoUtils.loadFieldColumnMap(entityClass);
-        tableInfo.setNameColumn(fieldColumnMap.get("name"));
 
-        // arranging get all cols logic
+        String column = fieldColumnMap.get("name");
+        tableInfo.setNameColumn(column);
+        tableInfo.getColumnNames().add(column);
 
         return tableInfo;
     }

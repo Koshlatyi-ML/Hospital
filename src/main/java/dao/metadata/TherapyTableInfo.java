@@ -4,7 +4,6 @@ import dao.metadata.annotation.Entity;
 import dao.metadata.annotation.InheritedBy;
 import dao.metadata.annotation.OneToMany;
 import dao.metadata.util.TableInfoUtils;
-import domain.Doctor;
 import domain.Therapy;
 
 import java.util.Map;
@@ -12,42 +11,45 @@ import java.util.Map;
 @Entity(Therapy.class)
 public class TherapyTableInfo extends IdHolderTableInfo {
     private String nameColumn;
-    private String descriptionColumn;
     private String typeColumn;
+    private String descriptionColumn;
     private String appointmentDateColumn;
     private String completeDateColumn;
     private String patientIdColumn;
     private String performerIdColumn;
 
+    TherapyTableInfo() {}
+
     public String getNameColumn() {
         return nameColumn;
     }
 
-    public void setNameColumn(String nameColumn) {
+    void setNameColumn(String nameColumn) {
         this.nameColumn = nameColumn;
-    }
-
-    public String getDescriptionColumn() {
-        return descriptionColumn;
-    }
-
-    public void setDescriptionColumn(String descriptionColumn) {
-        this.descriptionColumn = descriptionColumn;
     }
 
     public String getTypeColumn() {
         return typeColumn;
     }
 
-    public void setTypeColumn(String typeColumn) {
+    void setTypeColumn(String typeColumn) {
         this.typeColumn = typeColumn;
     }
+
+    public String getDescriptionColumn() {
+        return descriptionColumn;
+    }
+
+    void setDescriptionColumn(String descriptionColumn) {
+        this.descriptionColumn = descriptionColumn;
+    }
+
 
     public String getAppointmentDateColumn() {
         return appointmentDateColumn;
     }
 
-    public void setAppointmentDateColumn(String appointmentDateColumn) {
+    void setAppointmentDateColumn(String appointmentDateColumn) {
         this.appointmentDateColumn = appointmentDateColumn;
     }
 
@@ -55,7 +57,7 @@ public class TherapyTableInfo extends IdHolderTableInfo {
         return completeDateColumn;
     }
 
-    public void setCompleteDateColumn(String completeDateColumn) {
+    void setCompleteDateColumn(String completeDateColumn) {
         this.completeDateColumn = completeDateColumn;
     }
 
@@ -63,7 +65,7 @@ public class TherapyTableInfo extends IdHolderTableInfo {
         return patientIdColumn;
     }
 
-    public void setPatientIdColumn(String patientIdColumn) {
+    void setPatientIdColumn(String patientIdColumn) {
         this.patientIdColumn = patientIdColumn;
     }
 
@@ -71,7 +73,7 @@ public class TherapyTableInfo extends IdHolderTableInfo {
         return performerIdColumn;
     }
 
-    public void setPerformerIdColumn(String performerIdColumn) {
+    void setPerformerIdColumn(String performerIdColumn) {
         this.performerIdColumn = performerIdColumn;
     }
 
@@ -86,20 +88,39 @@ public class TherapyTableInfo extends IdHolderTableInfo {
 
         Map<String, String> fieldColumnMap
                 = TableInfoUtils.loadFieldColumnMap(entityClass);
-        tableInfo.setNameColumn(fieldColumnMap.get("name"));
-        tableInfo.setDescriptionColumn(fieldColumnMap.get("description"));
-        tableInfo.setTypeColumn(fieldColumnMap.get("type"));
-        tableInfo.setAppointmentDateColumn(fieldColumnMap.get("appointmentDateTime"));
-        tableInfo.setCompleteDateColumn(fieldColumnMap.get("completeDateTime"));
-        tableInfo.setPatientIdColumn(fieldColumnMap.get("patient"));
+
+        String column = fieldColumnMap.get("name");
+        tableInfo.setNameColumn(column);
+        tableInfo.getColumnNames().add(column);
+
+        column = fieldColumnMap.get("type");
+        tableInfo.setTypeColumn(column);
+        tableInfo.getColumnNames().add(column);
+
+        column = fieldColumnMap.get("description");
+        tableInfo.setDescriptionColumn(column);
+        tableInfo.getColumnNames().add(column);
+
+        column = fieldColumnMap.get("appointmentDateTime");
+        tableInfo.setAppointmentDateColumn(column);
+        tableInfo.getColumnNames().add(column);
+
+        column = fieldColumnMap.get("completeDateTime");
+        tableInfo.setCompleteDateColumn(column);
+        tableInfo.getColumnNames().add(column);
+
+        column = fieldColumnMap.get("patient");
+        tableInfo.setPatientIdColumn(column);
+        tableInfo.getColumnNames().add(column);
 
         Class<?> stuffDerivedClass = StuffTableInfo.class
                 .getDeclaredAnnotation(InheritedBy.class).value();
         OneToMany stuffToTherapyAnnot
                 = TableInfoUtils.getOneToManyRelation(stuffDerivedClass, tableName);
-        tableInfo.setPerformerIdColumn(stuffToTherapyAnnot.foreignKey());
 
-        // arranging get all cols logic
+        column = stuffToTherapyAnnot.foreignKey();
+        tableInfo.setPerformerIdColumn(column);
+        tableInfo.getColumnNames().add(column);
 
         return tableInfo;
     }
