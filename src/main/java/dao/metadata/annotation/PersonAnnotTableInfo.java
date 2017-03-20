@@ -1,5 +1,6 @@
 package dao.metadata.annotation;
 
+import dao.metadata.PersonTableInfo;
 import dao.metadata.annotation.mapping.Entity;
 import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.Person;
@@ -7,7 +8,8 @@ import domain.Person;
 import java.util.Map;
 
 @Entity(Person.class)
-public abstract class PersonAnnotTableInfo extends IdHolderAnnotTableInfo {
+public abstract class PersonAnnotTableInfo extends IdHolderAnnotTableInfo
+                                           implements PersonTableInfo {
     private String nameColumn;
     private String surnameColumn;
 

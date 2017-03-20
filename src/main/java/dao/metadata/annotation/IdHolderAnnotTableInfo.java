@@ -1,6 +1,6 @@
 package dao.metadata.annotation;
 
-import dao.metadata.IdHolderTableInfo;
+import dao.metadata.PlainTableInfo;
 import dao.metadata.annotation.mapping.Entity;
 import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.IdHolder;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(IdHolder.class)
-public abstract class IdHolderAnnotTableInfo implements IdHolderTableInfo {
+public abstract class IdHolderAnnotTableInfo implements PlainTableInfo {
     private String tableName;
     private String idColumnName;
     private List<String> columnNames;

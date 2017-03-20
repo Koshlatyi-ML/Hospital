@@ -1,6 +1,6 @@
 package dao.metadata;
 
-public interface TherapyTableInfo extends IdHolderTableInfo {
+public interface TherapyTableInfo extends PlainTableInfo {
     String getNameColumn();
     String getTypeColumn();
     String getDescriptionColumn();

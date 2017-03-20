@@ -12,4 +12,11 @@ public abstract class TableInfoFactory {
     public static TableInfoFactory getInstance() {
         return INSTANCE;
     }
+
+    public abstract DepartmentTableInfo getDepartmentTableInfo();
+    public abstract DoctorTableInfo getDoctorTableInfo();
+    public abstract MedicTableInfo getMedicTableInfo();
+    public abstract PatientTableInfo getPatientTableInfo();
+    public abstract TherapyTableInfo getTherapyTableInfo();
+    public abstract StuffTableInfo getStuffTableInfo();
 }

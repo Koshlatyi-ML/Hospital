@@ -1,3 +1,3 @@
 package dao.metadata;
 
-public interface DoctorTableInfo extends IdHolderTableInfo {}
+public interface DoctorTableInfo extends PlainTableInfo {}

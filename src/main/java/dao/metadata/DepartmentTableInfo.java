@@ -1,5 +1,5 @@
 package dao.metadata;
 
-public interface DepartmentTableInfo extends IdHolderTableInfo {
+public interface DepartmentTableInfo extends PlainTableInfo {
     String getNameColumn();
 }

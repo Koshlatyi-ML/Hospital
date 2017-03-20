@@ -1,7 +1,5 @@
 package dao.metadata;
 
-public interface StuffTableInfo extends IdHolderTableInfo {
-    String getNameColumn();
-    String getSurnameColumn();
+public interface StuffTableInfo extends PersonTableInfo {
     String getDepartmentIdColumn();
 }
