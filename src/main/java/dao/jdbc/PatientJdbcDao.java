@@ -1,14 +1,14 @@
 package dao.jdbc;
 
 import dao.PatientDao;
-import dao.metadata.PatientTableInfo;
-import dao.metadata.annotation.Entity;
+import dao.metadata.annotation.PatientAnnotTableInfo;
+import dao.metadata.annotation.mapping.Entity;
 import domain.Patient;
 
 import java.util.List;
 
 @Entity(Patient.class)
-public class PatientJdbcDao extends PersonJdbcDao<Patient, PatientTableInfo>
+public class PatientJdbcDao extends PersonJdbcDao<Patient, PatientAnnotTableInfo>
         implements PatientDao {
 
     @Override

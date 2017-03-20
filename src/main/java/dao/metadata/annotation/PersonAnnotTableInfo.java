@@ -1,13 +1,13 @@
-package dao.metadata;
+package dao.metadata.annotation;
 
-import dao.metadata.annotation.Entity;
-import dao.metadata.util.TableInfoUtils;
+import dao.metadata.annotation.mapping.Entity;
+import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.Person;
 
 import java.util.Map;
 
 @Entity(Person.class)
-public abstract class PersonTableInfo extends IdHolderTableInfo {
+public abstract class PersonAnnotTableInfo extends IdHolderAnnotTableInfo {
     private String nameColumn;
     private String surnameColumn;
 
@@ -15,7 +15,7 @@ public abstract class PersonTableInfo extends IdHolderTableInfo {
         return nameColumn;
     }
 
-    void setNameColumn(String nameColumn) {
+    private void setNameColumn(String nameColumn) {
         this.nameColumn = nameColumn;
     }
 
@@ -23,18 +23,18 @@ public abstract class PersonTableInfo extends IdHolderTableInfo {
         return surnameColumn;
     }
 
-    void setSurnameColumn(String surnameColumn) {
+    private void setSurnameColumn(String surnameColumn) {
         this.surnameColumn = surnameColumn;
     }
 
-    public static void fillTableInfo(PersonTableInfo tableInfo) {
-        IdHolderTableInfo.fillTableInfo(tableInfo);
+    void fillTableInfo(PersonAnnotTableInfo tableInfo) {
+        super.fillTableInfo(tableInfo);
 
-        Class entityClass = PersonTableInfo.class
+        Class entityClass = PersonAnnotTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
 
         Map<String, String> fieldColumnMap
-                = TableInfoUtils.loadFieldColumnMap(entityClass);
+                = AnnotTableInfos.loadFieldColumnMap(entityClass);
 
         String column = fieldColumnMap.get("name");
         tableInfo.setNameColumn(column);

@@ -1,4 +1,4 @@
-package dao.metadata.annotation;
+package dao.metadata.annotation.mapping;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Column {
-    String value();
+public @interface OneToOne {
+    String table();
+    String foreignKey();
 }

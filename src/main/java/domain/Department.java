@@ -1,8 +1,8 @@
 package domain;
 
-import dao.metadata.annotation.Column;
-import dao.metadata.annotation.OneToMany;
-import dao.metadata.annotation.Table;
+import dao.metadata.annotation.mapping.Column;
+import dao.metadata.annotation.mapping.OneToMany;
+import dao.metadata.annotation.mapping.Table;
 
 import java.util.List;
 import java.util.Objects;

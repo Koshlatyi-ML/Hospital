@@ -1,38 +1,15 @@
 package dao.metadata;
 
-public class TableInfoFactory {
-    private DepartmentTableInfo departmentTableInfo;
-    private DoctorTableInfo doctorTableInfo;
-    private MedicTableInfo medicTableInfo;
-    private PatientTableInfo patientTableInfo;
-    private TherapyTableInfo therapyTableInfo;
+import dao.metadata.annotation.AnnotTableInfoFactory;
+import util.load.Implementation;
+import util.load.Instantiator;
 
+@Implementation(AnnotTableInfoFactory.class)
+public abstract class TableInfoFactory {
     private static final TableInfoFactory INSTANCE
-            = new TableInfoFactory();
-
-    private TableInfoFactory() {}
+            = Instantiator.getInstance().loadInstance(TableInfoFactory.class);
 
     public static TableInfoFactory getInstance() {
         return INSTANCE;
-    }
-
-    public DepartmentTableInfo getDepartmentTableInfo() {
-        return departmentTableInfo;
-    }
-
-    public DoctorTableInfo getDoctorTableInfo() {
-        return doctorTableInfo;
-    }
-
-    public MedicTableInfo getMedicTableInfo() {
-        return medicTableInfo;
-    }
-
-    public PatientTableInfo getPatientTableInfo() {
-        return patientTableInfo;
-    }
-
-    public TherapyTableInfo getTherapyTableInfo() {
-        return therapyTableInfo;
     }
 }

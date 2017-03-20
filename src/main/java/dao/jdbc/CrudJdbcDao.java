@@ -1,14 +1,14 @@
 package dao.jdbc;
 
 import dao.CrudDao;
-import dao.metadata.IdHolderTableInfo;
+import dao.metadata.annotation.IdHolderAnnotTableInfo;
 import domain.IdHolder;
 
 import java.util.List;
 import java.util.Optional;
 
 public abstract class CrudJdbcDao<E extends IdHolder,
-        T extends IdHolderTableInfo> implements CrudDao<E> {
+        T extends IdHolderAnnotTableInfo> implements CrudDao<E> {
     protected T ownTableInfo;
 
     @Override

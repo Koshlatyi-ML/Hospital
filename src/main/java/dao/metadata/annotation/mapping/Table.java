@@ -1,4 +1,4 @@
-package dao.metadata.annotation;
+package dao.metadata.annotation.mapping;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Inherit {
-    String table();
-    String foreignKey();
+public @interface Table {
+    String value();
 }

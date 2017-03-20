@@ -1,19 +1,14 @@
-package dao.metadata.util;
+package dao.metadata.annotation.util;
 
-import dao.metadata.StuffTableInfo;
-import dao.metadata.annotation.*;
-import dao.metadata.annotation.Column;
-import dao.metadata.annotation.Id;
-import dao.metadata.annotation.Inherit;
-import dao.metadata.annotation.OneToMany;
-import dao.metadata.annotation.InheritedBy;
+import dao.metadata.annotation.StuffAnnotTableInfo;
+import dao.metadata.annotation.mapping.*;
 import util.ReflectionUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class TableInfoUtils {
+public class AnnotTableInfos {
     public static Map<String, String> loadFieldColumnMap(Class<?> entityClass) {
 
         Map<String, String> fieldColumnMap  = new HashMap<>();
@@ -40,7 +35,7 @@ public class TableInfoUtils {
     }
 
     public static String getInheritedByTableName(Class<?> entityClass) {
-        Class<?> derivedClass = StuffTableInfo.class
+        Class<?> derivedClass = StuffAnnotTableInfo.class
                 .getDeclaredAnnotation(InheritedBy.class).value();
         return derivedClass.getDeclaredAnnotation(Inherit.class).table();
     }

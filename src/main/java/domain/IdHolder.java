@@ -1,6 +1,6 @@
 package domain;
 
-import dao.metadata.annotation.Id;
+import dao.metadata.annotation.mapping.Id;
 import util.AbstractBuilder;
 
 import java.util.Objects;

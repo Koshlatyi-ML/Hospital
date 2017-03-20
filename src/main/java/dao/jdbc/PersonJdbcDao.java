@@ -1,14 +1,13 @@
 package dao.jdbc;
 
 import dao.PersonDao;
-import dao.metadata.IdHolderTableInfo;
-import dao.metadata.PersonTableInfo;
+import dao.metadata.annotation.IdHolderAnnotTableInfo;
 import domain.Person;
 
 import java.util.List;
 import java.util.Optional;
 
-public abstract class PersonJdbcDao<P extends Person, T extends IdHolderTableInfo>
+public abstract class PersonJdbcDao<P extends Person, T extends IdHolderAnnotTableInfo>
         extends CrudJdbcDao<P, T> implements PersonDao<P> {
 
     @Override
