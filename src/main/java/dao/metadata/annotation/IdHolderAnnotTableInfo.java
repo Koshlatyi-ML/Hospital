@@ -44,9 +44,6 @@ public abstract class IdHolderAnnotTableInfo implements PlainTableInfo {
 
         String idColumn = AnnotTableInfos.getIdColumnName(entityClass);
         tableInfo.setIdColumnName(idColumn);
-
-        List<String> columnNames = new ArrayList<>();
-        columnNames.add(idColumn);
-        tableInfo.setColumnNames(columnNames);
+        tableInfo.setColumnNames(new ArrayList<>());
     }
 }
