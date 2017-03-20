@@ -1,6 +1,7 @@
 package dao.jdbc;
 
 import dao.PatientDao;
+import dao.metadata.PatientTableInfo;
 import dao.metadata.annotation.PatientAnnotTableInfo;
 import dao.metadata.annotation.mapping.Entity;
 import domain.Patient;
@@ -8,8 +9,8 @@ import domain.Patient;
 import java.util.List;
 
 @Entity(Patient.class)
-public class PatientJdbcDao extends PersonJdbcDao<Patient, PatientAnnotTableInfo>
-        implements PatientDao {
+public class PatientJdbcDao extends PersonJdbcDao<Patient, PatientTableInfo>
+                            implements PatientDao {
 
     @Override
     public List<Patient> findByDepartmentId(long id) {

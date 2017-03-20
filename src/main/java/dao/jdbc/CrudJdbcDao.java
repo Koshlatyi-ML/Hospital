@@ -1,16 +1,15 @@
 package dao.jdbc;
 
 import dao.CrudDao;
-import dao.metadata.annotation.IdHolderAnnotTableInfo;
+import dao.metadata.PlainTableInfo;
 import domain.IdHolder;
 
 import java.util.List;
 import java.util.Optional;
 
 public abstract class CrudJdbcDao<E extends IdHolder,
-        T extends IdHolderAnnotTableInfo> implements CrudDao<E> {
+                                  T extends PlainTableInfo> implements CrudDao<E> {
     protected T ownTableInfo;
-
     @Override
     public Optional<E> find(int id) {
         return null;

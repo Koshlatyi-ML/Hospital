@@ -2,12 +2,12 @@ package dao;
 
 import dao.jdbc.JdbcDaoFactory;
 import util.load.Implementation;
-import util.load.Instantiator;
+import util.load.ImplementationLoader;
 
 @Implementation(JdbcDaoFactory.class)
 public abstract class DaoFactory {
     private static final DaoFactory INSTANCE
-            = Instantiator.getInstance().loadInstance(DaoFactory.class);
+            = ImplementationLoader.getInstance().loadInstance(DaoFactory.class);
 
     public static DaoFactory getInstance() {
         return INSTANCE;
