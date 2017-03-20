@@ -1,11 +1,11 @@
 package util.load;
 
-public class Instantiator {
-    private static Instantiator instance = new Instantiator();
+public class ImplementationLoader {
+    private static ImplementationLoader instance = new ImplementationLoader();
 
-    private Instantiator(){}
+    private ImplementationLoader(){}
 
-    public static Instantiator getInstance() {
+    public static ImplementationLoader getInstance() {
         return instance;
     }
 
@@ -13,7 +13,6 @@ public class Instantiator {
 
         Implementation implementationAnnot = supertypeClass
                 .getDeclaredAnnotation(Implementation.class);
-
 
         Class<? extends T> clazz = implementationAnnot.value();
         try {
