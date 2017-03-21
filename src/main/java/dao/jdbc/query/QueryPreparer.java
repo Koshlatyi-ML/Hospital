@@ -1,4 +1,4 @@
-package dao.query;
+package dao.jdbc.query;
 
 import dao.metadata.PlainTableInfo;
 
@@ -7,8 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
 
-public class Queries {
-    private Queries(){}
+public class QueryPreparer {
+    private QueryPreparer() {
+    }
 
     private static String formatColumnNames(PlainTableInfo tableInfo) {
         return "(" + String.join(",", tableInfo.getColumnNames()) + ")";
@@ -23,8 +24,8 @@ public class Queries {
         return String.join("=?,", tableInfo.getColumnNames());
     }
 
-    public static PreparedStatement createFindAllQuery(Connection connection,
-                                                       PlainTableInfo tableInfo) {
+    public static PreparedStatement prepareFindAll(Connection connection,
+                                                   PlainTableInfo tableInfo) {
         try {
             return connection.prepareStatement(
                     String.format("SELECT * FROM %s;",
@@ -34,8 +35,8 @@ public class Queries {
         }
     }
 
-    public static PreparedStatement createFindByIdQuery(Connection connection,
-                                                        PlainTableInfo tableInfo) {
+    public static PreparedStatement prepareFindById(Connection connection,
+                                                    PlainTableInfo tableInfo) {
         try {
             return connection.prepareStatement(
                     String.format("SELECT * FROM %s WHERE %s=?;",
@@ -46,8 +47,8 @@ public class Queries {
         }
     }
 
-    public static PreparedStatement createInsertQuery(Connection connection,
-                                                      PlainTableInfo tableInfo) {
+    public static PreparedStatement prepareInsert(Connection connection,
+                                                  PlainTableInfo tableInfo) {
         try {
             return connection.prepareStatement(
                     String.format("INSERT INTO %s %s VALUES %s;",
@@ -59,8 +60,8 @@ public class Queries {
         }
     }
 
-    public static PreparedStatement createUpdateQuery(Connection connection,
-                                                      PlainTableInfo tableInfo) {
+    public static PreparedStatement prepareUpdate(Connection connection,
+                                                  PlainTableInfo tableInfo) {
         try {
             return connection.prepareStatement(
                     String.format("UPDATE %s SET %s WHERE %s=?;",
@@ -72,8 +73,8 @@ public class Queries {
         }
     }
 
-    public static PreparedStatement createDeleteQuery(Connection connection,
-                                                      PlainTableInfo tableInfo) {
+    public static PreparedStatement prepareDelete(Connection connection,
+                                                  PlainTableInfo tableInfo) {
         try {
             return connection.prepareStatement(
                     String.format("DELETE FROM %s WHERE %s=?;",

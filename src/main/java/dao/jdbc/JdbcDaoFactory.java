@@ -3,29 +3,36 @@ package dao.jdbc;
 import dao.*;
 
 public class JdbcDaoFactory extends DaoFactory {
+    private DepartmentDao departmentDao = new DepartmentJdbcDao();
+    private DoctorDao doctorDao = new DoctorJdbcDao();
+    private MedicDao medicDao = new MedicJdbcDao();
+    private PatientDao patientDao = new PatientJdbcDao();
+    private TherapyDao therapyDao = new TherapyJdbcDao();
+
+    private JdbcDaoFactory(){}
 
     @Override
     public DepartmentDao getDepartmentDao() {
-        return null;
+        return departmentDao;
     }
 
     @Override
     public DoctorDao getDoctorDao() {
-        return null;
+        return doctorDao;
     }
 
     @Override
     public MedicDao getMedicDao() {
-        return null;
+        return medicDao;
     }
 
     @Override
     public PatientDao getPatient() {
-        return null;
+        return patientDao;
     }
 
     @Override
     public TherapyDao getTherapyDao() {
-        return null;
+        return therapyDao;
     }
 }

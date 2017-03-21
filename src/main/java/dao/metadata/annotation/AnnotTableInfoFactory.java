@@ -17,8 +17,7 @@ public class AnnotTableInfoFactory extends TableInfoFactory {
     private static final TherapyAnnotTableInfo THERAPY_ANNOT_TABLE_INFO
             = TherapyAnnotTableInfo.createAnnotTableInfo();
 
-    private AnnotTableInfoFactory() {
-    }
+    private AnnotTableInfoFactory() {}
 
     @Override
     public DepartmentAnnotTableInfo getDepartmentTableInfo() {
