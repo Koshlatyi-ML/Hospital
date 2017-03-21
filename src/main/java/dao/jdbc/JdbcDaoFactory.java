@@ -3,11 +3,12 @@ package dao.jdbc;
 import dao.*;
 
 public class JdbcDaoFactory extends DaoFactory {
-    private DepartmentDao departmentDao = new DepartmentJdbcDao();
-    private DoctorDao doctorDao = new DoctorJdbcDao();
-    private MedicDao medicDao = new MedicJdbcDao();
-    private PatientDao patientDao = new PatientJdbcDao();
-    private TherapyDao therapyDao = new TherapyJdbcDao();
+    private DoctorJdbcDao doctorDao = new DoctorJdbcDao();
+    private MedicJdbcDao medicDao = new MedicJdbcDao();
+    private PatientJdbcDao patientDao = new PatientJdbcDao();
+    private TherapyJdbcDao therapyDao = new TherapyJdbcDao();
+    private DepartmentJdbcDao departmentDao
+            = new DepartmentJdbcDao(doctorDao, medicDao);
 
     private JdbcDaoFactory(){}
 
