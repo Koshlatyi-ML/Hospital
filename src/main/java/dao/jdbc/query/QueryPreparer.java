@@ -7,81 +7,58 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Collections;
 
-public class QueryPreparer {
+public class QueryPreparer<T extends PlainTableInfo> {
+    private T tableInfo;
+
     private QueryPreparer() {
     }
 
-    private static String formatColumnNames(PlainTableInfo tableInfo) {
+    private String formatColumnNames() {
         return "(" + String.join(",", tableInfo.getColumnNames()) + ")";
     }
 
-    private static String formatPlaceholders(PlainTableInfo tableInfo) {
+    private String formatPlaceholders() {
         int count = tableInfo.getColumnNames().size();
         return "(" + String.join(",", Collections.nCopies(count, "?")) + ")";
     }
 
-    private static String formatColumnPlaceholders(PlainTableInfo tableInfo) {
+    private String formatColumnPlaceholders() {
         return String.join("=?,", tableInfo.getColumnNames());
     }
 
-    public static PreparedStatement prepareFindAll(Connection connection,
-                                                   PlainTableInfo tableInfo) {
-        try {
-            return connection.prepareStatement(
-                    String.format("SELECT * FROM %s;",
-                            tableInfo.getTableName()));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public PreparedStatement prepareFindAll(Connection connection) throws SQLException {
+        return connection.prepareStatement(
+                String.format("SELECT * FROM %s;",
+                        tableInfo.getTableName()));
     }
 
-    public static PreparedStatement prepareFindById(Connection connection,
-                                                    PlainTableInfo tableInfo) {
-        try {
-            return connection.prepareStatement(
-                    String.format("SELECT * FROM %s WHERE %s=?;",
-                            tableInfo.getTableName(),
-                            tableInfo.getIdColumnName()));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public PreparedStatement prepareFindById(Connection connection) throws SQLException {
+        return connection.prepareStatement(
+                String.format("SELECT * FROM %s WHERE %s=?;",
+                        tableInfo.getTableName(),
+                        tableInfo.getIdColumnName()));
     }
 
-    public static PreparedStatement prepareInsert(Connection connection,
-                                                  PlainTableInfo tableInfo) {
-        try {
-            return connection.prepareStatement(
-                    String.format("INSERT INTO %s %s VALUES %s;",
-                            tableInfo.getTableName(),
-                            formatColumnNames(tableInfo),
-                            formatPlaceholders(tableInfo)));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public PreparedStatement prepareInsert(Connection connection) throws SQLException {
+        return connection.prepareStatement(
+                String.format("INSERT INTO %s %s VALUES %s;",
+                        tableInfo.getTableName(),
+                        formatColumnNames(),
+                        formatPlaceholders()));
     }
 
-    public static PreparedStatement prepareUpdate(Connection connection,
-                                                  PlainTableInfo tableInfo) {
-        try {
-            return connection.prepareStatement(
-                    String.format("UPDATE %s SET %s WHERE %s=?;",
-                            formatColumnNames(tableInfo),
-                            formatColumnPlaceholders(tableInfo),
-                            tableInfo.getIdColumnName()));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public PreparedStatement prepareUpdate(Connection connection) throws SQLException {
+        return connection.prepareStatement(
+                String.format("UPDATE %s SET %s WHERE %s=?;",
+                        formatColumnNames(),
+                        formatColumnPlaceholders(),
+                        tableInfo.getIdColumnName()));
     }
 
-    public static PreparedStatement prepareDelete(Connection connection,
-                                                  PlainTableInfo tableInfo) {
-        try {
-            return connection.prepareStatement(
-                    String.format("DELETE FROM %s WHERE %s=?;",
-                            formatColumnNames(tableInfo),
-                            tableInfo.getIdColumnName()));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public PreparedStatement prepareDelete(Connection connection) throws SQLException {
+        return connection.prepareStatement(
+                String.format("DELETE FROM %s WHERE %s=?;",
+                        formatColumnNames(),
+                        tableInfo.getIdColumnName()));
     }
 }
