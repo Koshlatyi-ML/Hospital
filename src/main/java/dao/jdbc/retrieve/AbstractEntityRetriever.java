@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractEntityRetriever<T extends IdHolder    > implements EntityRetriever<T> {
+public abstract class AbstractEntityRetriever<T extends IdHolder> implements EntityRetriever<T> {
     @Override
     public Optional<T> retrieveEntity(ResultSet resultSet) throws SQLException {
         if (!resultSet.next()) {
