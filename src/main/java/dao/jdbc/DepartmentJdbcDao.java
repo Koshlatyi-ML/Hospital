@@ -24,12 +24,11 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department, DepartmentQueryPr
         entityRetriever = new DepartmentEntityRetriever();
         valueSupplier = new DepartmentValueSupplier();
         queryPreparer = new DepartmentQueryPreparer();
-
     }
 
     @Override
     public Optional<Department> find(long id) {
-        Connection connection = connectionPolicy.getConnection();
+        Connection connection = getConnection();
         setThreadLocalConnection(connection);
 
         Optional<Department> departmentOptional = super.find(id);
@@ -42,11 +41,11 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department, DepartmentQueryPr
 
     @Override
     public List<Department> findAll() {
-        Connection connection = connectionPolicy.getConnection();
+        Connection connection = getConnection();
         setThreadLocalConnection(connection);
 
         List<Department> departmentList = super.findAll();
-        departmentList.forEach(department -> setStuff(connection, departmentList));
+        setStuff(connection, departmentList);
 
         releaseThreadLocalConnection();
 
@@ -55,7 +54,7 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department, DepartmentQueryPr
 
     @Override
     public Optional<Department> findByName(String name) {
-        Connection connection = connectionPolicy.getConnection();
+        Connection connection = getConnection();
         setThreadLocalConnection(connection);
 
         Optional<Department> departmentOptional;

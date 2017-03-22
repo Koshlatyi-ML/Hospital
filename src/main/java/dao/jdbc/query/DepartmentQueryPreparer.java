@@ -2,7 +2,6 @@ package dao.jdbc.query;
 
 import dao.metadata.DepartmentTableInfo;
 import dao.metadata.TableInfoFactory;
-import domain.Department;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

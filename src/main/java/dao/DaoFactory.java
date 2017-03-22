@@ -1,10 +1,9 @@
 package dao;
 
-import dao.jdbc.JdbcDaoFactory;
 import util.load.Implementation;
 import util.load.ImplementationLoader;
 
-@Implementation(JdbcDaoFactory.class)
+//@Implementation(JdbcDaoFactory.class)
 public abstract class DaoFactory {
     private static final DaoFactory INSTANCE
             = ImplementationLoader.getInstance().loadInstance(DaoFactory.class);

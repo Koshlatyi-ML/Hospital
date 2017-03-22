@@ -10,5 +10,7 @@ public interface TherapyDao extends CrudDao<Therapy> {
     List<Therapy> findByAppointmentDateTime(ZonedDateTime dateTime); //?
     List<Therapy> findByPatientId(long id);
     List<Therapy> findByMedicId(long id);
-    List<Therapy> findByDoctorId(long id);
+    List<Therapy> findOperationsByDoctorId(long id);
+    List<Therapy> findPharmacotherapiesByDoctorId(long id);
+    List<Therapy> findPhysiotherapiesByDoctorId(long id);
 }

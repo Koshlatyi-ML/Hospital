@@ -10,19 +10,6 @@ import java.util.Collections;
 public class QueryPreparer<T extends PlainTableInfo> {
     protected T tableInfo;
 
-    private String formatColumnNames() {
-        return "(" + String.join(",", tableInfo.getColumnNames()) + ")";
-    }
-
-    private String formatPlaceholders() {
-        int count = tableInfo.getColumnNames().size();
-        return "(" + String.join(",", Collections.nCopies(count, "?")) + ")";
-    }
-
-    private String formatColumnPlaceholders() {
-        return String.join("=?,", tableInfo.getColumnNames());
-    }
-
     public PreparedStatement prepareFindAll(Connection connection) throws SQLException {
         return connection.prepareStatement(
                 String.format("SELECT * FROM %s;",
@@ -40,22 +27,22 @@ public class QueryPreparer<T extends PlainTableInfo> {
         return connection.prepareStatement(
                 String.format("INSERT INTO %s %s VALUES %s;",
                         tableInfo.getTableName(),
-                        formatColumnNames(),
-                        formatPlaceholders()));
+                        Queries.formatColumnNames(tableInfo),
+                        Queries.formatPlaceholders(tableInfo)));
     }
 
     public PreparedStatement prepareUpdate(Connection connection) throws SQLException {
         return connection.prepareStatement(
                 String.format("UPDATE %s SET %s WHERE %s=?;",
-                        formatColumnNames(),
-                        formatColumnPlaceholders(),
+                        Queries.formatColumnNames(tableInfo),
+                        Queries.formatColumnPlaceholders(tableInfo),
                         tableInfo.getIdColumnName()));
     }
 
     public PreparedStatement prepareDelete(Connection connection) throws SQLException {
         return connection.prepareStatement(
                 String.format("DELETE FROM %s WHERE %s=?;",
-                        formatColumnNames(),
+                        Queries.formatColumnNames(tableInfo),
                         tableInfo.getIdColumnName()));
     }
 }

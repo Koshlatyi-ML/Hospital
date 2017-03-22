@@ -1,7 +1,7 @@
 package dao.jdbc;
 
-import dao.PersonDao;
-import dao.jdbc.query.PersonQueryPreparer;
+import dao.StuffDao;
+import dao.jdbc.query.StuffQueryPreparer;
 import domain.Person;
 
 import java.sql.Connection;
@@ -10,16 +10,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class PersonJdbcDao<E extends Person, T extends PersonQueryPreparer>
-        extends CrudJdbcDao<E, T> implements PersonDao<E> {
+public abstract class StuffJdbcDao<E extends Person, T extends StuffQueryPreparer>
+        extends PersonJdbcDao<E, T> implements StuffDao<E> {
 
     @Override
-    public List<E> findByFullName(String name, String surname) {
+    public List<E> findByDepartmentId(long id) {
         Connection connection = getConnection();
 
-        try(PreparedStatement statement = queryPreparer.prepareFindByFullName(connection)) {
-            statement.setString(1, name);
-            statement.setString(2, surname);
+        try(PreparedStatement statement
+                    = queryPreparer.findByDepartmentId(connection)) {
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             return entityRetriever.retrieveEntityList(resultSet);
         } catch (SQLException e) {

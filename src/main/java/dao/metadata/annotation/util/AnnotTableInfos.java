@@ -16,8 +16,7 @@ public class AnnotTableInfos {
                 .filter(field -> ReflectionUtils.hasDeclaredAnnotation(
                         field, Column.class))
                 .forEach(field -> fieldColumnMap.put(field.getName(),
-                        field.getAnnotation(Column.class).value())
-                );
+                        field.getAnnotation(Column.class).value()));
         return fieldColumnMap;
     }
 
@@ -35,8 +34,8 @@ public class AnnotTableInfos {
     }
 
     public static String getInheritedByTableName(Class<?> entityClass) {
-        Class<?> derivedClass = StuffAnnotTableInfo.class
-                .getDeclaredAnnotation(InheritedBy.class).value();
+        Class<?> derivedClass
+                = entityClass.getDeclaredAnnotation(InheritedBy.class).value();
         return derivedClass.getDeclaredAnnotation(Inherit.class).table();
     }
 
