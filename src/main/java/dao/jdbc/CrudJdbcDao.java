@@ -21,7 +21,7 @@ public abstract class CrudJdbcDao<E extends IdHolder,T extends QueryPreparer>
     protected T queryPreparer;
     protected EntityRetriever<E> entityRetriever;
     protected ValueSupplier<E> valueSupplier;
-    private ConnectionPolicy connectionPolicy = ConnectionPolicy.METHOD_SCOPED;
+    protected ConnectionPolicy connectionPolicy = ConnectionPolicy.METHOD_SCOPED;
 
 
     enum ConnectionPolicy {

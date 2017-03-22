@@ -8,10 +8,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 public class QueryPreparer<T extends PlainTableInfo> {
-    private T tableInfo;
-
-    private QueryPreparer() {
-    }
+    protected T tableInfo;
 
     private String formatColumnNames() {
         return "(" + String.join(",", tableInfo.getColumnNames()) + ")";
