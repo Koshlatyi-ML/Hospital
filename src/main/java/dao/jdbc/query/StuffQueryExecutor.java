@@ -1,6 +1,7 @@
 package dao.jdbc.query;
 
-import dao.jdbc.supply.StuffValueSupplier;
+import dao.jdbc.query.retrieve.EntityRetriever;
+import dao.jdbc.query.supply.StuffValueSupplier;
 import dao.metadata.StuffTableInfo;
 import domain.Person;
 

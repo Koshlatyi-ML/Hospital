@@ -48,22 +48,22 @@ public class Department extends IdHolder {
 
         public Builder setId(long id) {
             instance.setId(id);
-            return this;
+            return getSelf();
         }
 
         public Builder setName(String name) {
             instance.setName(name);
-            return this;
+            return getSelf();
         }
 
         public Builder setDoctors(List<Doctor> doctors) {
             instance.setDoctors(doctors);
-            return this;
+            return getSelf();
         }
 
         public Builder setNurses(List<Medic> medics) {
             instance.setMedics(medics);
-            return this;
+            return getSelf();
         }
 
         @Override

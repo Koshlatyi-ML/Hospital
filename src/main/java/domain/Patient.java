@@ -9,7 +9,6 @@ public class Patient extends Person {
     private String complaints;
     @Column("diagnosis")
     private String diagnosis;
-    //    private Doctor doctor;
     @Column("state")
     private State state;
 

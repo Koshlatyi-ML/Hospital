@@ -2,6 +2,7 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.EntityRetriever;
 import dao.jdbc.query.retrieve.PatientEntityRetriever;
+import dao.jdbc.query.supply.PatientValueSupplier;
 import dao.jdbc.query.supply.ValueSupplier;
 import dao.metadata.PatientTableInfo;
 import domain.Patient;

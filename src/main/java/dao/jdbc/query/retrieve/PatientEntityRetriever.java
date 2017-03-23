@@ -14,6 +14,7 @@ public class PatientEntityRetriever extends AbstractEntityRetriever<Patient> {
                 .setSurname(resultSet.getString(3))
                 .setCompliants(resultSet.getString(4))
                 .setDiagnosis(resultSet.getString(5))
-                .setS
+                .setState(Patient.State.valueOf(resultSet.getString(6)))
+                .build();
     }
 }

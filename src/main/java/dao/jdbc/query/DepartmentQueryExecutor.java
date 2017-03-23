@@ -1,9 +1,9 @@
 package dao.jdbc.query;
 
-import dao.jdbc.retrieve.DepartmentEntityRetriever;
-import dao.jdbc.retrieve.EntityRetriever;
-import dao.jdbc.supply.DepartmentValueSupplier;
-import dao.jdbc.supply.ValueSupplier;
+import dao.jdbc.query.retrieve.DepartmentEntityRetriever;
+import dao.jdbc.query.retrieve.EntityRetriever;
+import dao.jdbc.query.supply.DepartmentValueSupplier;
+import dao.jdbc.query.supply.ValueSupplier;
 import dao.metadata.DepartmentTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Department;
@@ -15,8 +15,8 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class DepartmentQueryExecutor extends QueryExecutor<Department> {
-    private EntityRetriever<Department> entityRetriever;
-    private ValueSupplier<Department> valueSupplier;
+    private DepartmentEntityRetriever entityRetriever;
+    private DepartmentValueSupplier valueSupplier;
     private DepartmentTableInfo tableInfo;
 
     private final String FIND_BY_NAME_QUERY =

@@ -2,7 +2,6 @@ package dao.jdbc;
 
 import dao.DoctorDao;
 import dao.jdbc.query.DoctorQueryExecutor;
-import dao.jdbc.query.StuffQueryExecutor;
 import dao.metadata.TableInfoFactory;
 import domain.Doctor;
 
@@ -35,7 +34,6 @@ public class DoctorJdbcDao extends StuffJdbcDao<Doctor> implements DoctorDao {
                 setPatients(connection, doctor);
                 setTherapies(connection, doctor);
             });
-
         } catch (SQLException e) {
             releaseThreadLocalConnection();
             throw new RuntimeException(e);
@@ -59,55 +57,6 @@ public class DoctorJdbcDao extends StuffJdbcDao<Doctor> implements DoctorDao {
             throw new RuntimeException(e);
         }
         return doctorList;
-    }
-
-    @Override
-    public void create(Doctor entity) {
-        try (Connection connection = getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                queryExecutor.queryInsert(connection, entity);
-                connection.commit();
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                connection.rollback();
-            }
-        } catch (SQLException e) {
-            //connection.rollback() inside close //todo
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void update(Doctor entity) {
-        try (Connection connection = getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                queryExecutor.queryUpdate(connection, entity);
-                connection.commit();
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                connection.rollback();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void delete(long id) {
-        try (Connection connection = getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                queryExecutor.queryDelete(connection, id);
-                connection.commit();
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                connection.rollback();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override

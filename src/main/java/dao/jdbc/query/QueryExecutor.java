@@ -1,9 +1,8 @@
 package dao.jdbc.query;
 
-import dao.jdbc.retrieve.EntityRetriever;
-import dao.jdbc.supply.ValueSupplier;
+import dao.jdbc.query.retrieve.EntityRetriever;
+import dao.jdbc.query.supply.ValueSupplier;
 import dao.metadata.PlainTableInfo;
-import dao.metadata.annotation.IdHolderAnnotTableInfo;
 import domain.IdHolder;
 
 import java.sql.Connection;

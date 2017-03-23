@@ -12,9 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class CrudJdbcDao<E extends IdHolder> implements CrudDao<E> {
-
     private ConnectionPolicy connectionPolicy = ConnectionPolicy.METHOD_SCOPED;
-
 
     enum ConnectionPolicy {
         INSTANCE_SCOPED {

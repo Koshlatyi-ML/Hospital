@@ -33,6 +33,11 @@ public class Medic extends Person {
     }
 
     public static class Builder extends Person.Builder<Medic, Builder> {
+
+        protected Builder(Medic instance) {
+            this.instance = instance;
+        }
+
         public Builder() {
             this.instance = new Medic();
         }

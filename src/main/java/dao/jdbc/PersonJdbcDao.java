@@ -26,5 +26,4 @@ public abstract class PersonJdbcDao<E extends Person> extends CrudJdbcDao<E>
 
     @Override
     protected abstract PersonQueryExecutor<E> getQueryExecutor();
-
 }

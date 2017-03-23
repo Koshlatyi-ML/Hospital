@@ -1,7 +1,9 @@
 package dao.jdbc.query;
 
-import dao.jdbc.retrieve.DoctorEntityRetriever;
-import dao.jdbc.supply.DoctorValueSupplier;
+import dao.jdbc.query.retrieve.DoctorEntityRetriever;
+import dao.jdbc.query.retrieve.EntityRetriever;
+import dao.jdbc.query.supply.DoctorValueSupplier;
+import dao.jdbc.query.supply.StuffValueSupplier;
 import dao.metadata.DoctorTableInfo;
 import dao.metadata.PatientTableInfo;
 import dao.metadata.TableInfoFactory;
@@ -80,7 +82,6 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
 
         try (PreparedStatement statement = connection.prepareStatement(INSERT_QUERY)) {
             statement.setLong(1, stuffId);
-            valueSupplier.supplyStuffValues(statement, entity);
             statement.execute();
             return statement.getGeneratedKeys();
         }
@@ -123,12 +124,12 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
     }
 
     @Override
-    protected DoctorEntityRetriever getEntityRetriever() {
+    protected EntityRetriever<Doctor> getEntityRetriever() {
         return entityRetriever;
     }
 
     @Override
-    protected DoctorValueSupplier getValueSupplier() {
+    protected StuffValueSupplier<Doctor> getValueSupplier() {
         return valueSupplier;
     }
 }
