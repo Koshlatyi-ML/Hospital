@@ -78,36 +78,41 @@ public class Therapy extends IdHolder {
             extends IdHolder.Builder<Therapy, Builder> {
 
         public Builder(){
-            super(new Therapy());
+            instance = new Therapy();
         }
 
         public Builder setName(String name) {
             instance.setName(name);
-            return this;
+            return getSelf();
         }
 
         public Builder setDescription(String description) {
             instance.setDescription(description);
-            return this;
+            return getSelf();
         }
 
         public Builder setType(Type type) {
             instance.setType(type);
-            return this;
+            return getSelf();
         }
 
         public Builder setAppointmentDateTime(ZonedDateTime time) {
             instance.setAppointmentDateTime(time);
-            return this;
+            return getSelf();
         }
 
         public Builder setCompleteDateTime(ZonedDateTime time) {
             instance.setCompleteDateTime(time);
-            return this;
+            return getSelf();
         }
 
         public Builder setPatient(Patient patient) {
             instance.setPatient(patient);
+            return getSelf();
+        }
+
+        @Override
+        protected Builder getSelf() {
             return this;
         }
     }

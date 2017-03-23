@@ -32,19 +32,23 @@ public class Medic extends Person {
         this.physiotherapies = physiotherapies;
     }
 
-    public static class Builder extends Person.Builder<Medic, Doctor.Builder> {
-
+    public static class Builder extends Person.Builder<Medic, Builder> {
         public Builder() {
-            super(new Medic());
+            this.instance = new Medic();
         }
 
         public Builder setPharmacotherapies(List<Therapy> therapies) {
             instance.setPharmacotherapies(therapies);
-            return this;
+            return getSelf();
         }
 
         public Builder setPhysiotherapies(List<Therapy> therapies) {
             instance.setPhysiotherapies(therapies);
+            return getSelf();
+        }
+
+        @Override
+        protected Builder getSelf() {
             return this;
         }
     }

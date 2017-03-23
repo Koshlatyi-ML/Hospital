@@ -49,16 +49,26 @@ public class Patient extends Person {
 
     public static class Builder extends Person.Builder<Patient, Builder> {
         public Builder() {
-            super(new Patient());
+            instance = new Patient();
         }
 
         public Builder setCompliants(String compliants) {
             instance.setComplaints(compliants);
-            return this;
+            return getSelf();
         }
 
         public Builder setDiagnosis(String diagnosis) {
             instance.setDiagnosis(diagnosis);
+            return getSelf();
+        }
+
+        public Builder setState(State state) {
+            instance.setState(state);
+            return getSelf();
+        }
+
+        @Override
+        protected Builder getSelf() {
             return this;
         }
     }

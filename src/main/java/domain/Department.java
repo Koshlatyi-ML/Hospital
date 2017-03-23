@@ -43,7 +43,7 @@ public class Department extends IdHolder {
 
     public static class Builder extends IdHolder.Builder<Department, Builder> {
         public Builder() {
-            super(new Department());
+            instance = new Department();
         }
 
         public Builder setId(long id) {
@@ -63,6 +63,11 @@ public class Department extends IdHolder {
 
         public Builder setNurses(List<Medic> medics) {
             instance.setMedics(medics);
+            return this;
+        }
+
+        @Override
+        protected Builder getSelf() {
             return this;
         }
     }

@@ -17,17 +17,15 @@ public abstract class IdHolder {
         this.id = id;
     }
 
-    public static class Builder<T extends IdHolder, B extends Builder>
+    public abstract static class Builder<T extends IdHolder, B extends Builder>
             extends AbstractBuilder<T> {
 
-        protected Builder(T idHolder) {
-            instance = idHolder;
+        public B setId(long id) {
+            instance.setId(id);
+            return getSelf();
         }
 
-        public Builder setId(long id) {
-            instance.setId(id);
-            return this;
-        }
+        protected abstract B getSelf();
     }
 
     @Override
