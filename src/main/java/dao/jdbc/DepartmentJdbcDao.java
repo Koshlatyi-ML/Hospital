@@ -1,73 +1,70 @@
 package dao.jdbc;
 
 import dao.DepartmentDao;
-import dao.jdbc.query.DepartmentQueryPreparer;
-import dao.jdbc.retrieve.DepartmentEntityRetriever;
-import dao.jdbc.supply.DepartmentValueSupplier;
+import dao.jdbc.query.DepartmentQueryExecutor;
+import dao.jdbc.query.QueryExecutor;
 import domain.Department;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class DepartmentJdbcDao extends CrudJdbcDao<Department, DepartmentQueryPreparer>
-        implements DepartmentDao {
+public class DepartmentJdbcDao extends CrudJdbcDao<Department> implements DepartmentDao {
+    private DepartmentQueryExecutor queryExecutor;
     private DoctorJdbcDao doctorDao;
     private MedicJdbcDao medicDao;
 
     DepartmentJdbcDao(DoctorJdbcDao doctorDao, MedicJdbcDao medicDao) {
+        this.queryExecutor = new DepartmentQueryExecutor();
         this.doctorDao = doctorDao;
         this.medicDao = medicDao;
-        entityRetriever = new DepartmentEntityRetriever();
-        valueSupplier = new DepartmentValueSupplier();
-        queryPreparer = new DepartmentQueryPreparer();
     }
 
     @Override
     public Optional<Department> find(long id) {
-        Connection connection = getConnection();
-        setThreadLocalConnection(connection);
+        Optional<Department> departmentOptional;
+        try (Connection connection = getConnection()) {
+            setThreadLocalConnection(connection);
 
-        Optional<Department> departmentOptional = super.find(id);
-        departmentOptional.ifPresent(department -> setStuff(connection, department));
-
-        releaseThreadLocalConnection();
+            departmentOptional = super.find(id);
+            departmentOptional.ifPresent(department -> setStuff(connection, department));
+        } catch (SQLException e) {
+            releaseThreadLocalConnection();
+            throw new RuntimeException(e);
+        }
 
         return departmentOptional;
     }
 
     @Override
     public List<Department> findAll() {
-        Connection connection = getConnection();
-        setThreadLocalConnection(connection);
+        List<Department> departmentList;
+        try (Connection connection = getConnection()) {
+            setThreadLocalConnection(connection);
 
-        List<Department> departmentList = super.findAll();
-        setStuff(connection, departmentList);
-
-        releaseThreadLocalConnection();
+            departmentList = super.findAll();
+            setStuff(connection, departmentList);
+        } catch (SQLException e) {
+            releaseThreadLocalConnection();
+            throw new RuntimeException(e);
+        }
 
         return departmentList;
     }
 
     @Override
     public Optional<Department> findByName(String name) {
-        Connection connection = getConnection();
-        setThreadLocalConnection(connection);
-
         Optional<Department> departmentOptional;
-        try (PreparedStatement statement = queryPreparer.prepareFindByName(connection)) {
-            statement.setString(1, name);
-            ResultSet resultSet = statement.executeQuery();
-            departmentOptional = entityRetriever.retrieveEntity(resultSet);
+        try (Connection connection = getConnection()) {
+            setThreadLocalConnection(connection);
+
+            departmentOptional = queryExecutor.prepareFindByName(connection, name);
+            departmentOptional.ifPresent(department -> setStuff(connection, department));
         } catch (SQLException e) {
+            releaseThreadLocalConnection();
             throw new RuntimeException(e);
         }
-
-        departmentOptional.ifPresent(department -> setStuff(connection, department));
-        releaseThreadLocalConnection();
 
         return departmentOptional;
     }
@@ -88,7 +85,7 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department, DepartmentQueryPr
         medicDao.setThreadLocalConnection(connection);
         doctorDao.setThreadLocalConnection(connection);
 
-        departmentList.forEach(department ->  {
+        departmentList.forEach(department -> {
             long departmentId = department.getId();
             department.setMedics(medicDao.findByDepartmentId(departmentId));
             department.setDoctors(doctorDao.findByDepartmentId(departmentId));
@@ -96,5 +93,10 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department, DepartmentQueryPr
 
         medicDao.releaseThreadLocalConnection();
         doctorDao.releaseThreadLocalConnection();
+    }
+
+    @Override
+    protected QueryExecutor<Department> getQueryExecutor() {
+        return queryExecutor;
     }
 }

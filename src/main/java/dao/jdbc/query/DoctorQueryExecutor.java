@@ -19,19 +19,33 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
     private DoctorValueSupplier valueSupplier;
     private PatientTableInfo patientTableInfo;
 
-    private final String FIND_BY_PATIENT_ID_QUERY =
-            String.format("SELECT %s FROM %s " +
-                            "INNER JOIN %s ON %s.%s = %s.%s " +
-                            "INNER JOIN %s ON %s.%s = %s.%s " +
-                            "WHERE %s = ?;",
-                    Queries.formatColumnNames(tableInfo.getColumns()),
+    private final String STUFF_INNER_JOIN =
+            String.format(" %s INNER JOIN %s ON %s.%s = %s.%s ",
                     tableInfo.getStuffTableName(),
                     tableInfo.getTableName(),
-                    tableInfo.getStuffTableName(), tableInfo.getIdColumn(),
-                    tableInfo.getTableName(), tableInfo.getStuffIdColumn(),
+                    tableInfo.getStuffTableName(),
+                    tableInfo.getIdColumn(),
+                    tableInfo.getTableName(),
+                    tableInfo.getStuffIdColumn());
+
+    private final String FIND_BY_PATIENT_ID_QUERY =
+            String.format("SELECT %s " + STUFF_INNER_JOIN +
+                            "INNER JOIN %s ON %s.%s = %s.%s " +
+                            "WHERE %s.%s = ?;",
+                    Queries.formatColumnNames(tableInfo.getColumns()),
                     patientTableInfo.getTableName(),
                     tableInfo.getTableName(), tableInfo.getStuffIdColumn(),
-                    patientTableInfo.getTableName(), patientTableInfo.getDoctorIdColumn());
+                    patientTableInfo.getTableName(), patientTableInfo.getDoctorIdColumn(),
+                    patientTableInfo.getTableName(), patientTableInfo.getIdColumn());
+/*
+
+    private final String FIND_ALL_QUERY =
+            String.format("SELECT * FROM" + STUFF_INNER_JOIN + ";");
+
+    private final String FIND_BY_ID_QUERY =
+            String.format("SELECT * FROM" + STUFF_INNER_JOIN + "WHERE %s = ?;",
+                    getTableInfo().getIdColumn());
+*/
 
     private final String INSERT_QUERY =
             String.format("INSERT INTO %s %s VALUES %s;",
@@ -58,17 +72,6 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
         valueSupplier = new DoctorValueSupplier();
         patientTableInfo = tableInfoFactory.getPatientTableInfo();
     }
-
-    public Optional<Doctor> prepareFindByPatientId(Connection connection, long id)
-            throws SQLException {
-
-        try (PreparedStatement statement = connection.prepareStatement(FIND_BY_PATIENT_ID_QUERY)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            return entityRetriever.retrieveEntity(resultSet);
-        }
-    }
-
 
     @Override
     public ResultSet queryInsert(Connection connection, Doctor entity) throws SQLException {
@@ -100,6 +103,17 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setLong(1, id);
             statement.execute();
+        }
+    }
+
+    public Optional<Doctor> queryFindByPatientId(Connection connection, long id)
+            throws SQLException {
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(FIND_BY_PATIENT_ID_QUERY)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return entityRetriever.retrieveEntity(resultSet);
         }
     }
 
