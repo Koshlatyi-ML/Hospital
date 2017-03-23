@@ -13,8 +13,18 @@ import java.util.List;
 public class DoctorAnnotTableInfo extends StuffAnnotTableInfo
                                   implements DoctorTableInfo {
     private String stuffIdColumn;
+    private List<String> doctorColumns;
 
     private DoctorAnnotTableInfo() { }
+
+    @Override
+    public List<String> getDoctorColumns() {
+        return doctorColumns;
+    }
+
+    public void setDoctorColumns(List<String> doctorColumns) {
+        this.doctorColumns = doctorColumns;
+    }
 
     @Override
     public String getStuffIdColumn() {
@@ -37,6 +47,9 @@ public class DoctorAnnotTableInfo extends StuffAnnotTableInfo
         List<String> columnNames = new ArrayList<>();
         columnNames.add(stuffId);
         tableInfo.setColumnNames(columnNames);
+
+        doctorColumns = new ArrayList<>();
+        doctorColumns.add(stuffId);
     }
 
     static DoctorAnnotTableInfo createAnnotTableInfo() {

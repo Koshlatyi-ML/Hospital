@@ -22,7 +22,7 @@ public abstract class IdHolderAnnotTableInfo implements PlainTableInfo {
         this.tableName = tableName;
     }
 
-    public String getIdColumnName() {
+    public String getIdColumn() {
         return idColumnName;
     }
 
@@ -30,7 +30,7 @@ public abstract class IdHolderAnnotTableInfo implements PlainTableInfo {
         this.idColumnName = idColumnName;
     }
 
-    public List<String> getColumnNames() {
+    public List<String> getColumns() {
         return columnNames;
     }
 

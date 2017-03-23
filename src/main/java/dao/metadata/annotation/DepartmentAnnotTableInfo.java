@@ -5,7 +5,6 @@ import dao.metadata.annotation.mapping.Entity;
 import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.Department;
 
-import java.util.Formatter;
 import java.util.Map;
 
 @Entity(Department.class)
@@ -35,7 +34,7 @@ public class DepartmentAnnotTableInfo extends IdHolderAnnotTableInfo
 
         String column = fieldColumnMap.get("name");
         tableInfo.setNameColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
     }
 
     static DepartmentAnnotTableInfo createAnnotTableInfo() {

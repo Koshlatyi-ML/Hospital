@@ -40,10 +40,10 @@ public abstract class PersonAnnotTableInfo extends IdHolderAnnotTableInfo
 
         String column = fieldColumnMap.get("name");
         tableInfo.setNameColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         column = fieldColumnMap.get("surname");
         tableInfo.setSurnameColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
     }
 }

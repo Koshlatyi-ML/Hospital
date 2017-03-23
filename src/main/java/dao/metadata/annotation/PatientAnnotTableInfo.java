@@ -64,22 +64,22 @@ public class PatientAnnotTableInfo extends PersonAnnotTableInfo
 
         String column = doctorToPatientAnnot.foreignKey();
         tableInfo.setDoctorIdColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         Map<String, String> fieldColumnMap
                 = AnnotTableInfos.loadFieldColumnMap(entityClass);
 
         column = fieldColumnMap.get("complaints");
         tableInfo.setComplaintsColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         column = fieldColumnMap.get("diagnosis");
         tableInfo.setDiagnosisColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         column = fieldColumnMap.get("state");
         tableInfo.setStateColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
     }
 
     static PatientAnnotTableInfo createAnnotTableInfo() {

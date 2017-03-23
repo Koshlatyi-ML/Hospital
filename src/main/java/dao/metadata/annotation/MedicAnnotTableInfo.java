@@ -13,6 +13,7 @@ import java.util.List;
 public class MedicAnnotTableInfo extends StuffAnnotTableInfo
                                  implements MedicTableInfo {
     private String stuffIdColumn;
+    private List<String> medicColumns;
 
     private MedicAnnotTableInfo() {}
 
@@ -23,6 +24,15 @@ public class MedicAnnotTableInfo extends StuffAnnotTableInfo
 
     public void setStuffIdColumn(String stuffIdColumn) {
         this.stuffIdColumn = stuffIdColumn;
+    }
+
+    @Override
+    public List<String> getMedicColumns() {
+        return medicColumns;
+    }
+
+    public void setMedicColumns(List<String> medicColumns) {
+        this.medicColumns = medicColumns;
     }
 
     void fillTableInfo(MedicAnnotTableInfo tableInfo) {
@@ -39,6 +49,9 @@ public class MedicAnnotTableInfo extends StuffAnnotTableInfo
         List<String> columnNames = new ArrayList<>();
         columnNames.add(stuffId);
         tableInfo.setColumnNames(columnNames);
+
+        medicColumns = new ArrayList<>();
+        medicColumns.add(stuffId);
     }
 
     static MedicAnnotTableInfo createAnnotTableInfo() {

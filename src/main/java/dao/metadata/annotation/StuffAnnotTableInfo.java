@@ -7,15 +7,18 @@ import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.Department;
 import domain.Medic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @InheritedBy(Medic.class)
 public class StuffAnnotTableInfo extends PersonAnnotTableInfo
                                  implements StuffTableInfo {
     private String stuffTableName;
     private String departmentIdColumn;
+    private List<String> stuffColumns;
 
     protected StuffAnnotTableInfo() {}
 
-    @Override
     public String getDepartmentIdColumn() {
         return departmentIdColumn;
     }
@@ -33,6 +36,15 @@ public class StuffAnnotTableInfo extends PersonAnnotTableInfo
         this.stuffTableName = stuffTableName;
     }
 
+    @Override
+    public List<String> getStuffColumns() {
+        return stuffColumns;
+    }
+
+    public void setStuffColumns(List<String> stuffColumns) {
+        this.stuffColumns = stuffColumns;
+    }
+
     void fillTableInfo(StuffAnnotTableInfo tableInfo) {
         super.fillTableInfo(tableInfo);
 
@@ -45,7 +57,11 @@ public class StuffAnnotTableInfo extends PersonAnnotTableInfo
 
         String column = departmentToStuffAnnot.foreignKey();
         tableInfo.setDepartmentIdColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column); //todo?
+
+        stuffColumns = new ArrayList<>();
+        tableInfo.getColumns().forEach(col -> stuffColumns.add(col));
+        tableInfo.getStuffColumns().add(column);
     }
 
     static StuffAnnotTableInfo createAnnotTableInfo() {

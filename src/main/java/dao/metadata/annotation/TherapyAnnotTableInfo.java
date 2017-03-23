@@ -92,27 +92,27 @@ public class TherapyAnnotTableInfo extends IdHolderAnnotTableInfo
 
         String column = fieldColumnMap.get("name");
         tableInfo.setNameColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         column = fieldColumnMap.get("type");
         tableInfo.setTypeColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         column = fieldColumnMap.get("description");
         tableInfo.setDescriptionColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         column = fieldColumnMap.get("appointmentDateTime");
         tableInfo.setAppointmentDateColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         column = fieldColumnMap.get("completeDateTime");
         tableInfo.setCompleteDateColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         column = fieldColumnMap.get("patient");
         tableInfo.setPatientIdColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
 
         Class<?> stuffDerivedClass = StuffAnnotTableInfo.class
                 .getDeclaredAnnotation(InheritedBy.class).value();
@@ -121,7 +121,7 @@ public class TherapyAnnotTableInfo extends IdHolderAnnotTableInfo
 
         column = stuffToTherapyAnnot.foreignKey();
         tableInfo.setPerformerIdColumn(column);
-        tableInfo.getColumnNames().add(column);
+        tableInfo.getColumns().add(column);
     }
 
     static TherapyAnnotTableInfo createAnnotTableInfo() {
