@@ -32,7 +32,7 @@ public class Doctor extends Medic {
         this.surgicalOperations = surgicalOperations;
     }
 
-    public static class Builder extends Person.Builder<Doctor, Builder> {
+    public static class Builder extends Medic.AbstractBuilder<Doctor, Builder> {
         public Builder() {
             instance = new Doctor();
         }
@@ -44,16 +44,6 @@ public class Doctor extends Medic {
 
         public Builder setSurgicalOperations(List<Therapy> operations) {
             instance.setSurgicalOperations(operations);
-            return getSelf();
-        }
-
-        public Builder setPharmacotherapies(List<Therapy> therapies) {
-            instance.setPharmacotherapies(therapies);
-            return getSelf();
-        }
-
-        public Builder setPhysiotherapies(List<Therapy> therapies) {
-            instance.setPhysiotherapies(therapies);
             return getSelf();
         }
 

@@ -32,29 +32,32 @@ public class Medic extends Person {
         this.physiotherapies = physiotherapies;
     }
 
-    public static class Builder extends Person.Builder<Medic, Builder> {
-
-        protected Builder(Medic instance) {
-            this.instance = instance;
-        }
+    public static class Builder extends AbstractBuilder<Medic, Builder> {
 
         public Builder() {
             this.instance = new Medic();
-        }
-
-        public Builder setPharmacotherapies(List<Therapy> therapies) {
-            instance.setPharmacotherapies(therapies);
-            return getSelf();
-        }
-
-        public Builder setPhysiotherapies(List<Therapy> therapies) {
-            instance.setPhysiotherapies(therapies);
-            return getSelf();
         }
 
         @Override
         protected Builder getSelf() {
             return this;
         }
+    }
+
+    static abstract class AbstractBuilder<T extends Medic, B extends AbstractBuilder>
+            extends Person.Builder<T, B> {
+
+        public B setPharmacotherapies(List<Therapy> therapies) {
+            instance.setPharmacotherapies(therapies);
+            return getSelf();
+        }
+
+        public B setPhysiotherapies(List<Therapy> therapies) {
+            instance.setPhysiotherapies(therapies);
+            return getSelf();
+        }
+
+        @Override
+        protected abstract B getSelf();
     }
 }
