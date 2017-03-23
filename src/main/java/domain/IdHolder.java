@@ -13,13 +13,15 @@ public abstract class IdHolder {
         this.id = id;
     }
 
-    public static class Builder<T extends IdHolder, B extends Builder>
-            extends EntityBuilder<T> {
+    public abstract static class Builder<T extends IdHolder, B extends Builder>
+            extends AbstractBuilder<T> {
 
-        public Builder<T, B> setId(long id) {
+        public B setId(long id) {
             instance.setId(id);
-            return this;
+            return getSelf();
         }
+
+        protected abstract B getSelf();
     }
 
     @Override

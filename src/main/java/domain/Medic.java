@@ -1,4 +1,8 @@
-package domain.model;
+package domain;
+
+import dao.metadata.annotation.mapping.Inherit;
+import dao.metadata.annotation.mapping.OneToMany;
+import dao.metadata.annotation.mapping.Table;
 
 import java.util.List;
 
@@ -24,24 +28,23 @@ public class Medic extends Person {
         this.physiotherapies = physiotherapies;
     }
 
-    public static class Builder<T extends Medic, B extends Builder>
-            extends Person.Builder<T, B> {
-
+    public static class Builder extends Person.Builder<Medic, Builder> {
         public Builder() {
-            super((T) new Medic());
+            this.instance = new Medic();
         }
 
-        protected Builder(T instance) {
-            super(instance);
-        }
-
-        public Builder<T, B> setPharmacotherapies(List<Therapy> therapies) {
+        public Builder setPharmacotherapies(List<Therapy> therapies) {
             instance.setPharmacotherapies(therapies);
-            return this;
+            return getSelf();
         }
 
-        public Builder<T, B> setPhysiotherapies(List<Therapy> therapies) {
+        public Builder setPhysiotherapies(List<Therapy> therapies) {
             instance.setPhysiotherapies(therapies);
+            return getSelf();
+        }
+
+        @Override
+        protected Builder getSelf() {
             return this;
         }
     }

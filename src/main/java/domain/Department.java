@@ -1,6 +1,4 @@
-package domain.model;
-
-import domain.IdHolder;
+package domain;
 
 import java.util.List;
 import java.util.Objects;
@@ -58,6 +56,11 @@ public class Department extends IdHolder {
 
         public Builder setNurses(List<Medic> medics) {
             instance.setMedics(medics);
+            return this;
+        }
+
+        @Override
+        protected Builder getSelf() {
             return this;
         }
     }

@@ -1,6 +1,6 @@
-package domain.model;
+package domain;
 
-import domain.IdHolder;
+import dao.metadata.annotation.mapping.Column;
 
 public abstract class Person extends IdHolder {
     private String name;
@@ -22,26 +22,20 @@ public abstract class Person extends IdHolder {
         this.surname = surname;
     }
 
-    public static class Builder<T extends Person, B extends Builder>
+    public abstract static class Builder<T extends Person, B extends Builder>
             extends IdHolder.Builder<T, B> {
 
-        protected Builder(T person) {
-            instance = person;
-        }
-
-        public Builder<T, B> setId(long id) {
-            instance.setId(id);
-            return this;
-        }
-
-        public Builder<T, B> setName(String name) {
+        public B setName(String name) {
             instance.setName(name);
-            return this;
+            return getSelf();
         }
 
-        public Builder<T, B>  setSurname(String surname) {
+        public B setSurname(String surname) {
             instance.setSurname(surname);
-            return this;
+            return getSelf();
         }
+
+        @Override
+        protected abstract B getSelf();
     }
 }
