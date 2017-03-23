@@ -3,24 +3,16 @@ package dao.jdbc;
 import dao.CrudDao;
 import dao.connection.ConnectionFactory;
 import dao.jdbc.exception.IllegalConnectionPolicyException;
-import dao.jdbc.query.QueryPreparer;
-import dao.jdbc.retrieve.EntityRetriever;
-import dao.jdbc.supply.ValueSupplier;
+import dao.jdbc.query.QueryExecutor;
 import domain.IdHolder;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class CrudJdbcDao<E extends IdHolder, T extends QueryPreparer>
-        implements CrudDao<E> {
+public abstract class CrudJdbcDao<E extends IdHolder> implements CrudDao<E> {
 
-    protected T queryPreparer;
-    protected EntityRetriever<E> entityRetriever;
-    protected ValueSupplier<E> valueSupplier;
     private ConnectionPolicy connectionPolicy = ConnectionPolicy.METHOD_SCOPED;
 
 
@@ -57,12 +49,8 @@ public abstract class CrudJdbcDao<E extends IdHolder, T extends QueryPreparer>
 
     @Override
     public Optional<E> find(long id) {
-        try (Connection connection = connectionPolicy.getConnection();
-             PreparedStatement statement = queryPreparer.prepareFindById(connection)) {
-
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            return entityRetriever.retrieveEntity(resultSet);
+        try (Connection connection = connectionPolicy.getConnection()) {
+            return getQueryExecutor().queryFindById(connection, id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -70,11 +58,8 @@ public abstract class CrudJdbcDao<E extends IdHolder, T extends QueryPreparer>
 
     @Override
     public List<E> findAll() {
-        try (Connection connection = connectionPolicy.getConnection();
-             PreparedStatement statement = queryPreparer.prepareFindAll(connection)) {
-
-            ResultSet resultSet = statement.executeQuery();
-            return entityRetriever.retrieveEntityList(resultSet);
+        try (Connection connection = connectionPolicy.getConnection()) {
+            return getQueryExecutor().queryFindAll(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -82,11 +67,8 @@ public abstract class CrudJdbcDao<E extends IdHolder, T extends QueryPreparer>
 
     @Override
     public void create(E entity) {
-        try (Connection connection = connectionPolicy.getConnection();
-             PreparedStatement statement = queryPreparer.prepareInsert(connection)) {
-
-            valueSupplier.supplyValues(statement, entity);
-            statement.execute();
+        try (Connection connection = connectionPolicy.getConnection()) {
+            getQueryExecutor().queryInsert(connection,entity);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -94,11 +76,8 @@ public abstract class CrudJdbcDao<E extends IdHolder, T extends QueryPreparer>
 
     @Override
     public void update(E entity) {
-        try (Connection connection = connectionPolicy.getConnection();
-            PreparedStatement statement = queryPreparer.prepareUpdate(connection)) {
-
-            valueSupplier.supplyValues(statement, entity);
-            statement.execute();
+        try (Connection connection = connectionPolicy.getConnection()) {
+            getQueryExecutor().queryUpdate(connection, entity);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -106,11 +85,8 @@ public abstract class CrudJdbcDao<E extends IdHolder, T extends QueryPreparer>
 
     @Override
     public void delete(long id) {
-        try (Connection connection = connectionPolicy.getConnection();
-            PreparedStatement statement = queryPreparer.prepareDelete(connection)) {
-
-            statement.setLong(1, id);
-            statement.execute();
+        try (Connection connection = connectionPolicy.getConnection()) {
+            getQueryExecutor().queryDelete(connection, id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -129,4 +105,6 @@ public abstract class CrudJdbcDao<E extends IdHolder, T extends QueryPreparer>
         connectionPolicy.setThreadLocalConnection(null);
         connectionPolicy = ConnectionPolicy.METHOD_SCOPED;
     }
+
+    protected abstract QueryExecutor<E> getQueryExecutor();
 }
