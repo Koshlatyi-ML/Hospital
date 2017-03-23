@@ -10,10 +10,12 @@ import domain.Medic;
 @InheritedBy(Medic.class)
 public class StuffAnnotTableInfo extends PersonAnnotTableInfo
                                  implements StuffTableInfo {
+    private String stuffTableName;
     private String departmentIdColumn;
 
-    private StuffAnnotTableInfo() {}
+    protected StuffAnnotTableInfo() {}
 
+    @Override
     public String getDepartmentIdColumn() {
         return departmentIdColumn;
     }
@@ -22,12 +24,21 @@ public class StuffAnnotTableInfo extends PersonAnnotTableInfo
         this.departmentIdColumn = departmentIdColumn;
     }
 
+    @Override
+    public String getStuffTableName() {
+        return stuffTableName;
+    }
+
+    private void setStuffTableName(String stuffTableName) {
+        this.stuffTableName = stuffTableName;
+    }
+
     void fillTableInfo(StuffAnnotTableInfo tableInfo) {
         super.fillTableInfo(tableInfo);
 
         String tableName
                 = AnnotTableInfos.getInheritedByTableName(StuffAnnotTableInfo.class);
-        tableInfo.setTableName(tableName);
+        tableInfo.setStuffTableName(tableName);
 
         OneToMany departmentToStuffAnnot
                 = AnnotTableInfos.getOneToManyRelation(Department.class, tableName);

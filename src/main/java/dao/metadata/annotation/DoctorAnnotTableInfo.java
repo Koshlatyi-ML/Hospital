@@ -10,9 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(Doctor.class)
-public class DoctorAnnotTableInfo extends IdHolderAnnotTableInfo
+public class DoctorAnnotTableInfo extends StuffAnnotTableInfo
                                   implements DoctorTableInfo {
+    private String stuffIdColumn;
+
     private DoctorAnnotTableInfo() { }
+
+    @Override
+    public String getStuffIdColumn() {
+        return stuffIdColumn;
+    }
+
+    public void setStuffIdColumn(String stuffIdColumn) {
+        this.stuffIdColumn = stuffIdColumn;
+    }
 
     void fillTableInfo(DoctorAnnotTableInfo tableInfo) {
         Class<?> entityClass = DoctorAnnotTableInfo.class
@@ -21,7 +32,7 @@ public class DoctorAnnotTableInfo extends IdHolderAnnotTableInfo
 
         String stuffId = entityClass.getDeclaredAnnotation(Inherit.class)
                 .foreignKey();
-        tableInfo.setIdColumnName(stuffId);
+        tableInfo.setStuffIdColumn(stuffId);
 
         List<String> columnNames = new ArrayList<>();
         columnNames.add(stuffId);

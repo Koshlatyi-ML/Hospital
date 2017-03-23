@@ -1,3 +1,5 @@
 package dao.metadata;
 
-public interface MedicTableInfo extends PlainTableInfo {}
+public interface MedicTableInfo extends StuffTableInfo {
+    String getStuffIdColumn();
+}
