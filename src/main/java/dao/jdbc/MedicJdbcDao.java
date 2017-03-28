@@ -1,14 +1,12 @@
 package dao.jdbc;
 
+import dao.DaoFactory;
 import dao.MedicDao;
 import dao.jdbc.query.MedicQueryExecutor;
-import dao.jdbc.query.QueryExecutor;
-import dao.jdbc.query.StuffQueryExecutor;
-import dao.jdbc.query.retrieve.MedicEntityRetriever;
-import dao.jdbc.query.supply.MedicValueSupplier;
-import dao.metadata.MedicTableInfo;
+import dao.jdbc.query.QueryExecutorFactory;
 import dao.metadata.annotation.mapping.Entity;
 import domain.Medic;
+import domain.Therapy;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,74 +16,60 @@ import java.util.Optional;
 @Entity(Medic.class)
 public class MedicJdbcDao extends StuffJdbcDao<Medic> implements MedicDao {
     private MedicQueryExecutor queryExecutor;
-    private TherapyJdbcDao therapyDao;
+    private JdbcDaoFactory jdbcDaoFactory;
 
-    public MedicJdbcDao(TherapyJdbcDao therapyDao) {
-        this.therapyDao = therapyDao;
-        queryExecutor = new MedicQueryExecutor();
+    MedicJdbcDao(QueryExecutorFactory queryExecutorFactory,
+                 JdbcDaoFactory jdbcDaoFactory) {
+
+        this.queryExecutor = queryExecutorFactory.getMedicQueryExecutor();
+        this.jdbcDaoFactory = jdbcDaoFactory;
     }
 
     @Override
     public Optional<Medic> find(long id) {
-        Optional<Medic> medicOptional;
         try (Connection connection = getConnection()) {
-            setThreadLocalConnection(connection);
-
-            medicOptional = super.find(id);
-            medicOptional.ifPresent(medic -> {
-                setTherapies(connection, medic);
-            });
+            Optional<Medic> medicOptional =
+                    queryExecutor.queryFindById(connection, id);
+            medicOptional.ifPresent(this::setTherapies);
+            return medicOptional;
         } catch (SQLException e) {
-            releaseThreadLocalConnection();
             throw new RuntimeException(e);
         }
-        return medicOptional;
     }
 
     @Override
     public List<Medic> findAll() {
-        List<Medic> medicList;
         try (Connection connection = getConnection()) {
-            setThreadLocalConnection(connection);
-
-            medicList = super.findAll();
-            setTherapies(connection, medicList);
+            List<Medic> medicList = queryExecutor.queryFindAll(connection);
+            setTherapies(medicList);
+            return medicList;
         } catch (SQLException e) {
-            releaseThreadLocalConnection();
             throw new RuntimeException(e);
         }
-
-        return medicList;
     }
 
     @Override
     public List<Medic> findByFullName(String name, String surname) {
-        List<Medic> medicList;
         try (Connection connection = getConnection()) {
-            setThreadLocalConnection(connection);
-
-            medicList = super.findByFullName(name, surname);
-            setTherapies(connection, medicList);
+            List<Medic> medicList =
+                    queryExecutor.queryFindByFullName(connection, name, surname);
+            setTherapies(medicList);
+            return medicList;
         } catch (SQLException e) {
-            releaseThreadLocalConnection();
             throw new RuntimeException(e);
         }
-        return medicList;
     }
 
     @Override
     public List<Medic> findByDepartmentId(long id) {
-        List<Medic> medicList;
         try (Connection connection = getConnection()) {
-            setThreadLocalConnection(connection);
-
-            medicList = super.findByDepartmentId(id);
-            setTherapies(connection, medicList);
+            List<Medic> medicList =
+                    queryExecutor.queryFindByDepartmentId(connection, id);
+            setTherapies(medicList);
+            return medicList;
         } catch (SQLException e) {
-            releaseThreadLocalConnection();
             throw new RuntimeException(e);
         }
-        return medicList;
     }
 
     @Override
@@ -93,22 +77,20 @@ public class MedicJdbcDao extends StuffJdbcDao<Medic> implements MedicDao {
         return queryExecutor;
     }
 
-    private void setTherapies(Connection connection, Medic medic) {
-        long medicId = medic.getId();
-
-        therapyDao.setThreadLocalConnection(connection);
-        medic.setPharmacotherapies(therapyDao.findPharmacotherapiesByDoctorId(medicId));
-        medic.setPhysiotherapies(therapyDao.findPhysiotherapiesByDoctorId(medicId));
-        therapyDao.releaseThreadLocalConnection();
+    private void setTherapies(Medic medic) {
+        setTherapies(jdbcDaoFactory.getTherapyDao(), medic);
     }
 
-    private void setTherapies(Connection connection, List<Medic> medics) {
-        therapyDao.setThreadLocalConnection(connection);
-        medics.forEach(medic -> {
-            long doctorId = medic.getId();
-            medic.setPharmacotherapies(therapyDao.findPharmacotherapiesByDoctorId(doctorId));
-            medic.setPhysiotherapies(therapyDao.findPhysiotherapiesByDoctorId(doctorId));
-        });
-        therapyDao.releaseThreadLocalConnection();
+    private void setTherapies(List<Medic> medics) {
+        TherapyJdbcDao therapyJdbcDao = jdbcDaoFactory.getTherapyDao();
+        medics.forEach(medic -> setTherapies(therapyJdbcDao, medic));
+    }
+
+    private void setTherapies(TherapyJdbcDao therapyJdbcDao, Medic medic) {
+        long medicId = medic.getId();
+        medic.setPharmacotherapies(therapyJdbcDao.findByMedicIdAndType(medicId,
+                Therapy.Type.PHARMACOTHERAPY));
+        medic.setPhysiotherapies(therapyJdbcDao.findByMedicIdAndType(medicId,
+                Therapy.Type.PHYSIOTHERAPY));
     }
 }

@@ -6,11 +6,19 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface TherapyDao extends CrudDao<Therapy> {
-    List<Therapy> findByType(Therapy.Type type); //?
-    List<Therapy> findByAppointmentDateTime(ZonedDateTime dateTime); //?
-    List<Therapy> findByPatientId(long id);
-    List<Therapy> findByMedicId(long id);
-    List<Therapy> findOperationsByDoctorId(long id);
-    List<Therapy> findPharmacotherapiesByDoctorId(long id);
-    List<Therapy> findPhysiotherapiesByDoctorId(long id);
+    List<Therapy> findCurrentByDoctorIdAndType(long id, Therapy.Type type);
+    List<Therapy> findCurrentByMedicIdAndType(long id, Therapy.Type type);
+    List<Therapy> findCurrentByPatientIdAndType(long id, Therapy.Type type);
+
+    List<Therapy> findFinishedByDoctorIdAndType(long id, Therapy.Type type);
+    List<Therapy> findFinishedByMedicIdAndType(long id, Therapy.Type type);
+    List<Therapy> findFinishedByPatientIdAndType(long id, Therapy.Type type);
+
+    List<Therapy> findFutureByDoctorIdAndType(long id, Therapy.Type type);
+    List<Therapy> findFutureByMedicIdAndType(long id, Therapy.Type type);
+    List<Therapy> findFutureByPatientIdAndType(long id, Therapy.Type type);
+
+    List<Therapy> findByDoctorIdAndType(long id, Therapy.Type type);
+    List<Therapy> findByMedicIdAndType(long id, Therapy.Type type);
+    List<Therapy> findByPatientIdAndType(long id, Therapy.Type type);
 }

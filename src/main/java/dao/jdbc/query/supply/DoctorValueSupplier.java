@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DoctorValueSupplier implements StuffValueSupplier<Doctor> {
+    DoctorValueSupplier() {}
+
     @Override
     public void supplyValues(PreparedStatement statement, Doctor entity) throws SQLException {}
 

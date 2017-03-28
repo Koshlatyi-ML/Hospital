@@ -1,9 +1,9 @@
 package dao.jdbc.query;
 
-import dao.jdbc.query.retrieve.DepartmentEntityRetriever;
 import dao.jdbc.query.retrieve.EntityRetriever;
-import dao.jdbc.query.supply.DepartmentValueSupplier;
+import dao.jdbc.query.retrieve.EntityRetrieverFactory;
 import dao.jdbc.query.supply.ValueSupplier;
+import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.DepartmentTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Department;
@@ -15,25 +15,30 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class DepartmentQueryExecutor extends QueryExecutor<Department> {
-    private DepartmentEntityRetriever entityRetriever;
-    private DepartmentValueSupplier valueSupplier;
     private DepartmentTableInfo tableInfo;
+    private ValueSupplier<Department> valueSupplier;
+    private EntityRetriever<Department> entityRetriever;
 
-    private final String FIND_BY_NAME_QUERY =
-            String.format("SELECT * FROM %s WHERE %s = ?;",
-                    tableInfo.getTableName(),
-                    tableInfo.getNameColumn());
+    DepartmentQueryExecutor(TableInfoFactory tableInfoFactory,
+                                   ValueSupplierFactory valueSupplierFactory,
+                                   EntityRetrieverFactory entityRetrieverFactory) {
 
-    public DepartmentQueryExecutor() {
-        entityRetriever = new DepartmentEntityRetriever();
-        valueSupplier = new DepartmentValueSupplier();
-        tableInfo = TableInfoFactory.getInstance().getDepartmentTableInfo();
+        entityRetriever = entityRetrieverFactory.getDepartmentEntityRetriever();
+        valueSupplier = valueSupplierFactory.getDepartamentValueSupplier();
+        tableInfo = tableInfoFactory.getDepartmentTableInfo();
     }
 
-    public Optional<Department> prepareFindByName(Connection connection, String name)
+    private String getFindByNameQuery() {
+        return String.format("SELECT * FROM %s WHERE %s = ?;",
+                tableInfo.getTableName(),
+                tableInfo.getNameColumn());
+    }
+
+    public Optional<Department> queryFindByName(Connection connection, String name)
             throws SQLException {
 
-        try (PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME_QUERY)) {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(getFindByNameQuery())) {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             return entityRetriever.retrieveEntity(resultSet);

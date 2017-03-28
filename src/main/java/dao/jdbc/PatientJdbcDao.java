@@ -3,6 +3,7 @@ package dao.jdbc;
 import dao.PatientDao;
 import dao.jdbc.query.PatientQueryExecutor;
 import dao.jdbc.query.PersonQueryExecutor;
+import dao.jdbc.query.QueryExecutorFactory;
 import dao.metadata.TableInfoFactory;
 import dao.metadata.annotation.mapping.Entity;
 import domain.Patient;
@@ -15,14 +16,14 @@ import java.util.List;
 public class PatientJdbcDao extends PersonJdbcDao<Patient> implements PatientDao {
     private PatientQueryExecutor queryExecutor;
 
-    public PatientJdbcDao() {
-        queryExecutor = new PatientQueryExecutor(TableInfoFactory.getInstance());
+    PatientJdbcDao(QueryExecutorFactory queryExecutorFactory) {
+        this.queryExecutor = queryExecutorFactory.getPatientQueryExecutor();
     }
 
     @Override
     public List<Patient> findByDepartmentId(long id) {
         try (Connection connection = getConnection()) {
-            return queryExecutor.findByDepartmentId(connection, id);
+            return queryExecutor.queryFindByDepartmentId(connection, id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -31,7 +32,7 @@ public class PatientJdbcDao extends PersonJdbcDao<Patient> implements PatientDao
     @Override
     public List<Patient> findByDoctorId(long id) {
         try (Connection connection = getConnection()) {
-            return queryExecutor.findByDoctorId(connection, id);
+            return queryExecutor.queryFindByDoctorId(connection, id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -40,7 +41,7 @@ public class PatientJdbcDao extends PersonJdbcDao<Patient> implements PatientDao
     @Override
     public List<Patient> findByState(Patient.State state) {
         try (Connection connection = getConnection()) {
-            return queryExecutor.findByState(connection, state);
+            return queryExecutor.queryFindByState(connection, state);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

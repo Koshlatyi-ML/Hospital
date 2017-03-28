@@ -1,39 +1,46 @@
 package dao.jdbc;
 
 import dao.*;
+import dao.jdbc.query.QueryExecutorFactory;
 
 public class JdbcDaoFactory extends DaoFactory {
-    private PatientJdbcDao patientDao = new PatientJdbcDao();
-    private TherapyJdbcDao therapyDao = new TherapyJdbcDao();
-    private MedicJdbcDao medicDao = new MedicJdbcDao(therapyDao);
-    private DoctorJdbcDao doctorDao = new DoctorJdbcDao(patientDao, therapyDao);
-    private DepartmentJdbcDao departmentDao
-            = new DepartmentJdbcDao(doctorDao, medicDao);
+    private DepartmentJdbcDao departmentDao;
+    private DoctorJdbcDao doctorDao;
+    private MedicJdbcDao medicDao;
+    private PatientJdbcDao patientDao;
+    private TherapyJdbcDao therapyDao;
 
-    private JdbcDaoFactory(){}
+    private JdbcDaoFactory() {
+        QueryExecutorFactory queryExecutorFactory = QueryExecutorFactory.getInstance();
+        departmentDao = new DepartmentJdbcDao(queryExecutorFactory, this);
+        doctorDao = new DoctorJdbcDao(queryExecutorFactory, this);
+        medicDao = new MedicJdbcDao(queryExecutorFactory, this);
+        patientDao = new PatientJdbcDao(queryExecutorFactory);
+        therapyDao = new TherapyJdbcDao(queryExecutorFactory);
+    }
 
     @Override
-    public DepartmentDao getDepartmentDao() {
+    public DepartmentJdbcDao getDepartmentDao() {
         return departmentDao;
     }
 
     @Override
-    public DoctorDao getDoctorDao() {
+    public DoctorJdbcDao getDoctorDao() {
         return doctorDao;
     }
 
     @Override
-    public MedicDao getMedicDao() {
+    public MedicJdbcDao getMedicDao() {
         return medicDao;
     }
 
     @Override
-    public PatientDao getPatient() {
+    public PatientJdbcDao getPatientDao() {
         return patientDao;
     }
 
     @Override
-    public TherapyDao getTherapyDao() {
+    public TherapyJdbcDao getTherapyDao() {
         return therapyDao;
     }
 }

@@ -11,17 +11,17 @@ import java.util.List;
 
 public abstract class PersonQueryExecutor<E extends Person> extends QueryExecutor<E> {
 
-    private final String FIND_BY_FULL_NAME_QUERY
-            = String.format("SELECT * FROM %s WHERE %s LIKE %%?%% OR %s LIKE %%?%%;",
-                    getTableInfo().getTableName(),
-                    getTableInfo().getNameColumn(),
-                    getTableInfo().getSurnameColumn());
+    private String getFindByFullNameQuery() {
+        return String.format("SELECT * FROM %s WHERE %s LIKE %%?%% OR %s LIKE %%?%%;",
+                getTableInfo().getTableName(),
+                getTableInfo().getNameColumn(),
+                getTableInfo().getSurnameColumn());
+    }
 
-    public List<E> prepareFindByFullName(Connection connection, String name,
-                                         String surname) throws SQLException {
-
-        try (PreparedStatement statement
-                     = connection.prepareStatement(FIND_BY_FULL_NAME_QUERY)) {
+    public List<E> queryFindByFullName(Connection connection, String name, String surname)
+            throws SQLException {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(getFindByFullNameQuery())) {
             statement.setString(1, name);
             statement.setString(2, surname);
             ResultSet resultSet = statement.executeQuery();
