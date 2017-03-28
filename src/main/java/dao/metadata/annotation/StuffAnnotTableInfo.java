@@ -17,14 +17,10 @@ public class StuffAnnotTableInfo extends PersonAnnotTableInfo
     private String departmentIdColumn;
     private List<String> stuffColumns;
 
-    protected StuffAnnotTableInfo() {}
+    StuffAnnotTableInfo() {}
 
     public String getDepartmentIdColumn() {
         return departmentIdColumn;
-    }
-
-    private void setDepartmentIdColumn(String departmentIdColumn) {
-        this.departmentIdColumn = departmentIdColumn;
     }
 
     @Override
@@ -32,41 +28,30 @@ public class StuffAnnotTableInfo extends PersonAnnotTableInfo
         return stuffTableName;
     }
 
-    private void setStuffTableName(String stuffTableName) {
-        this.stuffTableName = stuffTableName;
-    }
-
     @Override
     public List<String> getStuffColumns() {
         return stuffColumns;
     }
 
-    public void setStuffColumns(List<String> stuffColumns) {
-        this.stuffColumns = stuffColumns;
-    }
+    void fillTableInfo() {
+        super.fillTableInfo();
 
-    void fillTableInfo(StuffAnnotTableInfo tableInfo) {
-        super.fillTableInfo(tableInfo);
+        stuffTableName = AnnotTableInfos
+                .getInheritedByTableName(StuffAnnotTableInfo.class);
 
-        String tableName
-                = AnnotTableInfos.getInheritedByTableName(StuffAnnotTableInfo.class);
-        tableInfo.setStuffTableName(tableName);
+        OneToMany departmentToStuffAnnot = AnnotTableInfos
+                .getOneToManyRelation(Department.class, stuffTableName);
 
-        OneToMany departmentToStuffAnnot
-                = AnnotTableInfos.getOneToManyRelation(Department.class, tableName);
-
-        String column = departmentToStuffAnnot.foreignKey();
-        tableInfo.setDepartmentIdColumn(column);
-        tableInfo.getColumns().add(column); //todo?
+        departmentIdColumn = departmentToStuffAnnot.foreignKey();
+        columns.add(departmentIdColumn);
 
         stuffColumns = new ArrayList<>();
-        tableInfo.getColumns().forEach(col -> stuffColumns.add(col));
-        tableInfo.getStuffColumns().add(column);
+        stuffColumns.addAll(columns);
     }
 
     static StuffAnnotTableInfo createAnnotTableInfo() {
         StuffAnnotTableInfo tableInfo = new StuffAnnotTableInfo();
-        tableInfo.fillTableInfo(tableInfo);
+        tableInfo.fillTableInfo();
         return tableInfo;
     }
 }

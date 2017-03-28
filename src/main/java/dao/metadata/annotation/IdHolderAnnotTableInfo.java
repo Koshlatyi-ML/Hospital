@@ -6,13 +6,14 @@ import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.IdHolder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity(IdHolder.class)
 public abstract class IdHolderAnnotTableInfo implements PlainTableInfo {
-    private String tableName;
-    private String idColumnName;
-    private List<String> columnNames;
+    String tableName;
+    private String idColumn;
+    List<String> columns;
 
     public String getTableName() {
         return tableName;
@@ -23,27 +24,18 @@ public abstract class IdHolderAnnotTableInfo implements PlainTableInfo {
     }
 
     public String getIdColumn() {
-        return idColumnName;
-    }
-
-    void setIdColumnName(String idColumnName) {
-        this.idColumnName = idColumnName;
+        return idColumn;
     }
 
     public List<String> getColumns() {
-        return columnNames;
+        return Collections.unmodifiableList(columns);
     }
 
-    void setColumnNames(List<String> columnNames) {
-        this.columnNames = columnNames;
-    }
-
-    void fillTableInfo(IdHolderAnnotTableInfo tableInfo) {
+    void fillTableInfo() {
         Class entityClass = IdHolderAnnotTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
 
-        String idColumn = AnnotTableInfos.getIdColumnName(entityClass);
-        tableInfo.setIdColumnName(idColumn);
-        tableInfo.setColumnNames(new ArrayList<>());
+        idColumn = AnnotTableInfos.getIdColumnName(entityClass);
+        columns = new ArrayList<>();
     }
 }

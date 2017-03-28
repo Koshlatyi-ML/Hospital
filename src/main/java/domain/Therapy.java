@@ -1,8 +1,10 @@
 package domain;
 
 import dao.metadata.annotation.mapping.Column;
+import dao.metadata.annotation.mapping.OneToOne;
 import dao.metadata.annotation.mapping.Table;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 
 @Table("therapies")
@@ -14,9 +16,9 @@ public class Therapy extends IdHolder {
     @Column("type")
     private Type type;
     @Column("appointment_date")
-    private ZonedDateTime appointmentDateTime;
+    private Instant appointmentDateTime;
     @Column("complete_date")
-    private ZonedDateTime completeDateTime;
+    private Instant completeDateTime;
     @Column("patient_id")
     private Patient patient;
 
@@ -44,19 +46,19 @@ public class Therapy extends IdHolder {
         this.type = type;
     }
 
-    public ZonedDateTime getAppointmentDateTime() {
+    public Instant getAppointmentDateTime() {
         return appointmentDateTime;
     }
 
-    public void setAppointmentDateTime(ZonedDateTime appointmentDateTime) {
+    public void setAppointmentDateTime(Instant appointmentDateTime) {
         this.appointmentDateTime = appointmentDateTime;
     }
 
-    public ZonedDateTime getCompleteDateTime() {
+    public Instant getCompleteDateTime() {
         return completeDateTime;
     }
 
-    public void setCompleteDateTime(ZonedDateTime completeDateTime) {
+    public void setCompleteDateTime(Instant completeDateTime) {
         this.completeDateTime = completeDateTime;
     }
 
@@ -96,12 +98,12 @@ public class Therapy extends IdHolder {
             return getSelf();
         }
 
-        public Builder setAppointmentDateTime(ZonedDateTime time) {
+        public Builder setAppointmentDateTime(Instant time) {
             instance.setAppointmentDateTime(time);
             return getSelf();
         }
 
-        public Builder setCompleteDateTime(ZonedDateTime time) {
+        public Builder setCompleteDateTime(Instant time) {
             instance.setCompleteDateTime(time);
             return getSelf();
         }

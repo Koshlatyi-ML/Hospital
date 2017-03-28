@@ -26,107 +26,64 @@ public class TherapyAnnotTableInfo extends IdHolderAnnotTableInfo
         return nameColumn;
     }
 
-    private void setNameColumn(String nameColumn) {
-        this.nameColumn = nameColumn;
-    }
-
     public String getTypeColumn() {
         return typeColumn;
-    }
-
-    private void setTypeColumn(String typeColumn) {
-        this.typeColumn = typeColumn;
     }
 
     public String getDescriptionColumn() {
         return descriptionColumn;
     }
 
-    private void setDescriptionColumn(String descriptionColumn) {
-        this.descriptionColumn = descriptionColumn;
-    }
-
-
     public String getAppointmentDateColumn() {
         return appointmentDateColumn;
-    }
-
-    private void setAppointmentDateColumn(String appointmentDateColumn) {
-        this.appointmentDateColumn = appointmentDateColumn;
     }
 
     public String getCompleteDateColumn() {
         return completeDateColumn;
     }
 
-    private void setCompleteDateColumn(String completeDateColumn) {
-        this.completeDateColumn = completeDateColumn;
-    }
-
     public String getPatientIdColumn() {
         return patientIdColumn;
-    }
-
-    private void setPatientIdColumn(String patientIdColumn) {
-        this.patientIdColumn = patientIdColumn;
     }
 
     public String getPerformerIdColumn() {
         return performerIdColumn;
     }
 
-    private void setPerformerIdColumn(String performerIdColumn) {
-        this.performerIdColumn = performerIdColumn;
-    }
-
-    void fillTableInfo(TherapyAnnotTableInfo tableInfo) {
-        super.fillTableInfo(tableInfo);
-
+    void fillTableInfo() {
+        super.fillTableInfo();
         Class<?> entityClass = TherapyAnnotTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
-        String tableName = AnnotTableInfos.getTableName(entityClass);
-        tableInfo.setTableName(AnnotTableInfos.getTableName(entityClass));
 
-        Map<String, String> fieldColumnMap
-                = AnnotTableInfos.loadFieldColumnMap(entityClass);
+        tableName = AnnotTableInfos.getTableName(entityClass);
 
-        String column = fieldColumnMap.get("name");
-        tableInfo.setNameColumn(column);
-        tableInfo.getColumns().add(column);
-
-        column = fieldColumnMap.get("type");
-        tableInfo.setTypeColumn(column);
-        tableInfo.getColumns().add(column);
-
-        column = fieldColumnMap.get("description");
-        tableInfo.setDescriptionColumn(column);
-        tableInfo.getColumns().add(column);
-
-        column = fieldColumnMap.get("appointmentDateTime");
-        tableInfo.setAppointmentDateColumn(column);
-        tableInfo.getColumns().add(column);
-
-        column = fieldColumnMap.get("completeDateTime");
-        tableInfo.setCompleteDateColumn(column);
-        tableInfo.getColumns().add(column);
-
-        column = fieldColumnMap.get("patient");
-        tableInfo.setPatientIdColumn(column);
-        tableInfo.getColumns().add(column);
+        Map<String, String> fieldColumnMap = AnnotTableInfos
+                .loadFieldColumnMap(entityClass);
+        nameColumn = fieldColumnMap.get("name");
+        columns.add(nameColumn);
+        typeColumn = fieldColumnMap.get("type");
+        columns.add(typeColumn);
+        descriptionColumn = fieldColumnMap.get("description");
+        columns.add(descriptionColumn);
+        appointmentDateColumn = fieldColumnMap.get("appointmentDateTime");
+        columns.add(appointmentDateColumn);
+        completeDateColumn = fieldColumnMap.get("completeDateTime");
+        columns.add(completeDateColumn);
+        patientIdColumn = fieldColumnMap.get("patient");
+        columns.add(patientIdColumn);
 
         Class<?> stuffDerivedClass = StuffAnnotTableInfo.class
                 .getDeclaredAnnotation(InheritedBy.class).value();
-        OneToMany stuffToTherapyAnnot
-                = AnnotTableInfos.getOneToManyRelation(stuffDerivedClass, tableName);
+        OneToMany stuffToTherapyAnnot = AnnotTableInfos
+                .getOneToManyRelation(stuffDerivedClass, tableName);
 
-        column = stuffToTherapyAnnot.foreignKey();
-        tableInfo.setPerformerIdColumn(column);
-        tableInfo.getColumns().add(column);
+        performerIdColumn = stuffToTherapyAnnot.foreignKey();
+        columns.add(performerIdColumn);
     }
 
     static TherapyAnnotTableInfo createAnnotTableInfo() {
         TherapyAnnotTableInfo tableInfo = new TherapyAnnotTableInfo();
-        tableInfo.fillTableInfo(tableInfo);
+        tableInfo.fillTableInfo();
         return tableInfo;
     }
 }

@@ -1,6 +1,5 @@
 package dao.metadata.annotation.util;
 
-import dao.metadata.annotation.StuffAnnotTableInfo;
 import dao.metadata.annotation.mapping.*;
 import util.ReflectionUtils;
 
@@ -10,7 +9,6 @@ import java.util.stream.Stream;
 
 public class AnnotTableInfos {
     public static Map<String, String> loadFieldColumnMap(Class<?> entityClass) {
-
         Map<String, String> fieldColumnMap  = new HashMap<>();
         Stream.of(entityClass.getDeclaredFields())
                 .filter(field -> ReflectionUtils.hasDeclaredAnnotation(
@@ -39,9 +37,7 @@ public class AnnotTableInfos {
         return derivedClass.getDeclaredAnnotation(Inherit.class).table();
     }
 
-    public static OneToOne getOneToOneRelation(Class<?> entityClass,
-                                               String tableName) {
-
+    public static OneToOne getOneToOneRelation(Class<?> entityClass, String tableName) {
         return Stream.of(entityClass.getDeclaredFields())
                 .filter(field -> ReflectionUtils.hasDeclaredAnnotation(
                         field, OneToOne.class))
@@ -50,8 +46,7 @@ public class AnnotTableInfos {
                 .findFirst().orElseThrow(IllegalStateException::new);
     }
 
-    public static OneToMany getOneToManyRelation(Class<?> entityClass,
-                                                 String tableName) {
+    public static OneToMany getOneToManyRelation(Class<?> entityClass, String tableName) {
 
         return Stream.of(entityClass.getDeclaredFields())
                 .filter(field -> ReflectionUtils.hasDeclaredAnnotation(

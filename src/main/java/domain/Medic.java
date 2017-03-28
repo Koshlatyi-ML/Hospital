@@ -4,6 +4,7 @@ import dao.metadata.annotation.mapping.Inherit;
 import dao.metadata.annotation.mapping.OneToMany;
 import dao.metadata.annotation.mapping.Table;
 
+import java.time.Instant;
 import java.util.List;
 
 @Table("medics")

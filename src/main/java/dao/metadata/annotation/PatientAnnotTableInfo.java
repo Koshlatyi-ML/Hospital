@@ -23,68 +23,42 @@ public class PatientAnnotTableInfo extends PersonAnnotTableInfo
         return doctorIdColumn;
     }
 
-    private void setDoctorIdColumn(String doctorIdColumn) {
-        this.doctorIdColumn = doctorIdColumn;
-    }
-
     public String getDiagnosisColumn() {
         return diagnosisColumn;
-    }
-
-    private void setDiagnosisColumn(String diagnosisColumn) {
-        this.diagnosisColumn = diagnosisColumn;
     }
 
     public String getComplaintsColumn() {
         return complaintsColumn;
     }
 
-    private void setComplaintsColumn(String complaintsColumn) {
-        this.complaintsColumn = complaintsColumn;
-    }
-
     public String getStateColumn() {
         return stateColumn;
     }
 
-    private void setStateColumn(String stateColumn) {
-        this.stateColumn = stateColumn;
-    }
-
-    void fillTableInfo(PatientAnnotTableInfo tableInfo) {
-        super.fillTableInfo(tableInfo);
-
+    void fillTableInfo() {
+        super.fillTableInfo();
         Class<?> entityClass = PatientAnnotTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
-        String tableName = AnnotTableInfos.getTableName(entityClass);
-        tableInfo.setTableName(AnnotTableInfos.getTableName(entityClass));
 
-        OneToMany doctorToPatientAnnot
-                = AnnotTableInfos.getOneToManyRelation(Doctor.class, tableName);
+        tableName = AnnotTableInfos.getTableName(entityClass);
 
-        String column = doctorToPatientAnnot.foreignKey();
-        tableInfo.setDoctorIdColumn(column);
-        tableInfo.getColumns().add(column);
+        OneToMany doctorToPatientAnnot = AnnotTableInfos
+                .getOneToManyRelation(Doctor.class, tableName);
+        doctorIdColumn = String.format("%s.%s", tableName, doctorToPatientAnnot.foreignKey());
+        columns.add(doctorIdColumn);
 
-        Map<String, String> fieldColumnMap
-                = AnnotTableInfos.loadFieldColumnMap(entityClass);
-
-        column = fieldColumnMap.get("complaints");
-        tableInfo.setComplaintsColumn(column);
-        tableInfo.getColumns().add(column);
-
-        column = fieldColumnMap.get("diagnosis");
-        tableInfo.setDiagnosisColumn(column);
-        tableInfo.getColumns().add(column);
-
-        column = fieldColumnMap.get("state");
-        tableInfo.setStateColumn(column);
-        tableInfo.getColumns().add(column);
+        Map<String, String> fieldColumnMap = AnnotTableInfos.loadFieldColumnMap(entityClass);
+        complaintsColumn = String.format("%s.%s", tableName, fieldColumnMap.get("complaints"));
+        columns.add(complaintsColumn);
+        diagnosisColumn = String.format("%s.%s", tableName, fieldColumnMap.get("diagnosis"));
+        columns.add(diagnosisColumn);
+        stateColumn = String.format("%s.%s", tableName, fieldColumnMap.get("state"));
+        columns.add(stateColumn);
     }
 
     static PatientAnnotTableInfo createAnnotTableInfo() {
         PatientAnnotTableInfo tableInfo = new PatientAnnotTableInfo();
-        tableInfo.fillTableInfo(tableInfo);
+        tableInfo.fillTableInfo();
         return tableInfo;
     }
 }

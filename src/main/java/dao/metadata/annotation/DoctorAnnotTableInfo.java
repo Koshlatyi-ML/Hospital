@@ -22,39 +22,29 @@ public class DoctorAnnotTableInfo extends StuffAnnotTableInfo
         return doctorColumns;
     }
 
-    public void setDoctorColumns(List<String> doctorColumns) {
-        this.doctorColumns = doctorColumns;
-    }
-
     @Override
     public String getStuffIdColumn() {
         return stuffIdColumn;
     }
 
-    public void setStuffIdColumn(String stuffIdColumn) {
-        this.stuffIdColumn = stuffIdColumn;
-    }
-
-    void fillTableInfo(DoctorAnnotTableInfo tableInfo) {
+    void fillTableInfo() {
+        super.fillTableInfo();
         Class<?> entityClass = DoctorAnnotTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
-        tableInfo.setTableName(AnnotTableInfos.getTableName(entityClass));
 
-        String stuffId = entityClass.getDeclaredAnnotation(Inherit.class)
-                .foreignKey();
-        tableInfo.setStuffIdColumn(stuffId);
+        tableName = AnnotTableInfos.getTableName(entityClass);
 
-        List<String> columnNames = new ArrayList<>();
-        columnNames.add(stuffId);
-        tableInfo.setColumnNames(columnNames);
+        stuffIdColumn = String.format("%s.%s", tableName,
+                entityClass.getDeclaredAnnotation(Inherit.class).foreignKey());
+        columns.add(stuffIdColumn);
 
         doctorColumns = new ArrayList<>();
-        doctorColumns.add(stuffId);
+        doctorColumns.add(stuffIdColumn);
     }
 
     static DoctorAnnotTableInfo createAnnotTableInfo() {
         DoctorAnnotTableInfo tableInfo = new DoctorAnnotTableInfo();
-        tableInfo.fillTableInfo(tableInfo);
+        tableInfo.fillTableInfo();
         return tableInfo;
     }
 }

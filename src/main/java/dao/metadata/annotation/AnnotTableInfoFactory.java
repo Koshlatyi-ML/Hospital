@@ -4,48 +4,48 @@ import dao.metadata.*;
 
 public class AnnotTableInfoFactory extends TableInfoFactory {
 
-    private static final DepartmentAnnotTableInfo DEPARTMENT_ANNOT_TABLE_INFO
+    private DepartmentAnnotTableInfo departmentAnnotTableInfo
             = DepartmentAnnotTableInfo.createAnnotTableInfo();
-    private static final StuffAnnotTableInfo STUFF_ANNOT_TABLE_INFO
+    private StuffAnnotTableInfo stuffAnnotTableInfo
             = StuffAnnotTableInfo.createAnnotTableInfo();
-    private static final DoctorAnnotTableInfo DOCTOR_ANNOT_TABLE_INFO
+    private DoctorAnnotTableInfo doctorAnnotTableInfo
             = DoctorAnnotTableInfo.createAnnotTableInfo();
-    private static final MedicAnnotTableInfo MEDIC_ANNOT_TABLE_INFO
+    private MedicAnnotTableInfo medicAnnotTableInfo
             = MedicAnnotTableInfo.createAnnotTableInfo();
-    private static final PatientAnnotTableInfo PATIENT_ANNOT_TABLE_INFO
+    private PatientAnnotTableInfo patientAnnotTableInfo
             = PatientAnnotTableInfo.createAnnotTableInfo();
-    private static final TherapyAnnotTableInfo THERAPY_ANNOT_TABLE_INFO
+    private TherapyAnnotTableInfo therapyAnnotTableInfo
             = TherapyAnnotTableInfo.createAnnotTableInfo();
 
     private AnnotTableInfoFactory() {}
 
     @Override
     public DepartmentAnnotTableInfo getDepartmentTableInfo() {
-        return DEPARTMENT_ANNOT_TABLE_INFO;
+        return departmentAnnotTableInfo;
     }
 
     @Override
     public StuffTableInfo getStuffTableInfo() {
-        return STUFF_ANNOT_TABLE_INFO;
+        return stuffAnnotTableInfo;
     }
 
     @Override
     public DoctorTableInfo getDoctorTableInfo() {
-        return DOCTOR_ANNOT_TABLE_INFO;
+        return doctorAnnotTableInfo;
     }
 
     @Override
     public MedicTableInfo getMedicTableInfo() {
-        return MEDIC_ANNOT_TABLE_INFO;
+        return medicAnnotTableInfo;
     }
 
     @Override
     public PatientTableInfo getPatientTableInfo() {
-        return PATIENT_ANNOT_TABLE_INFO;
+        return patientAnnotTableInfo;
     }
 
     @Override
     public TherapyTableInfo getTherapyTableInfo() {
-        return THERAPY_ANNOT_TABLE_INFO;
+        return therapyAnnotTableInfo;
     }
 }

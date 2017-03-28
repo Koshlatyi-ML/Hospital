@@ -17,33 +17,20 @@ public abstract class PersonAnnotTableInfo extends IdHolderAnnotTableInfo
         return nameColumn;
     }
 
-    private void setNameColumn(String nameColumn) {
-        this.nameColumn = nameColumn;
-    }
-
     public String getSurnameColumn() {
         return surnameColumn;
     }
 
-    private void setSurnameColumn(String surnameColumn) {
-        this.surnameColumn = surnameColumn;
-    }
-
-    void fillTableInfo(PersonAnnotTableInfo tableInfo) {
-        super.fillTableInfo(tableInfo);
-
+    void fillTableInfo() {
+        super.fillTableInfo();
         Class entityClass = PersonAnnotTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
 
-        Map<String, String> fieldColumnMap
-                = AnnotTableInfos.loadFieldColumnMap(entityClass);
-
-        String column = fieldColumnMap.get("name");
-        tableInfo.setNameColumn(column);
-        tableInfo.getColumns().add(column);
-
-        column = fieldColumnMap.get("surname");
-        tableInfo.setSurnameColumn(column);
-        tableInfo.getColumns().add(column);
+        Map<String, String> fieldColumnMap =
+                AnnotTableInfos.loadFieldColumnMap(entityClass);
+        nameColumn = String.format("%s.%s", tableName, fieldColumnMap.get("name"));
+        columns.add(nameColumn);
+        surnameColumn = String.format("%s.%s", tableName, fieldColumnMap.get("surname"));
+        columns.add(surnameColumn);
     }
 }

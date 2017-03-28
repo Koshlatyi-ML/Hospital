@@ -18,30 +18,22 @@ public class DepartmentAnnotTableInfo extends IdHolderAnnotTableInfo
         return nameColumn;
     }
 
-    private void setNameColumn(String nameColumn) {
-        this.nameColumn = nameColumn;
-    }
-
-    void fillTableInfo(DepartmentAnnotTableInfo tableInfo) {
-        super.fillTableInfo(tableInfo);
-
+    void fillTableInfo() {
+        super.fillTableInfo();
         Class entityClass = DepartmentAnnotTableInfo.class
                 .getDeclaredAnnotation(Entity.class).value();
-        tableInfo.setTableName(AnnotTableInfos.getTableName(entityClass));
 
-        Map<String, String> fieldColumnMap
-                = AnnotTableInfos.loadFieldColumnMap(entityClass);
+        tableName = AnnotTableInfos.getTableName(entityClass);
 
-        String column = fieldColumnMap.get("name");
-        tableInfo.setNameColumn(column);
-        tableInfo.getColumns().add(column);
+        Map<String, String> fieldColumnMap =
+                AnnotTableInfos.loadFieldColumnMap(entityClass);
+        nameColumn = String.format("%s.%s", tableName, fieldColumnMap.get("name"));
+        columns.add(nameColumn);
     }
 
     static DepartmentAnnotTableInfo createAnnotTableInfo() {
-        DepartmentAnnotTableInfo tableInfo
-                = new DepartmentAnnotTableInfo();
-
-        tableInfo.fillTableInfo(tableInfo);
+        DepartmentAnnotTableInfo tableInfo = new DepartmentAnnotTableInfo();
+        tableInfo.fillTableInfo();
         return tableInfo;
     }
 }
