@@ -7,12 +7,8 @@ import dao.metadata.annotation.mapping.Table;
 import java.time.Instant;
 import java.util.List;
 
-@Table("medics")
-@Inherit(table = "stuff", foreignKey = "stuff_id")
 public class Medic extends Person {
-    @OneToMany(table = "therapies", foreignKey = "performer_id")
     private List<Therapy> pharmacotherapies;
-    @OneToMany(table = "therapies", foreignKey = "performer_id")
     private List<Therapy> physiotherapies;
 
     Medic() {}

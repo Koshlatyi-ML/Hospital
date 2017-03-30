@@ -6,7 +6,6 @@ import util.AbstractBuilder;
 import java.util.Objects;
 
 public abstract class IdHolder {
-    @Id("id")
     private long id;
 
     public long getId() {

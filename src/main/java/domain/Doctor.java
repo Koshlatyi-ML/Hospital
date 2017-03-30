@@ -6,12 +6,8 @@ import dao.metadata.annotation.mapping.Table;
 
 import java.util.List;
 
-@Table("doctors")
-@Inherit(table = "stuff", foreignKey = "stuff_id")
 public class Doctor extends Medic {
-    @OneToMany(table = "patients", foreignKey = "doctor_id")
     private List<Patient> patients;
-    @OneToMany(table = "therapies", foreignKey = "performer_id")
     private List<Therapy> surgicalOperations;
 
     private Doctor() {}

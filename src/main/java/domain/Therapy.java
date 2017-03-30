@@ -7,19 +7,12 @@ import dao.metadata.annotation.mapping.Table;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 
-@Table("therapies")
 public class Therapy extends IdHolder {
-    @Column("name")
     private String name;
-    @Column("description")
     private String description;
-    @Column("type")
     private Type type;
-    @Column("appointment_date")
     private Instant appointmentDateTime;
-    @Column("complete_date")
     private Instant completeDateTime;
-    @Column("patient_id")
     private Patient patient;
 
     public String getName() {

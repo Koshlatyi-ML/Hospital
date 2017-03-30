@@ -14,9 +14,9 @@ public abstract class TableInfoFactory {
     }
 
     public abstract DepartmentTableInfo getDepartmentTableInfo();
+    public abstract StuffTableInfo getStuffTableInfo();
     public abstract DoctorTableInfo getDoctorTableInfo();
     public abstract MedicTableInfo getMedicTableInfo();
     public abstract PatientTableInfo getPatientTableInfo();
     public abstract TherapyTableInfo getTherapyTableInfo();
-    public abstract StuffTableInfo getStuffTableInfo();
 }

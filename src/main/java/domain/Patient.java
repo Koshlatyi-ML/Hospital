@@ -3,13 +3,9 @@ package domain;
 import dao.metadata.annotation.mapping.Column;
 import dao.metadata.annotation.mapping.Table;
 
-@Table("patients")
 public class Patient extends Person {
-    @Column("complaints")
     private String complaints;
-    @Column("diagnosis")
     private String diagnosis;
-    @Column("state")
     private State state;
 
     private Patient() {
