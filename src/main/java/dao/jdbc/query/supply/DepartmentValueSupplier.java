@@ -9,8 +9,9 @@ public class DepartmentValueSupplier implements ValueSupplier<Department> {
     DepartmentValueSupplier() {}
 
     @Override
-    public void supplyValues(PreparedStatement statement,
+    public int supplyValues(PreparedStatement statement,
                              Department entity) throws SQLException {
         statement.setString(1, entity.getName());
+        return 1;
     }
 }

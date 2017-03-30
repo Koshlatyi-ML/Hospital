@@ -9,14 +9,16 @@ public class MedicValueSupplier implements StuffValueSupplier<Medic> {
     MedicValueSupplier() {}
 
     @Override
-    public void supplyValues(PreparedStatement statement, Medic entity) throws SQLException {
+    public int supplyValues(PreparedStatement statement, Medic entity) throws SQLException {
         statement.setLong(1, entity.getId());
+        return 1;
     }
 
     @Override
-    public void supplyStuffValues(PreparedStatement statement, Medic entity) throws SQLException {
+    public int supplyStuffValues(PreparedStatement statement, Medic entity) throws SQLException {
         statement.setString(1, entity.getName());
         statement.setString(2, entity.getSurname());
+        return 2;
     }
 
 }

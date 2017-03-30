@@ -6,5 +6,5 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public interface StuffValueSupplier<T extends Person> extends ValueSupplier<T> {
-    void supplyStuffValues(PreparedStatement statement, T entity) throws SQLException;
+    int supplyStuffValues(PreparedStatement statement, T entity) throws SQLException;
 }
