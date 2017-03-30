@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class QueryExecutor<E extends IdHolder> {
-    private String getFindAllQuery() {
+    String getFindAllQuery() {
         return String.format("SELECT * FROM %s;",
                 getTableInfo().getTableName());
     }
 
-    private String getFindByIdQuery() {
+    String getFindByIdQuery() {
         return String.format("SELECT * FROM %s WHERE %s = ?;",
                 getTableInfo().getTableName(),
                 getTableInfo().getIdColumn());
@@ -35,6 +35,7 @@ public abstract class QueryExecutor<E extends IdHolder> {
     String getUpdateQuery() {
         return String.format("UPDATE %s SET %s WHERE %s = ?;",
                 getTableInfo().getTableName(),
+                Queries.formatColumnNames(getTableInfo().getColumns()),
                 Queries.formatColumnPlaceholders(getTableInfo().getColumns()),
                 getTableInfo().getIdColumn());
     }
@@ -62,12 +63,13 @@ public abstract class QueryExecutor<E extends IdHolder> {
         }
     }
 
-    public ResultSet queryInsert(Connection connection, E entity) throws SQLException {
+    public void queryInsert(Connection connection, E entity) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getInsertQuery())) {
             getValueSupplier().supplyValues(statement, entity);
             statement.execute();
-            return statement.getGeneratedKeys();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            entity.setId(generatedKeys.getLong(1));
         }
     }
 

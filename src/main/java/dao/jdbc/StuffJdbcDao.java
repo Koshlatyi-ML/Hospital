@@ -1,15 +1,10 @@
 package dao.jdbc;
 
 import dao.StuffDao;
-import dao.jdbc.query.PersonQueryExecutor;
 import dao.jdbc.query.StuffQueryExecutor;
-import domain.Doctor;
-import domain.Medic;
 import domain.Person;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,59 +13,83 @@ public abstract class StuffJdbcDao<E extends Person> extends PersonJdbcDao<E>
 
     @Override
     public void create(E entity) {
-        try (Connection connection = getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                getQueryExecutor().queryInsert(connection, entity);
-                connection.commit();
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                connection.rollback();
-            }
+        if (connectionManager.isTransactional()) {
+            plainCreate(entity);
+        } else {
+            connectionManager.beginTransaction();
+            plainCreate(entity);
+            connectionManager.finishTransaction();
+        }
+    }
+
+    private void plainCreate(E entity) {
+        Connection connection = connectionManager.getConnection();
+        try {
+            getQueryExecutor().queryInsert(connection, entity);
         } catch (SQLException e) {
-            //connection.rollback() inside close //todo
+            connectionManager.rollbackAndClose(connection);
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void update(E entity) {
-        try (Connection connection = getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                getQueryExecutor().queryUpdate(connection, entity);
-                connection.commit();
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                connection.rollback();
-            }
+        if (connectionManager.isTransactional()) {
+            plainUpdate(entity);
+        } else {
+            connectionManager.beginTransaction();
+            plainUpdate(entity);
+            connectionManager.finishTransaction();
+        }
+    }
+
+    private void plainUpdate(E entity) {
+        Connection connection = connectionManager.getConnection();
+        try {
+            getQueryExecutor().queryUpdate(connection, entity);
         } catch (SQLException e) {
+            connectionManager.rollbackAndClose(connection);
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(long id) {
-        try (Connection connection = getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                getQueryExecutor().queryDelete(connection, id);
-                connection.commit();
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                connection.rollback();
-            }
+        if (connectionManager.isTransactional()) {
+            plainDelete(id);
+        } else {
+            connectionManager.beginTransaction();
+            plainDelete(id);
+            connectionManager.finishTransaction();
+        }
+    }
+
+    private void plainDelete(long id) {
+        Connection connection = connectionManager.getConnection();
+        try {
+            getQueryExecutor().queryDelete(connection, id);
         } catch (SQLException e) {
+            connectionManager.rollbackAndClose(connection);
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<E> findByDepartmentId(long id) {
-        try (Connection connection = getConnection()) {
-            return getQueryExecutor().queryFindByDepartmentId(connection, id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Connection connection = connectionManager.getConnection();
+        if (connectionManager.isTransactional()) {
+            try {
+                return getQueryExecutor().queryFindByDepartmentId(connection, id);
+            } catch (SQLException e) {
+                connectionManager.rollbackAndClose(connection);
+                throw new RuntimeException(e);
+            }
+        } else {
+            try (Connection localConnection = connection) {
+                return getQueryExecutor().queryFindByDepartmentId(localConnection, id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

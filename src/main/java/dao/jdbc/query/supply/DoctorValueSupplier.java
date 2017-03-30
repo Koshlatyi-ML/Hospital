@@ -9,7 +9,9 @@ public class DoctorValueSupplier implements StuffValueSupplier<Doctor> {
     DoctorValueSupplier() {}
 
     @Override
-    public void supplyValues(PreparedStatement statement, Doctor entity) throws SQLException {}
+    public void supplyValues(PreparedStatement statement, Doctor entity) throws SQLException {
+        statement.setLong(1, entity.getId());
+    }
 
     @Override
     public void supplyStuffValues(PreparedStatement statement, Doctor entity) throws SQLException {

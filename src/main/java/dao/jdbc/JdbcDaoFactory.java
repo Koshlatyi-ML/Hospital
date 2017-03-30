@@ -1,6 +1,7 @@
 package dao.jdbc;
 
 import dao.*;
+import dao.connection.jdbc.ConnectionManager;
 import dao.jdbc.query.QueryExecutorFactory;
 
 public class JdbcDaoFactory extends DaoFactory {
@@ -9,6 +10,8 @@ public class JdbcDaoFactory extends DaoFactory {
     private MedicJdbcDao medicDao;
     private PatientJdbcDao patientDao;
     private TherapyJdbcDao therapyDao;
+    private ConnectionManager connectionPolicy;
+
 
     private JdbcDaoFactory() {
         QueryExecutorFactory queryExecutorFactory = QueryExecutorFactory.getInstance();
@@ -17,6 +20,15 @@ public class JdbcDaoFactory extends DaoFactory {
         medicDao = new MedicJdbcDao(queryExecutorFactory, this);
         patientDao = new PatientJdbcDao(queryExecutorFactory);
         therapyDao = new TherapyJdbcDao(queryExecutorFactory);
+        connectionPolicy = ConnectionManager.getInstance();
+    }
+
+    public void beginTransaction() {
+        connectionPolicy.beginTransaction();
+    }
+
+    public void finishTransaction() {
+        connectionPolicy.finishTransaction();
     }
 
     @Override

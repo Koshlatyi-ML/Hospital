@@ -12,50 +12,51 @@ import java.util.List;
 
 
 public abstract class StuffQueryExecutor<E extends Person> extends PersonQueryExecutor<E> {
-
-    String getInsertQuery() {
+    String getInsertStuffQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
                 getTableInfo().getStuffTableName(),
                 Queries.formatColumnNames(getTableInfo().getStuffColumns()),
                 Queries.formatPlaceholders(getTableInfo().getStuffColumns().size()));
     }
 
-    String getUpdateQuery() {
+    String getUpdateStuffQuery() {
         return String.format("UPDATE %s SET %s WHERE %s=?;",
                 getTableInfo().getStuffTableName(),
                 Queries.formatColumnPlaceholders(getTableInfo().getColumns()),
                 getTableInfo().getIdColumn());
     }
 
-    String getDeleteQuery() {
+    String getDeleteStuffQuery() {
         return String.format("DELETE FROM %s WHERE %s = ?;",
                 getTableInfo().getStuffTableName(),
                 getTableInfo().getIdColumn());
     }
 
 
-    private String getFindByDepartmentIdQuery() {
-        return String.format("SELECT FROM %s WHERE %s = ?;",
-                getTableInfo().getStuffTableName(),
-                getTableInfo().getDepartmentIdColumn());
-    }
+    abstract String getFindByDepartmentIdQuery();
 
-    @Override
-    public ResultSet queryInsert(Connection connection, E entity) throws SQLException {
+    void queryInsertStuff(Connection connection, E entity) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getInsertQuery())) {
+                     connection.prepareStatement(getInsertStuffQuery())) {
             getValueSupplier().supplyStuffValues(statement, entity);
             statement.execute();
-            return statement.getGeneratedKeys();
+            entity.setId(statement.getGeneratedKeys().getLong(1));
         }
     }
 
-    @Override
-    public void queryUpdate(Connection connection, E entity) throws SQLException {
+    void queryUpdateStuff(Connection connection, E entity) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getUpdateQuery())) {
+                     connection.prepareStatement(getUpdateStuffQuery())) {
             getValueSupplier().supplyStuffValues(statement, entity);
             statement.setLong(getTableInfo().getStuffColumns().size(), entity.getId());
+            statement.execute();
+        }
+    }
+
+    void queryDeleteStuff(Connection connection, long id) throws SQLException {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(getDeleteStuffQuery())) {
+            statement.setLong(1, id);
             statement.execute();
         }
     }

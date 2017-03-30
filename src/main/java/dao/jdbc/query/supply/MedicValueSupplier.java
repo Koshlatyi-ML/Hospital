@@ -10,6 +10,7 @@ public class MedicValueSupplier implements StuffValueSupplier<Medic> {
 
     @Override
     public void supplyValues(PreparedStatement statement, Medic entity) throws SQLException {
+        statement.setLong(1, entity.getId());
     }
 
     @Override

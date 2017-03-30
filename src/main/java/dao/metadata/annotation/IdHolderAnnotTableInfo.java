@@ -1,10 +1,13 @@
 package dao.metadata.annotation;
 
+import dao.connection.ConnectionFactory;
 import dao.metadata.PlainTableInfo;
 import dao.metadata.annotation.mapping.Entity;
 import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.IdHolder;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

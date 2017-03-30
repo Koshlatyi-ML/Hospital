@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class PersonQueryExecutor<E extends Person> extends QueryExecutor<E> {
 
-    private String getFindByFullNameQuery() {
+    String getFindByFullNameQuery() {
         return String.format("SELECT * FROM %s WHERE %s LIKE %%?%% OR %s LIKE %%?%%;",
                 getTableInfo().getTableName(),
                 getTableInfo().getNameColumn(),

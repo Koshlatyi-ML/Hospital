@@ -25,38 +25,39 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department> implements Depart
 
     @Override
     public Optional<Department> find(long id) {
-        try (Connection connection = getConnection()) {
-            Optional<Department> departmentOptional =
-                    queryExecutor.queryFindById(connection, id);
-            departmentOptional.ifPresent(this::setStuff);
-            return departmentOptional;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Optional<Department> departmentOptional = super.find(id);
+        departmentOptional.ifPresent(this::setStuff);
+        return departmentOptional;
     }
 
     @Override
     public List<Department> findAll() {
-        try (Connection connection = getConnection()) {
-            List<Department> departmentList =
-                    queryExecutor.queryFindAll(connection);
-            setStuff(departmentList);
-            return departmentList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Department> departmentList = super.findAll();
+        setStuff(departmentList);
+        return departmentList;
     }
 
     @Override
     public Optional<Department> findByName(String name) {
-        try (Connection connection = getConnection()) {
-            Optional<Department> departmentOptional =
-                    queryExecutor.queryFindByName(connection, name);
-            departmentOptional.ifPresent(this::setStuff);
-            return departmentOptional;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Optional<Department> departmentOptional;
+        Connection connection = connectionManager.getConnection();
+        if (connectionManager.isTransactional()) {
+            try {
+                departmentOptional = queryExecutor.queryFindByName(connection, name);
+            } catch (SQLException e) {
+                connectionManager.rollbackAndClose(connection);
+                throw new RuntimeException(e);
+            }
+        } else {
+            try (Connection localConnection = connection) {
+                departmentOptional = queryExecutor.queryFindByName(localConnection, name);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        departmentOptional.ifPresent(this::setStuff);
+        return departmentOptional;
     }
 
     private void setStuff(List<Department> departments) {
@@ -68,7 +69,7 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department> implements Depart
 
     private void setStuff(Department department) {
         setStuff(jdbcDaoFactory.getMedicDao(), jdbcDaoFactory.getDoctorDao(),
-                 department);
+                department);
     }
 
     private void setStuff(MedicJdbcDao medicJdbcDao, DoctorJdbcDao doctorJdbcDao,

@@ -1,10 +1,10 @@
 package dao.jdbc;
 
-import dao.DaoFactory;
 import dao.MedicDao;
 import dao.jdbc.query.MedicQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import dao.metadata.annotation.mapping.Entity;
+import domain.Doctor;
 import domain.Medic;
 import domain.Therapy;
 
@@ -27,51 +27,31 @@ public class MedicJdbcDao extends StuffJdbcDao<Medic> implements MedicDao {
 
     @Override
     public Optional<Medic> find(long id) {
-        try (Connection connection = getConnection()) {
-            Optional<Medic> medicOptional =
-                    queryExecutor.queryFindById(connection, id);
-            medicOptional.ifPresent(this::setTherapies);
-            return medicOptional;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Optional<Medic> medicOptional = super.find(id);
+        medicOptional.ifPresent(medic -> setTherapies(medic));
+        return medicOptional;
     }
 
     @Override
     public List<Medic> findAll() {
-        try (Connection connection = getConnection()) {
-            List<Medic> medicList = queryExecutor.queryFindAll(connection);
-            setTherapies(medicList);
-            return medicList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Medic> medicList = super.findAll();
+        setTherapies(medicList);
+        return medicList;
     }
 
     @Override
     public List<Medic> findByFullName(String name, String surname) {
-        try (Connection connection = getConnection()) {
-            List<Medic> medicList =
-                    queryExecutor.queryFindByFullName(connection, name, surname);
-            setTherapies(medicList);
-            return medicList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Medic> medicList = super.findByFullName(name, surname);
+        setTherapies(medicList);
+        return medicList;
     }
 
     @Override
     public List<Medic> findByDepartmentId(long id) {
-        try (Connection connection = getConnection()) {
-            List<Medic> medicList =
-                    queryExecutor.queryFindByDepartmentId(connection, id);
-            setTherapies(medicList);
-            return medicList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Medic> medicList = super.findByDepartmentId(id);
+        setTherapies(medicList);
+        return medicList;
     }
-
     @Override
     protected MedicQueryExecutor getQueryExecutor() {
         return queryExecutor;

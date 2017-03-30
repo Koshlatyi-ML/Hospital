@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class JdbcConnectionFactory extends ConnectionFactory {
-    PGConnectionPoolDataSource dataSource;
+    private PGConnectionPoolDataSource dataSource;
 
     public JdbcConnectionFactory() {
         this.dataSource = new PGConnectionPoolDataSource();

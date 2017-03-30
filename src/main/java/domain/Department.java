@@ -13,6 +13,7 @@ public class Department extends IdHolder {
     private String name;
     @OneToMany(table = "stuff", foreignKey = "department_id")
     private List<Doctor> doctors;
+    @OneToMany(table = "stuff", foreignKey = "department_id")
     private List<Medic> medics;
 
     private Department() {}

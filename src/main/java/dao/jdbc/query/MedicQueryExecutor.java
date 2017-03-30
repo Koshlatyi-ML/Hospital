@@ -9,6 +9,7 @@ import dao.jdbc.query.supply.ValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.MedicTableInfo;
 import dao.metadata.TableInfoFactory;
+import domain.Doctor;
 import domain.Medic;
 
 import java.sql.Connection;
@@ -28,6 +29,47 @@ public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
         tableInfo = tableInfoFactory.getMedicTableInfo();
         valueSupplier = valueSupplierFactory.getMedicValueSupplier();
         entityRetriever = entityRetrieverFactory.getMedicEntityRetriever();
+    }
+
+    private String getStuffInnerJoin() {
+        return String.format(" %s INNER JOIN %s ON %s = %s ",
+                tableInfo.getStuffTableName(),
+                tableInfo.getTableName(),
+                tableInfo.getIdColumn(),
+                tableInfo.getStuffIdColumn());
+    }
+
+    @Override
+    String getFindAllQuery() {
+        return String.format("SELECT %s FROM" +
+                        getStuffInnerJoin() + ";",
+                Queries.formatColumnNames(tableInfo.getColumns()));
+    }
+
+    @Override
+    String getFindByIdQuery() {
+        return String.format("SELECT %s FROM" +
+                        getStuffInnerJoin() +
+                        "WHERE %s = ?;",
+                Queries.formatColumnNames(tableInfo.getColumns()),
+                tableInfo.getIdColumn());
+    }
+
+
+    public String getFindByFullNameQuery() {
+        return String.format("SELECT %s FROM" +
+                        getStuffInnerJoin() +
+                        "WHERE %s LIKE %%?%% OR %s LIKE %%?%%;",
+                Queries.formatColumnNames(tableInfo.getColumns()),
+                tableInfo.getNameColumn(),
+                tableInfo.getSurnameColumn());
+    }
+
+    @Override
+    String getFindByDepartmentIdQuery() {
+        return String.format("SELECT FROM %s WHERE %s = ?;",
+                Queries.formatColumnNames(tableInfo.getColumns()),
+                tableInfo.getDepartmentIdColumn());
     }
 
     String getInsertQuery() {
@@ -51,15 +93,21 @@ public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
     }
 
     @Override
-    public ResultSet queryInsert(Connection connection, Medic entity) throws SQLException {
-        ResultSet generatedKeys = super.queryInsert(connection, entity);
-        long stuffId = generatedKeys.getLong(1);
-        try (PreparedStatement statement =
-                     connection.prepareStatement(getInsertQuery())) {
-            statement.setLong(1, stuffId);
-            statement.execute();
-            return statement.getGeneratedKeys();
-        }
+    public void queryInsert(Connection connection, Medic entity) throws SQLException {
+        super.queryInsertStuff(connection, entity);
+        super.queryInsert(connection, entity);
+    }
+
+    @Override
+    public void queryUpdate(Connection connection, Medic entity) throws SQLException {
+        super.queryUpdateStuff(connection, entity);
+        super.queryUpdate(connection, entity);
+    }
+
+    @Override
+    public void queryDelete(Connection connection, long id) throws SQLException {
+        super.queryDeleteStuff(connection, id);
+        super.queryDelete(connection, id);
     }
 
     @Override

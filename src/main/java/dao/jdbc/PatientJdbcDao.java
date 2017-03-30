@@ -22,28 +22,58 @@ public class PatientJdbcDao extends PersonJdbcDao<Patient> implements PatientDao
 
     @Override
     public List<Patient> findByDepartmentId(long id) {
-        try (Connection connection = getConnection()) {
-            return queryExecutor.queryFindByDepartmentId(connection, id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Connection connection = connectionManager.getConnection();
+        if (connectionManager.isTransactional()) {
+            try {
+                return queryExecutor.queryFindByDepartmentId(connection, id);
+            } catch (SQLException e) {
+                connectionManager.rollbackAndClose(connection);
+                throw new RuntimeException(e);
+            }
+        } else {
+            try (Connection localConnection = connection) {
+                return queryExecutor.queryFindByDepartmentId(localConnection, id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     @Override
     public List<Patient> findByDoctorId(long id) {
-        try (Connection connection = getConnection()) {
-            return queryExecutor.queryFindByDoctorId(connection, id);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Connection connection = connectionManager.getConnection();
+        if (connectionManager.isTransactional()) {
+            try {
+                return queryExecutor.queryFindByDoctorId(connection, id);
+            } catch (SQLException e) {
+                connectionManager.rollbackAndClose(connection);
+                throw new RuntimeException(e);
+            }
+        } else {
+            try (Connection localConnection = connection) {
+                return queryExecutor.queryFindByDoctorId(localConnection, id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     @Override
     public List<Patient> findByState(Patient.State state) {
-        try (Connection connection = getConnection()) {
-            return queryExecutor.queryFindByState(connection, state);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Connection connection = connectionManager.getConnection();
+        if (connectionManager.isTransactional()) {
+            try {
+                return queryExecutor.queryFindByState(connection, state);
+            } catch (SQLException e) {
+                connectionManager.rollbackAndClose(connection);
+                throw new RuntimeException(e);
+            }
+        } else {
+            try (Connection localConnection = connection) {
+                return queryExecutor.queryFindByState(localConnection, state);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

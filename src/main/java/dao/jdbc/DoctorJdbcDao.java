@@ -4,7 +4,6 @@ import dao.DoctorDao;
 import dao.jdbc.query.DoctorQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import domain.Doctor;
-import domain.Patient;
 import domain.Therapy;
 
 import java.sql.Connection;
@@ -25,71 +24,66 @@ public class DoctorJdbcDao extends StuffJdbcDao<Doctor> implements DoctorDao {
 
     @Override
     public Optional<Doctor> find(long id) {
-        try (Connection connection = getConnection()) {
-            Optional<Doctor> doctorOptional =
-                    queryExecutor.queryFindById(connection, id);
-            doctorOptional.ifPresent(doctor -> {
-                setPatients(doctor);
-                setTherapies(doctor);
-            });
-            return doctorOptional;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Optional<Doctor> doctorOptional = super.find(id);
+        doctorOptional.ifPresent(doctor -> {
+            setPatients(doctor);
+            setTherapies(doctor);
+        });
+
+        return doctorOptional;
     }
 
     @Override
     public List<Doctor> findAll() {
-        try (Connection connection = getConnection()) {
-            List<Doctor> doctorList = queryExecutor.queryFindAll(connection);
-            setPatients(doctorList);
-            setTherapies(doctorList);
-            return doctorList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Doctor> doctorList = super.findAll();
+        setPatients(doctorList);
+        setTherapies(doctorList);
+        return doctorList;
     }
 
     @Override
     public List<Doctor> findByFullName(String name, String surname) {
-        try (Connection connection = getConnection()) {
-            List<Doctor> doctorList =
-                    queryExecutor.queryFindByFullName(connection, name, surname);
-            setPatients(doctorList);
-            setTherapies(doctorList);
-            return doctorList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Doctor> doctorList = super.findByFullName(name, surname);
+        setPatients(doctorList);
+        setTherapies(doctorList);
+        return doctorList;
     }
 
     @Override
     public List<Doctor> findByDepartmentId(long id) {
-        try (Connection connection = getConnection()) {
-            List<Doctor> doctorList =
-                    queryExecutor.queryFindByDepartmentId(connection, id);
-            setPatients(doctorList);
-            setTherapies(doctorList);
-            return doctorList;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Doctor> doctorList = super.findByDepartmentId(id);
+        setPatients(doctorList);
+        setTherapies(doctorList);
+        return doctorList;
     }
-
 
     @Override
     public Optional<Doctor> findByPatientId(long id) {
-        try (Connection connection = getConnection()) {
-            Optional<Doctor> doctorOptional =
-                    queryExecutor.queryFindByPatientId(connection, id);
-            doctorOptional.ifPresent(doctor -> {
-                setPatients(doctor);
-                setTherapies(doctor);
-            });
-            return doctorOptional;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Optional<Doctor> doctorOptional;
+
+        Connection connection = connectionManager.getConnection();
+        if (connectionManager.isTransactional()) {
+            try {
+                doctorOptional =
+                        queryExecutor.queryFindByPatientId(connection, id);
+            } catch (SQLException e) {
+                connectionManager.rollbackAndClose(connection);
+                throw new RuntimeException(e);
+            }
+        } else {
+            try (Connection localConnection = connection) {
+                doctorOptional =
+                        queryExecutor.queryFindByPatientId(localConnection, id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        doctorOptional.ifPresent(doctor -> {
+            setPatients(doctor);
+            setTherapies(doctor);
+        });
+        return doctorOptional;
     }
 
     @Override
