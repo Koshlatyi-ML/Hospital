@@ -29,6 +29,10 @@ public class ConnectionManager {
                 .orElse(connectionFactory.getConnection());
     }
 
+    public void beginTransaction() {
+        beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
+    }
+
     public void beginTransaction(int isolationLevel) {
         Connection connection = connectionFactory.getConnection();
         try {
