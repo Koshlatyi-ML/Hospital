@@ -29,10 +29,11 @@ public class ConnectionManager {
                 .orElse(connectionFactory.getConnection());
     }
 
-    public void beginTransaction() {
+    public void beginTransaction(int isolationLevel) {
         Connection connection = connectionFactory.getConnection();
         try {
             connection.setAutoCommit(false);
+            connection.setTransactionIsolation(isolationLevel);
             savepointThreadLocal.set(connection.setSavepoint("init"));
         } catch (SQLException onSetAutocommitFalse) {
             try {

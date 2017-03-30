@@ -4,6 +4,8 @@ import dao.DaoFactory;
 import dao.DaoManager;
 import dao.connection.jdbc.ConnectionManager;
 
+import java.sql.Connection;
+
 public class JdbcDaoManager extends DaoManager {
     private DaoFactory daoFactory;
     private ConnectionManager connectionManager;
@@ -20,7 +22,12 @@ public class JdbcDaoManager extends DaoManager {
 
     @Override
     public void beginTransaction() {
-        connectionManager.beginTransaction();
+        beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
+    }
+
+    @Override
+    public void beginTransaction(int isolationLevel) {
+        connectionManager.beginTransaction(isolationLevel);
     }
 
     @Override
