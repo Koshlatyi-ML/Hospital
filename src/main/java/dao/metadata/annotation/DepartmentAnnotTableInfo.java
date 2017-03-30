@@ -5,6 +5,7 @@ import dao.metadata.annotation.mapping.Entity;
 import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.Department;
 
+import java.util.List;
 import java.util.Map;
 
 @Entity(Department.class)
@@ -16,6 +17,11 @@ public class DepartmentAnnotTableInfo extends IdHolderAnnotTableInfo
 
     public String getNameColumn() {
         return nameColumn;
+    }
+
+    @Override
+    public List<String> getEntityfulColumns() {
+        return null;
     }
 
     void fillTableInfo() {

@@ -26,6 +26,11 @@ public class DoctorConstantTableInfo extends IdHolderConstantTableInfo
 
     @Override
     public List<String> getColumns() {
-        return null;
+        return Collections.singletonList(STUFFID_COLUMN);
+    }
+
+    @Override
+    public List<String> getEntityfulColumns() {
+        return Collections.singletonList(STUFFID_COLUMN);
     }
 }

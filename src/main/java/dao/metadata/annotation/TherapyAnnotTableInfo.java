@@ -7,6 +7,7 @@ import dao.metadata.annotation.mapping.OneToMany;
 import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.Therapy;
 
+import java.util.List;
 import java.util.Map;
 
 @Entity(Therapy.class)
@@ -48,6 +49,11 @@ public class TherapyAnnotTableInfo extends IdHolderAnnotTableInfo
 
     public String getPerformerIdColumn() {
         return performerIdColumn;
+    }
+
+    @Override
+    public List<String> getEntityfulColumns() {
+        return null;
     }
 
     void fillTableInfo() {

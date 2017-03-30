@@ -91,17 +91,22 @@ public abstract class CrudJdbcDao<E extends IdHolder> implements CrudDao<E> {
 
     @Override
     public void delete(E entity) {
+        delete(entity.getId());
+    }
+
+    @Override
+    public void delete(long id) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
-                getQueryExecutor().queryDelete(connection, entity);
+                getQueryExecutor().queryDelete(connection, id);
             } catch (SQLException e) {
                 connectionManager.rollbackAndClose(connection);
                 throw new RuntimeException(e);
             }
         } else {
             try (Connection localConnection = connection) {
-                getQueryExecutor().queryDelete(localConnection, entity);
+                getQueryExecutor().queryDelete(localConnection, id);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

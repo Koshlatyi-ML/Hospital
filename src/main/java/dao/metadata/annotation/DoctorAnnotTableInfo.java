@@ -25,6 +25,11 @@ public class DoctorAnnotTableInfo extends StuffAnnotTableInfo
         return stuffIdColumn;
     }
 
+    @Override
+    public List<String> getEntityfulColumns() {
+        return null;
+    }
+
     void fillTableInfo() {
         super.fillTableInfo();
         Class<?> entityClass = DoctorAnnotTableInfo.class

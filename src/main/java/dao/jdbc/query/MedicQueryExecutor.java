@@ -110,8 +110,13 @@ public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
 
     @Override
     public void queryDelete(Connection connection, Medic entity) throws SQLException {
-        super.queryDeleteStuff(connection, entity);
-        super.queryDelete(connection, entity);
+        queryDelete(connection, entity.getId());
+    }
+
+    @Override
+    public void queryDelete(Connection connection, long id) throws SQLException {
+        super.queryDeleteStuff(connection, id);
+        super.queryDelete(connection, id);
     }
 
     @Override

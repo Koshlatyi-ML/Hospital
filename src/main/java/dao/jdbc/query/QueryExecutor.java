@@ -25,14 +25,14 @@ public abstract class QueryExecutor<E extends IdHolder> {
     String getInsertQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
                 getTableInfo().getTableName(),
-                Queries.formatColumnNames(getTableInfo().getColumns()),
+                Queries.formatColumnNames(getTableInfo().getEntityfulColumns()),
                 Queries.formatPlaceholders(getTableInfo().getColumns().size()));
     }
 
     String getUpdateQuery() {
         return String.format("UPDATE %s SET %s WHERE %s = ?;",
                 getTableInfo().getTableName(),
-                Queries.formatColumnPlaceholders(getTableInfo().getColumns()),
+                Queries.formatColumnPlaceholders(getTableInfo().getEntityfulColumns()),
                 getTableInfo().getIdColumn());
     }
 
@@ -66,25 +66,29 @@ public abstract class QueryExecutor<E extends IdHolder> {
             getValueSupplier().supplyValues(statement, entity);
             statement.execute();
             ResultSet generatedKeys = statement.getGeneratedKeys();
-            generatedKeys.next();
-            entity.setId(generatedKeys.getLong(1));
-
+            if (generatedKeys.next()) {
+                entity.setId(generatedKeys.getLong(1));
+            }
         }
     }
 
     public void queryUpdate(Connection connection, E entity) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getUpdateQuery())) {
-            getValueSupplier().supplyValues(statement, entity);
-            statement.setLong(getTableInfo().getColumns().size() + 1, entity.getId());
+            int index = getValueSupplier().supplyValues(statement, entity);
+            statement.setLong(++index, entity.getId());
             statement.execute();
         }
     }
 
     public void queryDelete(Connection connection, E entity) throws SQLException {
+        queryDelete(connection, entity.getId());
+    }
+
+    public void queryDelete(Connection connection, long id) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getDeleteQuery())) {
-            statement.setLong(1, entity.getId());
+            statement.setLong(1, id);
             statement.execute();
         }
     }

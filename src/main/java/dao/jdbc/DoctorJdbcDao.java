@@ -1,5 +1,7 @@
 package dao.jdbc;
 
+import dao.DaoFactory;
+import dao.DaoManager;
 import dao.DoctorDao;
 import dao.connection.jdbc.ConnectionManager;
 import dao.jdbc.query.DoctorQueryExecutor;
@@ -125,5 +127,26 @@ public class DoctorJdbcDao extends StuffJdbcDao<Doctor> implements DoctorDao {
                 Therapy.Type.PHARMACOTHERAPY));
         doctor.setPhysiotherapies(therapyJdbcDao.findByDoctorIdAndType(doctorId,
                 Therapy.Type.PHYSIOTHERAPY));
+    }
+
+    public static void main(String[] args) {
+        DaoManager daoManager = DaoManager.getInstance();
+        DaoFactory daoFactory = daoManager.getDaoFactory();
+        DoctorDao doctorDao = daoFactory.getDoctorDao();
+
+        Doctor doc = new Doctor.Builder()
+                .setId(31)
+                .setName("зззз")
+                .setSurname("ъъъъъ")
+                .build();
+
+        Doctor doc2 = new Doctor.Builder()
+                .setName("lalik")
+                .setSurname("banka")
+                .build();
+
+        doctorDao.insert(doc2);
+        doctorDao.update(doc);
+        doctorDao.delete(33);
     }
 }

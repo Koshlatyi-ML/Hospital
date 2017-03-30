@@ -31,6 +31,11 @@ public class StuffAnnotTableInfo extends PersonAnnotTableInfo
         return stuffColumns;
     }
 
+    @Override
+    public List<String> getEntityfulColumns() {
+        return null;
+    }
+
     void fillTableInfo() {
         super.fillTableInfo();
 

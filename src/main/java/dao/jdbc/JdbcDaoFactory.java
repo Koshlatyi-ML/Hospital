@@ -23,14 +23,6 @@ public class JdbcDaoFactory extends DaoFactory {
         therapyDao = new TherapyJdbcDao(queryExecutorFactory, connectionManager);
     }
 
-    public void beginTransaction() {
-        connectionManager.beginTransaction();
-    }
-
-    public void finishTransaction() {
-        connectionManager.finishTransaction();
-    }
-
     @Override
     public DepartmentJdbcDao getDepartmentDao() {
         return departmentDao;

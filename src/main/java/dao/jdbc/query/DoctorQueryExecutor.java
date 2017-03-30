@@ -97,22 +97,22 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
 
     String getInsertQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
-                stuffTableInfo.getTableName(),
-                Queries.formatColumnNames(stuffTableInfo.getColumns()),
-                Queries.formatPlaceholders(stuffTableInfo.getColumns().size()));
+                doctorTableInfo.getTableName(),
+                Queries.formatColumnNames(doctorTableInfo.getColumns()),
+                Queries.formatPlaceholders(doctorTableInfo.getColumns().size()));
     }
 
     String getUpdateQuery() {
         return String.format("UPDATE %s SET %s WHERE %s = ?;",
-                stuffTableInfo.getTableName(),
-                Queries.formatColumnPlaceholders(stuffTableInfo.getColumns()),
-                stuffTableInfo.getIdColumn());
+                doctorTableInfo.getTableName(),
+                Queries.formatColumnPlaceholders(doctorTableInfo.getColumns()),
+                doctorTableInfo.getIdColumn());
     }
 
     String getDeleteQuery() {
         return String.format("DELETE FROM %s WHERE %s = ?;",
-                stuffTableInfo.getTableName(),
-                stuffTableInfo.getIdColumn());
+                doctorTableInfo.getTableName(),
+                doctorTableInfo.getIdColumn());
     }
 
     @Override
@@ -127,10 +127,20 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
         super.queryUpdate(connection, entity);
     }
 
+    public void queryUpdate(Connection connection, Doctor entity, long id) throws SQLException {
+        super.queryUpdateStuff(connection, entity, id);
+        super.queryUpdate(connection, entity);
+    }
+
     @Override
     public void queryDelete(Connection connection, Doctor entity) throws SQLException {
-        super.queryDeleteStuff(connection, entity);
-        super.queryDelete(connection, entity);
+        queryDelete(connection, entity.getId());
+    }
+
+    @Override
+    public void queryDelete(Connection connection, long id) throws SQLException {
+        super.queryDeleteStuff(connection, id);
+        super.queryDelete(connection, id);
     }
 
     public Optional<Doctor> queryFindByPatientId(Connection connection, long id)

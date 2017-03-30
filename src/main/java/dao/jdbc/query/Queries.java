@@ -2,6 +2,7 @@ package dao.jdbc.query;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Queries {
     private Queries() {
@@ -18,7 +19,6 @@ class Queries {
     static String formatColumnPlaceholders(List<String> columns) {
         return columns.stream()
                 .map(c -> c += "=?")
-                .reduce(String::concat)
-                .orElseThrow(IllegalArgumentException::new);
+                .collect(Collectors.joining(", "));
     }
 }

@@ -66,4 +66,11 @@ public class PatientConstantTableInfo extends PersonConstantTableInfo
                 DOCTOR_ID_COLUMN, COMPLAINTS_COLUMN, DIAGNOSIS_COLUMN,
                 STATE_COLUMN);
     }
+
+    @Override
+    public List<String> getEntityfulColumns() {
+        return Arrays.asList(NAME_COLUMN, SURNAME_COLUMN,
+                COMPLAINTS_COLUMN, DIAGNOSIS_COLUMN,
+                STATE_COLUMN);
+    }
 }

@@ -7,6 +7,7 @@ import dao.metadata.annotation.util.AnnotTableInfos;
 import domain.Doctor;
 import domain.Patient;
 
+import java.util.List;
 import java.util.Map;
 
 @Entity(Patient.class)
@@ -33,6 +34,11 @@ public class PatientAnnotTableInfo extends PersonAnnotTableInfo
 
     public String getStateColumn() {
         return stateColumn;
+    }
+
+    @Override
+    public List<String> getEntityfulColumns() {
+        return null;
     }
 
     void fillTableInfo() {

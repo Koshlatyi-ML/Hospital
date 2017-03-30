@@ -10,6 +10,7 @@ import dao.jdbc.query.QueryExecutorFactory;
 import domain.Department;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -65,19 +66,6 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department> implements Depart
         return departmentOptional;
     }
 
-    @Override
-    public void broke() {
-        Connection connection = connectionManager.getConnection();
-        Statement shopopalo = null;
-        try {
-            shopopalo = connection.createStatement();
-            shopopalo.execute("SHOPOPALO");
-        } catch (SQLException e) {
-            connectionManager.rollbackAndClose(connection);
-            throw new RuntimeException(e);
-        }
-    }
-
     private void setStuff(List<Department> departments) {
         MedicJdbcDao medicJdbcDao = jdbcDaoFactory.getMedicDao();
         DoctorJdbcDao doctorJdbcDao = jdbcDaoFactory.getDoctorDao();
@@ -102,24 +90,30 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department> implements Depart
         return queryExecutor;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         DaoManager daoManager = DaoManager.getInstance();
         DaoFactory daoFactory = daoManager.getDaoFactory();
-        DepartmentDao departmentDao = daoFactory.getDepartmentDao();
-        Department newDep1 = new Department.Builder()
-                .setName("ccc")
-                .build();
-        Department newDep2 = new Department.Builder()
-                .setName("ddd")
-                .build();
 
-        daoManager.beginTransaction();
-        departmentDao.insert(newDep1);
-        daoManager.setSavepoint();
-        departmentDao.insert(newDep2);
-//        departmentDao.broke();
-        daoManager.finishTransaction();
-//        departmentDao.update(newDep);
-//        departmentDao.delete(newDep);
+        Connection connection = ConnectionManager.getInstance().getConnection();
+        connection.setAutoCommit(false);
+        connection.prepareStatement("INSERT INTO stuff (name, surname, department_id)" +
+                " VALUES ('A', 'B', NULL)").execute();
+        connection.prepareStatement("INSERT INTO stuff (name, surname, department_id)" +
+                " VALUES ('C', 'D', NULL)").execute();
+        connection.commit();
+
+
+//        DepartmentDao departmentDao = daoFactory.getDepartmentDao();
+//        Department newDep1 = new Department.Builder()
+//                .setName("ccc")
+//                .build();
+//        Department newDep2 = new Department.Builder()
+//                .setName("ddd")
+//                .build();
+//
+//        daoManager.beginTransaction();
+//        departmentDao.insert(newDep1);
+//        departmentDao.insert(newDep2);
+//        daoManager.finishTransaction();
     }
 }
