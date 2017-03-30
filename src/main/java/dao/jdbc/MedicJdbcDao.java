@@ -1,15 +1,13 @@
 package dao.jdbc;
 
 import dao.MedicDao;
+import dao.connection.jdbc.ConnectionManager;
 import dao.jdbc.query.MedicQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import dao.metadata.annotation.mapping.Entity;
-import domain.Doctor;
 import domain.Medic;
 import domain.Therapy;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +17,12 @@ public class MedicJdbcDao extends StuffJdbcDao<Medic> implements MedicDao {
     private JdbcDaoFactory jdbcDaoFactory;
 
     MedicJdbcDao(QueryExecutorFactory queryExecutorFactory,
-                 JdbcDaoFactory jdbcDaoFactory) {
+                 JdbcDaoFactory jdbcDaoFactory,
+                 ConnectionManager connectionManager) {
 
         this.queryExecutor = queryExecutorFactory.getMedicQueryExecutor();
         this.jdbcDaoFactory = jdbcDaoFactory;
+        this.connectionManager = connectionManager;
     }
 
     @Override

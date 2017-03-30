@@ -62,7 +62,7 @@ public class PatientConstantTableInfo extends PersonConstantTableInfo
 
     @Override
     public List<String> getColumns() {
-        return Arrays.asList(ID_COLUMN, NAME_COLUMN, SURNAME_COLUMN,
+        return Arrays.asList(NAME_COLUMN, SURNAME_COLUMN,
                 DOCTOR_ID_COLUMN, COMPLAINTS_COLUMN, DIAGNOSIS_COLUMN,
                 STATE_COLUMN);
     }

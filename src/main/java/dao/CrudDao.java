@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface CrudDao<T extends IdHolder> {
     Optional<T> find(long id);
     List<T> findAll();
-    void create(T entity);
+    void insert(T entity);
     void update(T entity);
-    void delete(long id);
+    void delete(T entity);
 }

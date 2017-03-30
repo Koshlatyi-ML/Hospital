@@ -1,10 +1,11 @@
 package dao.metadata;
 
 import dao.metadata.annotation.AnnotTableInfoFactory;
+import dao.metadata.constant.ConstantTableInfoFactory;
 import util.load.Implementation;
 import util.load.ImplementationLoader;
 
-@Implementation(AnnotTableInfoFactory.class)
+@Implementation(ConstantTableInfoFactory.class)
 public abstract class TableInfoFactory {
     private static final TableInfoFactory INSTANCE
             = ImplementationLoader.getInstance().loadInstance(TableInfoFactory.class);

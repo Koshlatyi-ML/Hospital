@@ -33,7 +33,7 @@ public class ConnectionManager {
         Connection connection = connectionFactory.getConnection();
         try {
             connection.setAutoCommit(false);
-            savepointThreadLocal.set(connection.setSavepoint());
+            savepointThreadLocal.set(connection.setSavepoint("init"));
         } catch (SQLException onSetAutocommitFalse) {
             try {
                 connection.close();
@@ -59,9 +59,9 @@ public class ConnectionManager {
     }
 
     public void setSavepoint() {
-        Connection connection = connectionFactory.getConnection();
+        Connection connection = connectionThreadLocal.get();
         try {
-            savepointThreadLocal.set(connection.setSavepoint());
+            savepointThreadLocal.set(connection.setSavepoint("setted"));
         } catch (SQLException e) {
             rollbackAndClose(connection);
             throw new RuntimeException(e);
@@ -72,6 +72,7 @@ public class ConnectionManager {
         connectionThreadLocal.set(null);
         try (Connection localConnection = connection) {
             localConnection.rollback(savepointThreadLocal.get());
+            localConnection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -3,6 +3,7 @@ package dao.metadata.constant;
 import dao.metadata.DepartmentTableInfo;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class DepartmentConstantTableInfo extends IdHolderConstantTableInfo
@@ -31,6 +32,6 @@ public class DepartmentConstantTableInfo extends IdHolderConstantTableInfo
 
     @Override
     public List<String> getColumns() {
-        return Arrays.asList(ID_COLUMN, NAME_COLUMN);
+        return Collections.singletonList(NAME_COLUMN);
     }
 }

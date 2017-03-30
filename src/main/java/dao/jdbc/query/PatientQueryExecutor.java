@@ -8,6 +8,7 @@ import dao.jdbc.query.supply.ValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.DoctorTableInfo;
 import dao.metadata.PatientTableInfo;
+import dao.metadata.StuffTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Patient;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class PatientQueryExecutor extends PersonQueryExecutor<Patient> {
     private PatientTableInfo tableInfo;
+    private StuffTableInfo stuffTableInfo;
     private DoctorTableInfo doctorTableInfo;
     private ValueSupplier<Patient> valueSupplier;
     private EntityRetriever<Patient> entityRetriever;
@@ -28,6 +30,7 @@ public class PatientQueryExecutor extends PersonQueryExecutor<Patient> {
                                 EntityRetrieverFactory entityRetrieverFactory) {
 
         tableInfo = tableInfoFactory.getPatientTableInfo();
+        stuffTableInfo = tableInfoFactory.getStuffTableInfo();
         doctorTableInfo = tableInfoFactory.getDoctorTableInfo();
         valueSupplier = valueSupplierFactory.getPatientValueSupplier();
         entityRetriever = entityRetrieverFactory.getPatientEntityRetriever();
@@ -42,11 +45,11 @@ public class PatientQueryExecutor extends PersonQueryExecutor<Patient> {
                 tableInfo.getTableName(),
                 doctorTableInfo.getTableName(),
                 tableInfo.getDoctorIdColumn(),
-                doctorTableInfo.getStuffIdColumn(),
-                doctorTableInfo.getStuffTableName(),
-                doctorTableInfo.getStuffIdColumn(),
                 doctorTableInfo.getIdColumn(),
-                doctorTableInfo.getDepartmentIdColumn());
+                stuffTableInfo.getTableName(),
+                doctorTableInfo.getIdColumn(),
+                stuffTableInfo.getIdColumn(),
+                stuffTableInfo.getDepartmentIdColumn());
     }
 
     private String getFindByDoctorIdQuery() {

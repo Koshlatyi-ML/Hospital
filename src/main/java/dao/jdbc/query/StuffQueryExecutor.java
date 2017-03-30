@@ -12,23 +12,24 @@ import java.util.List;
 
 
 public abstract class StuffQueryExecutor<E extends Person> extends PersonQueryExecutor<E> {
+
     String getInsertStuffQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
-                getTableInfo().getStuffTableName(),
-                Queries.formatColumnNames(getTableInfo().getStuffColumns()),
-                Queries.formatPlaceholders(getTableInfo().getStuffColumns().size()));
+                getTableInfo().getTableName(),
+                Queries.formatColumnNames(getTableInfo().getColumns()),
+                Queries.formatPlaceholders(getTableInfo().getColumns().size()));
     }
 
     String getUpdateStuffQuery() {
         return String.format("UPDATE %s SET %s WHERE %s=?;",
-                getTableInfo().getStuffTableName(),
+                getTableInfo().getTableName(),
                 Queries.formatColumnPlaceholders(getTableInfo().getColumns()),
                 getTableInfo().getIdColumn());
     }
 
     String getDeleteStuffQuery() {
         return String.format("DELETE FROM %s WHERE %s = ?;",
-                getTableInfo().getStuffTableName(),
+                getTableInfo().getTableName(),
                 getTableInfo().getIdColumn());
     }
 
@@ -48,15 +49,15 @@ public abstract class StuffQueryExecutor<E extends Person> extends PersonQueryEx
         try (PreparedStatement statement =
                      connection.prepareStatement(getUpdateStuffQuery())) {
             getValueSupplier().supplyStuffValues(statement, entity);
-            statement.setLong(getTableInfo().getStuffColumns().size(), entity.getId());
+            statement.setLong(getTableInfo().getColumns().size(), entity.getId());
             statement.execute();
         }
     }
 
-    void queryDeleteStuff(Connection connection, long id) throws SQLException {
+    void queryDeleteStuff(Connection connection, E entity) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getDeleteStuffQuery())) {
-            statement.setLong(1, id);
+            statement.setLong(1, entity.getId());
             statement.execute();
         }
     }

@@ -5,10 +5,7 @@ import dao.jdbc.query.supply.ValueSupplier;
 import dao.metadata.PlainTableInfo;
 import domain.IdHolder;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +32,6 @@ public abstract class QueryExecutor<E extends IdHolder> {
     String getUpdateQuery() {
         return String.format("UPDATE %s SET %s WHERE %s = ?;",
                 getTableInfo().getTableName(),
-                Queries.formatColumnNames(getTableInfo().getColumns()),
                 Queries.formatColumnPlaceholders(getTableInfo().getColumns()),
                 getTableInfo().getIdColumn());
     }
@@ -65,11 +61,14 @@ public abstract class QueryExecutor<E extends IdHolder> {
 
     public void queryInsert(Connection connection, E entity) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getInsertQuery())) {
+                     connection.prepareStatement(getInsertQuery(),
+                             Statement.RETURN_GENERATED_KEYS)) {
             getValueSupplier().supplyValues(statement, entity);
             statement.execute();
             ResultSet generatedKeys = statement.getGeneratedKeys();
+            generatedKeys.next();
             entity.setId(generatedKeys.getLong(1));
+
         }
     }
 
@@ -77,15 +76,15 @@ public abstract class QueryExecutor<E extends IdHolder> {
         try (PreparedStatement statement =
                      connection.prepareStatement(getUpdateQuery())) {
             getValueSupplier().supplyValues(statement, entity);
-            statement.setLong(getTableInfo().getColumns().size(), entity.getId());
+            statement.setLong(getTableInfo().getColumns().size() + 1, entity.getId());
             statement.execute();
         }
     }
 
-    public void queryDelete(Connection connection, long id) throws SQLException {
+    public void queryDelete(Connection connection, E entity) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getDeleteQuery())) {
-            statement.setLong(1, id);
+            statement.setLong(1, entity.getId());
             statement.execute();
         }
     }

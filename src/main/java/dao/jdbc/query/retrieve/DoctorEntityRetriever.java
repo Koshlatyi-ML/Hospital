@@ -1,6 +1,7 @@
 package dao.jdbc.query.retrieve;
 
 import dao.metadata.DoctorTableInfo;
+import dao.metadata.StuffTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Doctor;
 
@@ -8,18 +9,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DoctorEntityRetriever extends AbstractEntityRetriever<Doctor> {
-    private DoctorTableInfo tableInfo;
+    private StuffTableInfo stuffTableInfo;
+    private DoctorTableInfo doctorTableInfo;
 
     DoctorEntityRetriever(TableInfoFactory tableInfoFactory) {
-        tableInfo = tableInfoFactory.getDoctorTableInfo();
+        stuffTableInfo = tableInfoFactory.getStuffTableInfo();
+        doctorTableInfo = tableInfoFactory.getDoctorTableInfo();
     }
 
     @Override
     protected Doctor retrieve(ResultSet resultSet) throws SQLException {
         return new Doctor.Builder()
-                .setId(resultSet.getLong(tableInfo.getIdColumn()))
-                .setName(resultSet.getString(tableInfo.getNameColumn()))
-                .setSurname(resultSet.getString(tableInfo.getSurnameColumn()))
+                .setId(resultSet.getLong(stuffTableInfo.getIdColumn()))
+                .setName(resultSet.getString(stuffTableInfo.getNameColumn()))
+                .setSurname(resultSet.getString(stuffTableInfo.getSurnameColumn()))
                 .build();
     }
 }

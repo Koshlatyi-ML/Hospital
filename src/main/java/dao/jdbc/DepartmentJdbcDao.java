@@ -1,14 +1,17 @@
 package dao.jdbc;
 
+import dao.DaoFactory;
+import dao.DaoManager;
 import dao.DepartmentDao;
+import dao.connection.jdbc.ConnectionManager;
 import dao.jdbc.query.DepartmentQueryExecutor;
 import dao.jdbc.query.QueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import domain.Department;
-import sun.dc.pr.PRError;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,10 +20,12 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department> implements Depart
     private JdbcDaoFactory jdbcDaoFactory;
 
     DepartmentJdbcDao(QueryExecutorFactory queryExecutorFactory,
-                      JdbcDaoFactory jdbcDaoFactory) {
+                      JdbcDaoFactory jdbcDaoFactory,
+                      ConnectionManager connectionManager) {
 
         queryExecutor = queryExecutorFactory.getDepartmentQueryExecutor();
         this.jdbcDaoFactory = jdbcDaoFactory;
+        this.connectionManager = connectionManager;
     }
 
     @Override
@@ -60,6 +65,19 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department> implements Depart
         return departmentOptional;
     }
 
+    @Override
+    public void broke() {
+        Connection connection = connectionManager.getConnection();
+        Statement shopopalo = null;
+        try {
+            shopopalo = connection.createStatement();
+            shopopalo.execute("SHOPOPALO");
+        } catch (SQLException e) {
+            connectionManager.rollbackAndClose(connection);
+            throw new RuntimeException(e);
+        }
+    }
+
     private void setStuff(List<Department> departments) {
         MedicJdbcDao medicJdbcDao = jdbcDaoFactory.getMedicDao();
         DoctorJdbcDao doctorJdbcDao = jdbcDaoFactory.getDoctorDao();
@@ -82,5 +100,26 @@ public class DepartmentJdbcDao extends CrudJdbcDao<Department> implements Depart
     @Override
     protected QueryExecutor<Department> getQueryExecutor() {
         return queryExecutor;
+    }
+
+    public static void main(String[] args) {
+        DaoManager daoManager = DaoManager.getInstance();
+        DaoFactory daoFactory = daoManager.getDaoFactory();
+        DepartmentDao departmentDao = daoFactory.getDepartmentDao();
+        Department newDep1 = new Department.Builder()
+                .setName("ccc")
+                .build();
+        Department newDep2 = new Department.Builder()
+                .setName("ddd")
+                .build();
+
+        daoManager.beginTransaction();
+        departmentDao.insert(newDep1);
+        daoManager.setSavepoint();
+        departmentDao.insert(newDep2);
+//        departmentDao.broke();
+        daoManager.finishTransaction();
+//        departmentDao.update(newDep);
+//        departmentDao.delete(newDep);
     }
 }

@@ -54,14 +54,14 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
         return String.format(" INNER JOIN %s ON %s = %s ",
                 doctorTableInfo.getTableName(),
                 tableInfo.getPerformerIdColumn(),
-                doctorTableInfo.getStuffIdColumn());
+                doctorTableInfo.getIdColumn());
     }
 
     private String getInnerJoinMedics() {
         return String.format(" INNER JOIN %s ON %s = %s ",
                 medicTableInfo.getTableName(),
                 tableInfo.getPerformerIdColumn(),
-                medicTableInfo.getStuffIdColumn());
+                medicTableInfo.getIdColumn());
     }
 
     private String getFindByPatientIdAndTypeQuery() {
@@ -108,7 +108,7 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
                         getInnerJoinPatients() +
                         getInnerJoinDoctors() +
                         "WHERE %s = ? AND %s = ?;",
-                doctorTableInfo.getStuffIdColumn(),
+                doctorTableInfo.getIdColumn(),
                 tableInfo.getTypeColumn());
     }
 
@@ -118,7 +118,7 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
                         getInnerJoinDoctors() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NULL AND %s < now();",
-                doctorTableInfo.getStuffIdColumn(),
+                doctorTableInfo.getIdColumn(),
                 tableInfo.getTypeColumn(),
                 tableInfo.getCompleteDateColumn(),
                 tableInfo.getAppointmentDateColumn());
@@ -130,7 +130,7 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
                         getInnerJoinDoctors() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NOT NULL;",
-                doctorTableInfo.getStuffIdColumn(),
+                doctorTableInfo.getIdColumn(),
                 tableInfo.getTypeColumn(),
                 tableInfo.getCompleteDateColumn());
     }
@@ -141,7 +141,7 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
                         getInnerJoinDoctors() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s > now();",
-                doctorTableInfo.getStuffIdColumn(),
+                doctorTableInfo.getIdColumn(),
                 tableInfo.getTypeColumn(),
                 tableInfo.getAppointmentDateColumn());
     }
@@ -151,7 +151,7 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
                         getInnerJoinPatients() +
                         getInnerJoinMedics() +
                         "WHERE %s = ? AND %s = ?;",
-                medicTableInfo.getStuffIdColumn(),
+                medicTableInfo.getIdColumn(),
                 tableInfo.getTypeColumn());
     }
 
@@ -161,7 +161,7 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
                         getInnerJoinMedics() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NULL AND %s < now();",
-                medicTableInfo.getStuffIdColumn(),
+                medicTableInfo.getIdColumn(),
                 tableInfo.getTypeColumn(),
                 tableInfo.getCompleteDateColumn(),
                 tableInfo.getAppointmentDateColumn());
@@ -173,7 +173,7 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
                         getInnerJoinMedics() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NOT NULL;",
-                medicTableInfo.getStuffIdColumn(),
+                medicTableInfo.getIdColumn(),
                 tableInfo.getTypeColumn(),
                 tableInfo.getCompleteDateColumn());
     }
@@ -184,7 +184,7 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
                         getInnerJoinMedics() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s > now();",
-                medicTableInfo.getStuffIdColumn(),
+                medicTableInfo.getIdColumn(),
                 tableInfo.getTypeColumn(),
                 tableInfo.getAppointmentDateColumn());
     }

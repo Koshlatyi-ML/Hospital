@@ -45,7 +45,7 @@ public class StuffConstantTableInfo extends PersonConstantTableInfo
 
     @Override
     public List<String> getColumns() {
-        return Arrays.asList(ID_COLUMN, NAME_COLUMN, SURNAME_COLUMN,
+        return Arrays.asList(NAME_COLUMN, SURNAME_COLUMN,
                 DEPARTMENT_ID_COLUMN);
     }
 }

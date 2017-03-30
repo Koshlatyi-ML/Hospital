@@ -12,7 +12,7 @@ public abstract class StuffJdbcDao<E extends Person> extends PersonJdbcDao<E>
         implements StuffDao<E> {
 
     @Override
-    public void create(E entity) {
+    public void insert(E entity) {
         if (connectionManager.isTransactional()) {
             plainCreate(entity);
         } else {
@@ -54,20 +54,20 @@ public abstract class StuffJdbcDao<E extends Person> extends PersonJdbcDao<E>
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(E entity) {
         if (connectionManager.isTransactional()) {
-            plainDelete(id);
+            plainDelete(entity);
         } else {
             connectionManager.beginTransaction();
-            plainDelete(id);
+            plainDelete(entity);
             connectionManager.finishTransaction();
         }
     }
 
-    private void plainDelete(long id) {
+    private void plainDelete(E entity) {
         Connection connection = connectionManager.getConnection();
         try {
-            getQueryExecutor().queryDelete(connection, id);
+            getQueryExecutor().queryDelete(connection, entity);
         } catch (SQLException e) {
             connectionManager.rollbackAndClose(connection);
             throw new RuntimeException(e);

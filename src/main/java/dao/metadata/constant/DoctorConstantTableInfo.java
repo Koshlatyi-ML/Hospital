@@ -2,6 +2,7 @@ package dao.metadata.constant;
 
 import dao.metadata.DoctorTableInfo;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,6 +26,6 @@ public class DoctorConstantTableInfo extends IdHolderConstantTableInfo
 
     @Override
     public List<String> getColumns() {
-        return Collections.singletonList(STUFFID_COLUMN);
+        return null;
     }
 }

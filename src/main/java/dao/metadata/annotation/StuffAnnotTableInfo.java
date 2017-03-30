@@ -23,12 +23,10 @@ public class StuffAnnotTableInfo extends PersonAnnotTableInfo
         return departmentIdColumn;
     }
 
-    @Override
     public String getStuffTableName() {
         return stuffTableName;
     }
 
-    @Override
     public List<String> getStuffColumns() {
         return stuffColumns;
     }

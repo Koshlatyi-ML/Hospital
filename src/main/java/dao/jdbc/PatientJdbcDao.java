@@ -1,6 +1,7 @@
 package dao.jdbc;
 
 import dao.PatientDao;
+import dao.connection.jdbc.ConnectionManager;
 import dao.jdbc.query.PatientQueryExecutor;
 import dao.jdbc.query.PersonQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
@@ -16,8 +17,10 @@ import java.util.List;
 public class PatientJdbcDao extends PersonJdbcDao<Patient> implements PatientDao {
     private PatientQueryExecutor queryExecutor;
 
-    PatientJdbcDao(QueryExecutorFactory queryExecutorFactory) {
+    PatientJdbcDao(QueryExecutorFactory queryExecutorFactory,
+                   ConnectionManager connectionManager) {
         this.queryExecutor = queryExecutorFactory.getPatientQueryExecutor();
+        this.connectionManager = connectionManager;
     }
 
     @Override

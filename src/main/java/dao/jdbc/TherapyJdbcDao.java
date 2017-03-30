@@ -1,6 +1,7 @@
 package dao.jdbc;
 
 import dao.TherapyDao;
+import dao.connection.jdbc.ConnectionManager;
 import dao.jdbc.query.QueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import dao.jdbc.query.TherapyQueryExecutor;
@@ -15,8 +16,10 @@ import java.util.*;
 public class TherapyJdbcDao extends CrudJdbcDao<Therapy> implements TherapyDao {
     private TherapyQueryExecutor queryExecutor;
 
-    TherapyJdbcDao(QueryExecutorFactory queryExecutorFactory) {
+    TherapyJdbcDao(QueryExecutorFactory queryExecutorFactory,
+                   ConnectionManager connectionManager) {
         queryExecutor = queryExecutorFactory.getTherapyQueryExecutor();
+        this.connectionManager = connectionManager;
     }
 
     @Override

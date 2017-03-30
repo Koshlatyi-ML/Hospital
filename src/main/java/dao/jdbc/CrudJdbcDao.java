@@ -24,7 +24,7 @@ public abstract class CrudJdbcDao<E extends IdHolder> implements CrudDao<E> {
                 throw new RuntimeException(e);
             }
         } else {
-            try (Connection localConnection = connectionManager.getConnection()) {
+            try (Connection localConnection = connection) {
                 return getQueryExecutor().queryFindById(localConnection, id);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -43,7 +43,7 @@ public abstract class CrudJdbcDao<E extends IdHolder> implements CrudDao<E> {
                 throw new RuntimeException(e);
             }
         } else {
-            try (Connection localConnection = connectionManager.getConnection()) {
+            try (Connection localConnection = connection) {
                 return getQueryExecutor().queryFindAll(localConnection);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -52,7 +52,7 @@ public abstract class CrudJdbcDao<E extends IdHolder> implements CrudDao<E> {
     }
 
     @Override
-    public void create(E entity) {
+    public void insert(E entity) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -62,7 +62,7 @@ public abstract class CrudJdbcDao<E extends IdHolder> implements CrudDao<E> {
                 throw new RuntimeException(e);
             }
         } else {
-            try (Connection localConnection = connectionManager.getConnection()) {
+            try (Connection localConnection = connection) {
                 getQueryExecutor().queryInsert(localConnection, entity);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -90,18 +90,18 @@ public abstract class CrudJdbcDao<E extends IdHolder> implements CrudDao<E> {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(E entity) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
-                getQueryExecutor().queryDelete(connection, id);
+                getQueryExecutor().queryDelete(connection, entity);
             } catch (SQLException e) {
                 connectionManager.rollbackAndClose(connection);
                 throw new RuntimeException(e);
             }
         } else {
             try (Connection localConnection = connection) {
-                getQueryExecutor().queryDelete(localConnection, id);
+                getQueryExecutor().queryDelete(localConnection, entity);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

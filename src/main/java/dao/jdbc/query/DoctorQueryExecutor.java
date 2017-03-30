@@ -3,13 +3,14 @@ package dao.jdbc.query;
 import dao.jdbc.query.retrieve.EntityRetriever;
 import dao.jdbc.query.retrieve.EntityRetrieverFactory;
 import dao.jdbc.query.supply.StuffValueSupplier;
-import dao.jdbc.query.supply.ValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.DoctorTableInfo;
 import dao.metadata.PatientTableInfo;
+import dao.metadata.StuffTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Doctor;
 
+import javax.print.Doc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
-    private DoctorTableInfo tableInfo;
+    private StuffTableInfo stuffTableInfo;
+    private DoctorTableInfo doctorTableInfo;
     private PatientTableInfo patientTableInfo;
     private StuffValueSupplier<Doctor> valueSupplier;
     private EntityRetriever<Doctor> entityRetriever;
@@ -27,7 +29,8 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
                         ValueSupplierFactory valueSupplierFactory,
                         EntityRetrieverFactory entityRetrieverFactory) {
 
-        tableInfo = tableInfoFactory.getDoctorTableInfo();
+        stuffTableInfo = tableInfoFactory.getStuffTableInfo();
+        doctorTableInfo = tableInfoFactory.getDoctorTableInfo();
         patientTableInfo = tableInfoFactory.getPatientTableInfo();
         valueSupplier = valueSupplierFactory.getDoctorValueSupplier();
         entityRetriever = entityRetrieverFactory.getDoctorEntityRetriever();
@@ -35,17 +38,23 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
 
     private String getStuffInnerJoin() {
         return String.format(" %s INNER JOIN %s ON %s = %s ",
-                tableInfo.getStuffTableName(),
-                tableInfo.getTableName(),
-                tableInfo.getIdColumn(),
-                tableInfo.getStuffIdColumn());
+                stuffTableInfo.getTableName(),
+                doctorTableInfo.getTableName(),
+                stuffTableInfo.getIdColumn(),
+                doctorTableInfo.getIdColumn());
+    }
+
+    private List<String> getJoinedColumns() {
+        List<String> columns = stuffTableInfo.getColumns();
+        columns.addAll(doctorTableInfo.getColumns());
+        return columns;
     }
 
     @Override
     String getFindAllQuery() {
         return String.format("SELECT %s FROM" +
                         getStuffInnerJoin() + ";",
-                Queries.formatColumnNames(tableInfo.getColumns()));
+                Queries.formatColumnNames(getJoinedColumns()));
     }
 
     @Override
@@ -53,8 +62,8 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
         return String.format("SELECT %s FROM" +
                         getStuffInnerJoin() +
                         "WHERE %s = ?;",
-                Queries.formatColumnNames(tableInfo.getColumns()),
-                tableInfo.getIdColumn());
+                Queries.formatColumnNames(getJoinedColumns()),
+                stuffTableInfo.getIdColumn());
     }
 
 
@@ -62,16 +71,16 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
         return String.format("SELECT %s FROM" +
                         getStuffInnerJoin() +
                         "WHERE %s LIKE %%?%% OR %s LIKE %%?%%;",
-                Queries.formatColumnNames(tableInfo.getColumns()),
-                tableInfo.getNameColumn(),
-                tableInfo.getSurnameColumn());
+                Queries.formatColumnNames(getJoinedColumns()),
+                stuffTableInfo.getNameColumn(),
+                stuffTableInfo.getSurnameColumn());
     }
 
     @Override
     String getFindByDepartmentIdQuery() {
         return String.format("SELECT FROM %s WHERE %s = ?;",
-                Queries.formatColumnNames(tableInfo.getColumns()),
-                tableInfo.getDepartmentIdColumn());
+                Queries.formatColumnNames(getJoinedColumns()),
+                stuffTableInfo.getDepartmentIdColumn());
     }
 
     private String getFindByPatientIdQuery() {
@@ -79,31 +88,31 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
                         getStuffInnerJoin() +
                         "INNER JOIN %s ON %s = %s " +
                         "WHERE %s = ?;",
-                Queries.formatColumnNames(tableInfo.getColumns()),
+                Queries.formatColumnNames(getJoinedColumns()),
                 patientTableInfo.getTableName(),
-                tableInfo.getStuffIdColumn(),
+                stuffTableInfo.getIdColumn(),
                 patientTableInfo.getDoctorIdColumn(),
                 patientTableInfo.getIdColumn());
     }
 
     String getInsertQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
-                tableInfo.getTableName(),
-                Queries.formatColumnNames(tableInfo.getDoctorColumns()),
-                Queries.formatPlaceholders(tableInfo.getDoctorColumns().size()));
+                stuffTableInfo.getTableName(),
+                Queries.formatColumnNames(stuffTableInfo.getColumns()),
+                Queries.formatPlaceholders(stuffTableInfo.getColumns().size()));
     }
 
     String getUpdateQuery() {
         return String.format("UPDATE %s SET %s WHERE %s = ?;",
-                tableInfo.getTableName(),
-                Queries.formatColumnPlaceholders(tableInfo.getDoctorColumns()),
-                getTableInfo().getStuffIdColumn());
+                stuffTableInfo.getTableName(),
+                Queries.formatColumnPlaceholders(stuffTableInfo.getColumns()),
+                stuffTableInfo.getIdColumn());
     }
 
     String getDeleteQuery() {
         return String.format("DELETE FROM %s WHERE %s = ?;",
-                tableInfo.getTableName(),
-                tableInfo.getStuffIdColumn());
+                stuffTableInfo.getTableName(),
+                stuffTableInfo.getIdColumn());
     }
 
     @Override
@@ -119,9 +128,9 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
     }
 
     @Override
-    public void queryDelete(Connection connection, long id) throws SQLException {
-        super.queryDeleteStuff(connection, id);
-        super.queryDelete(connection, id);
+    public void queryDelete(Connection connection, Doctor entity) throws SQLException {
+        super.queryDeleteStuff(connection, entity);
+        super.queryDelete(connection, entity);
     }
 
     public Optional<Doctor> queryFindByPatientId(Connection connection, long id)
@@ -136,8 +145,8 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
     }
 
     @Override
-    protected DoctorTableInfo getTableInfo() {
-        return tableInfo;
+    protected StuffTableInfo getTableInfo() {
+        return stuffTableInfo;
     }
 
     @Override

@@ -17,12 +17,10 @@ public class MedicAnnotTableInfo extends StuffAnnotTableInfo
 
     private MedicAnnotTableInfo() {}
 
-    @Override
     public String getStuffIdColumn() {
         return stuffIdColumn;
     }
 
-    @Override
     public List<String> getMedicColumns() {
         return medicColumns;
     }

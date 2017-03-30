@@ -10,25 +10,25 @@ public class JdbcDaoFactory extends DaoFactory {
     private MedicJdbcDao medicDao;
     private PatientJdbcDao patientDao;
     private TherapyJdbcDao therapyDao;
-    private ConnectionManager connectionPolicy;
+    private ConnectionManager connectionManager;
 
 
     private JdbcDaoFactory() {
         QueryExecutorFactory queryExecutorFactory = QueryExecutorFactory.getInstance();
-        departmentDao = new DepartmentJdbcDao(queryExecutorFactory, this);
-        doctorDao = new DoctorJdbcDao(queryExecutorFactory, this);
-        medicDao = new MedicJdbcDao(queryExecutorFactory, this);
-        patientDao = new PatientJdbcDao(queryExecutorFactory);
-        therapyDao = new TherapyJdbcDao(queryExecutorFactory);
-        connectionPolicy = ConnectionManager.getInstance();
+        connectionManager = ConnectionManager.getInstance();
+        departmentDao = new DepartmentJdbcDao(queryExecutorFactory, this, connectionManager);
+        doctorDao = new DoctorJdbcDao(queryExecutorFactory, this, connectionManager);
+        medicDao = new MedicJdbcDao(queryExecutorFactory, this, connectionManager);
+        patientDao = new PatientJdbcDao(queryExecutorFactory, connectionManager);
+        therapyDao = new TherapyJdbcDao(queryExecutorFactory, connectionManager);
     }
 
     public void beginTransaction() {
-        connectionPolicy.beginTransaction();
+        connectionManager.beginTransaction();
     }
 
     public void finishTransaction() {
-        connectionPolicy.finishTransaction();
+        connectionManager.finishTransaction();
     }
 
     @Override

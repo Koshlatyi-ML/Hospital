@@ -4,7 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 class Queries {
-    private Queries() {}
+    private Queries() {
+    }
 
     static String formatColumnNames(List<String> columns) {
         return "(" + String.join(",", columns) + ")";
@@ -15,6 +16,9 @@ class Queries {
     }
 
     static String formatColumnPlaceholders(List<String> columns) {
-        return String.join("=?,", columns);
+        return columns.stream()
+                .map(c -> c += "=?")
+                .reduce(String::concat)
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

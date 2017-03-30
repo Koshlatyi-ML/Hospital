@@ -6,8 +6,8 @@ import util.load.ImplementationLoader;
 
 @Implementation(JdbcDaoFactory.class)
 public abstract class DaoFactory {
-    private static final DaoFactory INSTANCE
-            = ImplementationLoader.getInstance().loadInstance(DaoFactory.class);
+    private static final DaoFactory INSTANCE =
+            ImplementationLoader.getInstance().loadInstance(DaoFactory.class);
 
     public static DaoFactory getInstance() {
         return INSTANCE;

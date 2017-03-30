@@ -2,23 +2,20 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.EntityRetriever;
 import dao.jdbc.query.retrieve.EntityRetrieverFactory;
-import dao.jdbc.query.retrieve.MedicEntityRetriever;
-import dao.jdbc.query.supply.MedicValueSupplier;
 import dao.jdbc.query.supply.StuffValueSupplier;
-import dao.jdbc.query.supply.ValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.MedicTableInfo;
+import dao.metadata.StuffTableInfo;
 import dao.metadata.TableInfoFactory;
-import domain.Doctor;
 import domain.Medic;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
-    private MedicTableInfo tableInfo;
+    private StuffTableInfo stuffTableInfo;
+    private MedicTableInfo medicTableInfo;
     private StuffValueSupplier<Medic> valueSupplier;
     private EntityRetriever<Medic> entityRetriever;
 
@@ -26,24 +23,31 @@ public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
                               ValueSupplierFactory valueSupplierFactory,
                               EntityRetrieverFactory entityRetrieverFactory) {
 
-        tableInfo = tableInfoFactory.getMedicTableInfo();
+        stuffTableInfo = tableInfoFactory.getStuffTableInfo();
+        medicTableInfo = tableInfoFactory.getMedicTableInfo();
         valueSupplier = valueSupplierFactory.getMedicValueSupplier();
         entityRetriever = entityRetrieverFactory.getMedicEntityRetriever();
     }
 
     private String getStuffInnerJoin() {
         return String.format(" %s INNER JOIN %s ON %s = %s ",
-                tableInfo.getStuffTableName(),
-                tableInfo.getTableName(),
-                tableInfo.getIdColumn(),
-                tableInfo.getStuffIdColumn());
+                stuffTableInfo.getTableName(),
+                medicTableInfo.getTableName(),
+                stuffTableInfo.getIdColumn(),
+                medicTableInfo.getIdColumn());
+    }
+
+    private List<String> getJoinedColumns() {
+        List<String> columns = stuffTableInfo.getColumns();
+        columns.addAll(medicTableInfo.getColumns());
+        return columns;
     }
 
     @Override
     String getFindAllQuery() {
         return String.format("SELECT %s FROM" +
                         getStuffInnerJoin() + ";",
-                Queries.formatColumnNames(tableInfo.getColumns()));
+                Queries.formatColumnNames(getJoinedColumns()));
     }
 
     @Override
@@ -51,8 +55,8 @@ public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
         return String.format("SELECT %s FROM" +
                         getStuffInnerJoin() +
                         "WHERE %s = ?;",
-                Queries.formatColumnNames(tableInfo.getColumns()),
-                tableInfo.getIdColumn());
+                Queries.formatColumnNames(getJoinedColumns()),
+                stuffTableInfo.getIdColumn());
     }
 
 
@@ -60,36 +64,36 @@ public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
         return String.format("SELECT %s FROM" +
                         getStuffInnerJoin() +
                         "WHERE %s LIKE %%?%% OR %s LIKE %%?%%;",
-                Queries.formatColumnNames(tableInfo.getColumns()),
-                tableInfo.getNameColumn(),
-                tableInfo.getSurnameColumn());
+                Queries.formatColumnNames(getJoinedColumns()),
+                stuffTableInfo.getNameColumn(),
+                stuffTableInfo.getSurnameColumn());
     }
 
     @Override
     String getFindByDepartmentIdQuery() {
         return String.format("SELECT FROM %s WHERE %s = ?;",
-                Queries.formatColumnNames(tableInfo.getColumns()),
-                tableInfo.getDepartmentIdColumn());
+                Queries.formatColumnNames(getJoinedColumns()),
+                stuffTableInfo.getDepartmentIdColumn());
     }
 
     String getInsertQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
-                tableInfo.getTableName(),
-                Queries.formatColumnNames(tableInfo.getMedicColumns()),
-                Queries.formatPlaceholders(tableInfo.getMedicColumns().size()));
+                medicTableInfo.getTableName(),
+                Queries.formatColumnNames(medicTableInfo.getColumns()),
+                Queries.formatPlaceholders(medicTableInfo.getColumns().size()));
     }
 
     String getUpdateQuery() {
         return String.format("UPDATE %s SET %s WHERE %s = ?;",
-                tableInfo.getTableName(),
-                Queries.formatColumnPlaceholders(tableInfo.getMedicColumns()),
-                getTableInfo().getStuffIdColumn());
+                medicTableInfo.getTableName(),
+                Queries.formatColumnPlaceholders(medicTableInfo.getColumns()),
+                medicTableInfo.getIdColumn());
     }
 
     String getDeleteQuery() {
         return String.format("DELETE FROM %s WHERE %s = ?;",
-                tableInfo.getTableName(),
-                tableInfo.getStuffIdColumn());
+                medicTableInfo.getTableName(),
+                medicTableInfo.getIdColumn());
     }
 
     @Override
@@ -105,14 +109,14 @@ public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
     }
 
     @Override
-    public void queryDelete(Connection connection, long id) throws SQLException {
-        super.queryDeleteStuff(connection, id);
-        super.queryDelete(connection, id);
+    public void queryDelete(Connection connection, Medic entity) throws SQLException {
+        super.queryDeleteStuff(connection, entity);
+        super.queryDelete(connection, entity);
     }
 
     @Override
-    protected MedicTableInfo getTableInfo() {
-        return tableInfo;
+    protected StuffTableInfo getTableInfo() {
+        return stuffTableInfo;
     }
 
     @Override

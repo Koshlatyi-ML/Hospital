@@ -1,6 +1,7 @@
 package dao.jdbc;
 
 import dao.DoctorDao;
+import dao.connection.jdbc.ConnectionManager;
 import dao.jdbc.query.DoctorQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import domain.Doctor;
@@ -16,10 +17,12 @@ public class DoctorJdbcDao extends StuffJdbcDao<Doctor> implements DoctorDao {
     private JdbcDaoFactory jdbcDaoFactory;
 
     DoctorJdbcDao(QueryExecutorFactory queryExecutorFactory,
-                  JdbcDaoFactory jdbcDaoFactory) {
+                  JdbcDaoFactory jdbcDaoFactory,
+                  ConnectionManager connectionManager) {
 
         this.queryExecutor = queryExecutorFactory.getDoctorQueryExecutor();
         this.jdbcDaoFactory = jdbcDaoFactory;
+        this.connectionManager = connectionManager;
     }
 
     @Override
