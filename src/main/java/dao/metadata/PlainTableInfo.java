@@ -6,5 +6,4 @@ public interface PlainTableInfo {
     String getTableName();
     String getIdColumn();
     List<String> getColumns();
-    List<String> getEntityfulColumns();
 }

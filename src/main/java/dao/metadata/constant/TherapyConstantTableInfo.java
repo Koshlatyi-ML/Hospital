@@ -70,11 +70,4 @@ public class TherapyConstantTableInfo extends IdHolderConstantTableInfo
                 COMPLETE_DATE_COLUMN, PATIENT_ID_COLUMN,
                 PERFORMER_ID_COLUMN);
     }
-
-    @Override
-    public List<String> getEntityfulColumns() {
-        return Arrays.asList(NAME_COLUMN, TYPE_COLUMN,
-                DESCRIPTION_COLUMN, APPOINTMENT_DATE_COLUMN,
-                COMPLETE_DATE_COLUMN, PATIENT_ID_COLUMN);
-    }
 }

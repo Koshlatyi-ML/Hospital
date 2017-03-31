@@ -1,6 +1,6 @@
 package dao.jdbc.query;
 
-import dao.jdbc.query.retrieve.EntityRetrieverFactory;
+import dao.jdbc.query.retrieve.DtoRetrieverFactory;
 import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.TableInfoFactory;
 
@@ -13,23 +13,23 @@ public class QueryExecutorFactory {
 
     private QueryExecutorFactory() {
         TableInfoFactory tableInfoFactory = TableInfoFactory.getInstance();
-        EntityRetrieverFactory entityRetrieverFactory = EntityRetrieverFactory.getInstance();
+        DtoRetrieverFactory dtoRetrieverFactory = DtoRetrieverFactory.getInstance();
         ValueSupplierFactory valueSupplierFactory = ValueSupplierFactory.getInstance();
 
         departmentQueryExecutor = new DepartmentQueryExecutor(tableInfoFactory,
-                        valueSupplierFactory, entityRetrieverFactory);
+                        valueSupplierFactory, dtoRetrieverFactory);
 
         doctorQueryExecutor = new DoctorQueryExecutor(tableInfoFactory,
-                valueSupplierFactory, entityRetrieverFactory);
+                valueSupplierFactory, dtoRetrieverFactory);
 
         medicQueryExecutor = new MedicQueryExecutor(tableInfoFactory,
-                valueSupplierFactory, entityRetrieverFactory);
+                valueSupplierFactory, dtoRetrieverFactory);
 
         patientQueryExecutor = new PatientQueryExecutor(tableInfoFactory,
-                valueSupplierFactory, entityRetrieverFactory);
+                valueSupplierFactory, dtoRetrieverFactory);
 
         therapyQueryExecutor = new TherapyQueryExecutor(tableInfoFactory,
-                valueSupplierFactory, entityRetrieverFactory);
+                valueSupplierFactory, dtoRetrieverFactory);
     }
 
     private static final QueryExecutorFactory INSTANCE = new QueryExecutorFactory();

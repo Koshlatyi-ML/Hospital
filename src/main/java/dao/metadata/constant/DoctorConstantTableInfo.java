@@ -10,7 +10,7 @@ public class DoctorConstantTableInfo extends IdHolderConstantTableInfo
         implements DoctorTableInfo {
 
     private static final String TABLE_NAME = "doctors";
-    private static final String STUFFID_COLUMN = "stuff_id";
+    private static final String STUFF_ID_COLUMN = "stuff_id";
 
     DoctorConstantTableInfo() {}
 
@@ -21,16 +21,11 @@ public class DoctorConstantTableInfo extends IdHolderConstantTableInfo
 
     @Override
     public String getIdColumn() {
-        return STUFFID_COLUMN;
+        return STUFF_ID_COLUMN;
     }
 
     @Override
     public List<String> getColumns() {
-        return Collections.singletonList(STUFFID_COLUMN);
-    }
-
-    @Override
-    public List<String> getEntityfulColumns() {
-        return Collections.singletonList(STUFFID_COLUMN);
+        return Collections.singletonList(STUFF_ID_COLUMN);
     }
 }

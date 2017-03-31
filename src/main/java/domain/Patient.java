@@ -1,8 +1,5 @@
 package domain;
 
-import dao.metadata.annotation.mapping.Column;
-import dao.metadata.annotation.mapping.Table;
-
 public class Patient extends Person {
     private String complaints;
     private String diagnosis;

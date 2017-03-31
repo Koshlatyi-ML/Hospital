@@ -48,9 +48,4 @@ public class StuffConstantTableInfo extends PersonConstantTableInfo
         return Arrays.asList(NAME_COLUMN, SURNAME_COLUMN,
                 DEPARTMENT_ID_COLUMN);
     }
-
-    @Override
-    public List<String> getEntityfulColumns() {
-        return Arrays.asList(NAME_COLUMN, SURNAME_COLUMN);
-    }
 }

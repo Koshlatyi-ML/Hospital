@@ -13,9 +13,9 @@ public abstract class DaoFactory {
         return INSTANCE;
     }
 
-    public abstract DepartmentDao getDepartmentDao();
-    public abstract DoctorDao getDoctorDao();
-    public abstract MedicDao getMedicDao();
-    public abstract PatientDao getPatientDao();
-    public abstract TherapyDao getTherapyDao();
+    public abstract DepartmentDAO getDepartmentDao();
+    public abstract DoctorDAO getDoctorDao();
+    public abstract MedicDAO getMedicDao();
+    public abstract PatientDAO getPatientDao();
+    public abstract TherapyDAO getTherapyDao();
 }

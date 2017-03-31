@@ -19,11 +19,6 @@ public class DepartmentAnnotTableInfo extends IdHolderAnnotTableInfo
         return nameColumn;
     }
 
-    @Override
-    public List<String> getEntityfulColumns() {
-        return null;
-    }
-
     void fillTableInfo() {
         super.fillTableInfo();
         Class entityClass = DepartmentAnnotTableInfo.class

@@ -27,9 +27,4 @@ public class MedicConstantTableInfo extends IdHolderConstantTableInfo
     public List<String> getColumns() {
         return Collections.singletonList(STUFF_ID_COLUMN);
     }
-
-    @Override
-    public List<String> getEntityfulColumns() {
-        return Collections.singletonList(STUFF_ID_COLUMN);
-    }
 }

@@ -1,32 +1,33 @@
 package dao.jdbc.query;
 
-import dao.jdbc.query.retrieve.EntityRetriever;
-import dao.jdbc.query.retrieve.EntityRetrieverFactory;
-import dao.jdbc.query.supply.StuffValueSupplier;
+import dao.jdbc.query.retrieve.DtoRetriever;
+import dao.jdbc.query.retrieve.DtoRetrieverFactory;
+import dao.jdbc.query.supply.StuffDtoValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.MedicTableInfo;
 import dao.metadata.StuffTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Medic;
+import domain.dto.MedicDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
+public class MedicQueryExecutor extends StuffQueryExecutor<MedicDTO> {
     private StuffTableInfo stuffTableInfo;
     private MedicTableInfo medicTableInfo;
-    private StuffValueSupplier<Medic> valueSupplier;
-    private EntityRetriever<Medic> entityRetriever;
+    private StuffDtoValueSupplier<MedicDTO> valueSupplier;
+    private DtoRetriever<MedicDTO> dtoRetriever;
 
     MedicQueryExecutor(TableInfoFactory tableInfoFactory,
-                              ValueSupplierFactory valueSupplierFactory,
-                              EntityRetrieverFactory entityRetrieverFactory) {
+                       ValueSupplierFactory valueSupplierFactory,
+                       DtoRetrieverFactory dtoRetrieverFactory) {
 
         stuffTableInfo = tableInfoFactory.getStuffTableInfo();
         medicTableInfo = tableInfoFactory.getMedicTableInfo();
-        valueSupplier = valueSupplierFactory.getMedicValueSupplier();
-        entityRetriever = entityRetrieverFactory.getMedicEntityRetriever();
+        valueSupplier = valueSupplierFactory.getMedicDtoValueSupplier();
+        dtoRetriever = dtoRetrieverFactory.getMedicDtoRetriever();
     }
 
     private String getStuffInnerJoin() {
@@ -97,20 +98,20 @@ public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
     }
 
     @Override
-    public void queryInsert(Connection connection, Medic entity) throws SQLException {
-        super.queryInsertStuff(connection, entity);
-        super.queryInsert(connection, entity);
+    public void queryInsert(Connection connection, MedicDTO dto) throws SQLException {
+        super.queryInsertStuff(connection, dto);
+        super.queryInsert(connection, dto);
     }
 
     @Override
-    public void queryUpdate(Connection connection, Medic entity) throws SQLException {
-        super.queryUpdateStuff(connection, entity);
-        super.queryUpdate(connection, entity);
+    public void queryUpdate(Connection connection, MedicDTO dto) throws SQLException {
+        super.queryUpdateStuff(connection, dto);
+        super.queryUpdate(connection, dto);
     }
 
     @Override
-    public void queryDelete(Connection connection, Medic entity) throws SQLException {
-        queryDelete(connection, entity.getId());
+    public void queryDelete(Connection connection, MedicDTO dto) throws SQLException {
+        queryDelete(connection, dto.getId());
     }
 
     @Override
@@ -125,12 +126,12 @@ public class MedicQueryExecutor extends StuffQueryExecutor<Medic> {
     }
 
     @Override
-    protected StuffValueSupplier<Medic> getValueSupplier() {
+    protected StuffDtoValueSupplier<MedicDTO> getDtoValueSupplier() {
         return valueSupplier;
     }
 
     @Override
-    protected EntityRetriever<Medic> getEntityRetriever() {
-        return entityRetriever;
+    protected DtoRetriever<MedicDTO> getDtoRetriever() {
+        return dtoRetriever;
     }
 }

@@ -34,9 +34,4 @@ public class DepartmentConstantTableInfo extends IdHolderConstantTableInfo
     public List<String> getColumns() {
         return Collections.singletonList(NAME_COLUMN);
     }
-
-    @Override
-    public List<String> getEntityfulColumns() {
-        return Collections.singletonList(NAME_COLUMN);
-    }
 }

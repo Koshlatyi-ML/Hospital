@@ -51,11 +51,6 @@ public class TherapyAnnotTableInfo extends IdHolderAnnotTableInfo
         return performerIdColumn;
     }
 
-    @Override
-    public List<String> getEntityfulColumns() {
-        return null;
-    }
-
     void fillTableInfo() {
         super.fillTableInfo();
         Class<?> entityClass = TherapyAnnotTableInfo.class

@@ -1,16 +1,17 @@
 package dao.jdbc.query;
 
-import dao.jdbc.query.retrieve.EntityRetriever;
-import dao.jdbc.query.retrieve.EntityRetrieverFactory;
-import dao.jdbc.query.supply.StuffValueSupplier;
+import dao.DoctorDAO;
+import dao.jdbc.query.retrieve.DtoRetriever;
+import dao.jdbc.query.retrieve.DtoRetrieverFactory;
+import dao.jdbc.query.supply.StuffDtoValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.DoctorTableInfo;
 import dao.metadata.PatientTableInfo;
 import dao.metadata.StuffTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Doctor;
+import domain.dto.DoctorDTO;
 
-import javax.print.Doc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,22 +19,22 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
+public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
     private StuffTableInfo stuffTableInfo;
     private DoctorTableInfo doctorTableInfo;
     private PatientTableInfo patientTableInfo;
-    private StuffValueSupplier<Doctor> valueSupplier;
-    private EntityRetriever<Doctor> entityRetriever;
+    private StuffDtoValueSupplier<DoctorDTO> valueSupplier;
+    private DtoRetriever<DoctorDTO> dtoRetriever;
 
     DoctorQueryExecutor(TableInfoFactory tableInfoFactory,
                         ValueSupplierFactory valueSupplierFactory,
-                        EntityRetrieverFactory entityRetrieverFactory) {
+                        DtoRetrieverFactory dtoRetrieverFactory) {
 
         stuffTableInfo = tableInfoFactory.getStuffTableInfo();
         doctorTableInfo = tableInfoFactory.getDoctorTableInfo();
         patientTableInfo = tableInfoFactory.getPatientTableInfo();
-        valueSupplier = valueSupplierFactory.getDoctorValueSupplier();
-        entityRetriever = entityRetrieverFactory.getDoctorEntityRetriever();
+        valueSupplier = valueSupplierFactory.getDoctorDtoValueSupplier();
+        dtoRetriever = dtoRetrieverFactory.getDoctorDtoRetriever();
     }
 
     private String getStuffInnerJoin() {
@@ -116,41 +117,36 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
     }
 
     @Override
-    public void queryInsert(Connection connection, Doctor entity) throws SQLException {
-        super.queryInsertStuff(connection, entity);
-        super.queryInsert(connection, entity);
+    public void queryInsert(Connection connection, DoctorDTO dto) throws SQLException {
+        super.queryInsertStuff(connection, dto);
+        super.queryInsert(connection, dto);
     }
 
     @Override
-    public void queryUpdate(Connection connection, Doctor entity) throws SQLException {
-        super.queryUpdateStuff(connection, entity);
-        super.queryUpdate(connection, entity);
-    }
-
-    public void queryUpdate(Connection connection, Doctor entity, long id) throws SQLException {
-        super.queryUpdateStuff(connection, entity, id);
-        super.queryUpdate(connection, entity);
+    public void queryUpdate(Connection connection, DoctorDTO dto) throws SQLException {
+        super.queryUpdateStuff(connection, dto);
+        super.queryUpdate(connection, dto);
     }
 
     @Override
-    public void queryDelete(Connection connection, Doctor entity) throws SQLException {
-        queryDelete(connection, entity.getId());
+    public void queryDelete(Connection connection, DoctorDTO dto) throws SQLException {
+        queryDelete(connection, dto.getId());
     }
 
     @Override
     public void queryDelete(Connection connection, long id) throws SQLException {
-        super.queryDeleteStuff(connection, id);
         super.queryDelete(connection, id);
+        super.queryDeleteStuff(connection, id);
     }
 
-    public Optional<Doctor> queryFindByPatientId(Connection connection, long id)
+    public Optional<DoctorDTO> queryFindByPatientId(Connection connection, long id)
             throws SQLException {
 
         try (PreparedStatement statement =
                      connection.prepareStatement(getFindByPatientIdQuery())) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            return entityRetriever.retrieveEntity(resultSet);
+            return dtoRetriever.retrieveDTO(resultSet);
         }
     }
 
@@ -160,12 +156,12 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<Doctor> {
     }
 
     @Override
-    protected EntityRetriever<Doctor> getEntityRetriever() {
-        return entityRetriever;
+    protected DtoRetriever<DoctorDTO> getDtoRetriever() {
+        return dtoRetriever;
     }
 
     @Override
-    protected StuffValueSupplier<Doctor> getValueSupplier() {
+    protected StuffDtoValueSupplier<DoctorDTO> getDtoValueSupplier() {
         return valueSupplier;
     }
 }

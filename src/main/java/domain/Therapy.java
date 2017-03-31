@@ -1,16 +1,11 @@
 package domain;
 
-import dao.metadata.annotation.mapping.Column;
-import dao.metadata.annotation.mapping.OneToOne;
-import dao.metadata.annotation.mapping.Table;
-
 import java.time.Instant;
-import java.time.ZonedDateTime;
 
 public class Therapy extends IdHolder {
     private String name;
-    private String description;
     private Type type;
+    private String description;
     private Instant appointmentDateTime;
     private Instant completeDateTime;
     private Patient patient;
@@ -23,20 +18,20 @@ public class Therapy extends IdHolder {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Type getType() {
         return type;
     }
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Instant getAppointmentDateTime() {

@@ -1,45 +1,45 @@
 package dao.jdbc.query.supply;
 
-import domain.*;
+import domain.dto.*;
 
 public class ValueSupplierFactory {
-    private DepartmentValueSupplier departmentValueSupplier;
-    private DoctorValueSupplier doctorValueSupplier;
-    private MedicValueSupplier medicValueSupplier;
-    private PatientValueSupplier patientValueSupplier;
-    private TherapyValueSupplier therapyValueSupplier;
+    private DepartmentDtoValueSupplier departmentDtoValueSupplier;
+    private DoctorDtoValueSupplier doctorDtoValueSupplier;
+    private MedicDtoValueSupplier medicDtoValueSupplier;
+    private PatientDtoValueSupplier patientDtoValueSupplier;
+    private TherapyDtoValueSupplier therapyDtoValueSupplier;
 
     private static final ValueSupplierFactory INSTANCE = new ValueSupplierFactory();
 
     private ValueSupplierFactory() {
-        departmentValueSupplier = new DepartmentValueSupplier();
-        doctorValueSupplier = new DoctorValueSupplier();
-        medicValueSupplier = new MedicValueSupplier();
-        patientValueSupplier = new PatientValueSupplier();
-        therapyValueSupplier = new TherapyValueSupplier();
+        departmentDtoValueSupplier = new DepartmentDtoValueSupplier();
+        doctorDtoValueSupplier = new DoctorDtoValueSupplier();
+        medicDtoValueSupplier = new MedicDtoValueSupplier();
+        patientDtoValueSupplier = new PatientDtoValueSupplier();
+        therapyDtoValueSupplier = new TherapyDtoValueSupplier();
     }
 
     public static ValueSupplierFactory getInstance() {
         return INSTANCE;
     }
 
-    public ValueSupplier<Department> getDepartamentValueSupplier() {
-        return departmentValueSupplier;
+    public DtoValueSupplier<DepartmentDTO> getDepartmentDtoValueSupplier() {
+        return departmentDtoValueSupplier;
     }
 
-    public StuffValueSupplier<Doctor> getDoctorValueSupplier() {
-        return doctorValueSupplier;
+    public StuffDtoValueSupplier<DoctorDTO> getDoctorDtoValueSupplier() {
+        return doctorDtoValueSupplier;
     }
 
-    public StuffValueSupplier<Medic> getMedicValueSupplier() {
-        return medicValueSupplier;
+    public StuffDtoValueSupplier<MedicDTO> getMedicDtoValueSupplier() {
+        return medicDtoValueSupplier;
     }
 
-    public ValueSupplier<Patient> getPatientValueSupplier() {
-        return patientValueSupplier;
+    public DtoValueSupplier<PatientDTO> getPatientDtoValueSupplier() {
+        return patientDtoValueSupplier;
     }
 
-    public ValueSupplier<Therapy> getTherapyValueSupplier() {
-        return therapyValueSupplier;
+    public DtoValueSupplier<TherapyDTO> getTherapyDtoValueSupplier() {
+        return therapyDtoValueSupplier;
     }
 }

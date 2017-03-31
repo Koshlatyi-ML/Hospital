@@ -1,15 +1,15 @@
 package dao.jdbc.query;
 
-import dao.jdbc.query.retrieve.EntityRetriever;
-import dao.jdbc.query.supply.ValueSupplier;
+import dao.jdbc.query.retrieve.DtoRetriever;
+import dao.jdbc.query.supply.DtoValueSupplier;
 import dao.metadata.PlainTableInfo;
-import domain.IdHolder;
+import domain.dto.AbstractDTO;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class QueryExecutor<E extends IdHolder> {
+public abstract class QueryExecutor<E extends AbstractDTO> {
     String getFindAllQuery() {
         return String.format("SELECT * FROM %s;",
                 getTableInfo().getTableName());
@@ -25,14 +25,14 @@ public abstract class QueryExecutor<E extends IdHolder> {
     String getInsertQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
                 getTableInfo().getTableName(),
-                Queries.formatColumnNames(getTableInfo().getEntityfulColumns()),
+                Queries.formatColumnNames(getTableInfo().getColumns()),
                 Queries.formatPlaceholders(getTableInfo().getColumns().size()));
     }
 
     String getUpdateQuery() {
         return String.format("UPDATE %s SET %s WHERE %s = ?;",
                 getTableInfo().getTableName(),
-                Queries.formatColumnPlaceholders(getTableInfo().getEntityfulColumns()),
+                Queries.formatColumnPlaceholders(getTableInfo().getColumns()),
                 getTableInfo().getIdColumn());
     }
 
@@ -46,7 +46,7 @@ public abstract class QueryExecutor<E extends IdHolder> {
         try (PreparedStatement statement =
                      connection.prepareStatement(getFindAllQuery())) {
             ResultSet resultSet = statement.executeQuery();
-            return getEntityRetriever().retrieveEntityList(resultSet);
+            return getDtoRetriever().retrieveDTOList(resultSet);
         }
     }
 
@@ -55,34 +55,34 @@ public abstract class QueryExecutor<E extends IdHolder> {
                      connection.prepareStatement(getFindByIdQuery())) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            return getEntityRetriever().retrieveEntity(resultSet);
+            return getDtoRetriever().retrieveDTO(resultSet);
         }
     }
 
-    public void queryInsert(Connection connection, E entity) throws SQLException {
+    public void queryInsert(Connection connection, E dto) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getInsertQuery(),
                              Statement.RETURN_GENERATED_KEYS)) {
-            getValueSupplier().supplyValues(statement, entity);
+            getDtoValueSupplier().supplyValues(statement, dto);
             statement.execute();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                entity.setId(generatedKeys.getLong(1));
+                dto.setId(generatedKeys.getLong(1));
             }
         }
     }
 
-    public void queryUpdate(Connection connection, E entity) throws SQLException {
+    public void queryUpdate(Connection connection, E dto) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getUpdateQuery())) {
-            int index = getValueSupplier().supplyValues(statement, entity);
-            statement.setLong(++index, entity.getId());
+            int index = getDtoValueSupplier().supplyValues(statement, dto);
+            statement.setLong(++index, dto.getId());
             statement.execute();
         }
     }
 
-    public void queryDelete(Connection connection, E entity) throws SQLException {
-        queryDelete(connection, entity.getId());
+    public void queryDelete(Connection connection, E dto) throws SQLException {
+        queryDelete(connection, dto.getId());
     }
 
     public void queryDelete(Connection connection, long id) throws SQLException {
@@ -93,9 +93,9 @@ public abstract class QueryExecutor<E extends IdHolder> {
         }
     }
 
-    protected abstract EntityRetriever<E> getEntityRetriever();
+    protected abstract DtoRetriever<E> getDtoRetriever();
 
-    protected abstract ValueSupplier<E> getValueSupplier();
+    protected abstract DtoValueSupplier<E> getDtoValueSupplier();
 
     protected abstract PlainTableInfo getTableInfo();
 }

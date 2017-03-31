@@ -1,34 +1,36 @@
 package dao.jdbc.query;
 
-import dao.jdbc.query.retrieve.EntityRetriever;
-import dao.jdbc.query.retrieve.EntityRetrieverFactory;
-import dao.jdbc.query.supply.ValueSupplier;
+import dao.TherapyDAO;
+import dao.jdbc.query.retrieve.DtoRetriever;
+import dao.jdbc.query.retrieve.DtoRetrieverFactory;
+import dao.jdbc.query.supply.DtoValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.*;
 import domain.Therapy;
+import domain.dto.TherapyDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
+public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     private TherapyTableInfo tableInfo;
     private PatientTableInfo patientTableInfo;
     private DoctorTableInfo doctorTableInfo;
     private MedicTableInfo medicTableInfo;
-    private ValueSupplier<Therapy> valueSupplier;
-    private EntityRetriever<Therapy> entityRetriever;
+    private DtoValueSupplier<TherapyDTO> dtoValueSupplier;
+    private DtoRetriever<TherapyDTO> dtoRetriever;
 
     TherapyQueryExecutor(TableInfoFactory tableInfoFactory,
                                 ValueSupplierFactory valueSupplierFactory,
-                                EntityRetrieverFactory entityRetrieverFactory) {
+                                DtoRetrieverFactory dtoRetrieverFactory) {
 
         tableInfo = tableInfoFactory.getTherapyTableInfo();
         patientTableInfo = tableInfoFactory.getPatientTableInfo();
         doctorTableInfo = tableInfoFactory.getDoctorTableInfo();
         medicTableInfo = tableInfoFactory.getMedicTableInfo();
-        valueSupplier = valueSupplierFactory.getTherapyValueSupplier();
-        entityRetriever = entityRetrieverFactory.getTherapyEntityetriever();
+        dtoValueSupplier = valueSupplierFactory.getTherapyDtoValueSupplier();
+        dtoRetriever = dtoRetrieverFactory.getTherapyEntityetriever();
     }
 
     private List<String> getSeekableColumns() {
@@ -189,7 +191,7 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
                 tableInfo.getAppointmentDateColumn());
     }
 
-    private List<Therapy> queryFindByIdAndType(
+    private List<TherapyDTO> queryFindByIdAndType(
             Connection connection, long id, Therapy.Type type, String sqlQuery)
             throws SQLException {
 
@@ -197,88 +199,88 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
             statement.setLong(1, id);
             statement.setString(2, type.toString());
             ResultSet resultSet = statement.executeQuery();
-            return entityRetriever.retrieveEntityList(resultSet);
+            return dtoRetriever.retrieveDTOList(resultSet);
         }
     }
 
-    public List<Therapy> queryFindByPatientIdAndType(
+    public List<TherapyDTO> queryFindByPatientIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindByPatientIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindCurrentByPatientIdAndType(
+    public List<TherapyDTO> queryFindCurrentByPatientIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindCurrentByPatientIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindFinishedByPatientIdAndType(
+    public List<TherapyDTO> queryFindFinishedByPatientIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFinishedByPatientIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindFutureByPatientIdAndType(
+    public List<TherapyDTO> queryFindFutureByPatientIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFutureByPatientIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindByDoctorIdAndType(
+    public List<TherapyDTO> queryFindByDoctorIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindByDoctorIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindCurrentByDoctorIdAndType(
+    public List<TherapyDTO> queryFindCurrentByDoctorIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindCurrentByDoctorIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindFinishedByDoctorIdAndType(
+    public List<TherapyDTO> queryFindFinishedByDoctorIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFinishedByDoctorIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindFutureByDoctorIdAndType(
+    public List<TherapyDTO> queryFindFutureByDoctorIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFutureByDoctorIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindByMedicIdAndType(
+    public List<TherapyDTO> queryFindByMedicIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindByMedicIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindCurrentByMedicIdAndType(
+    public List<TherapyDTO> queryFindCurrentByMedicIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindCurrentByMedicIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindFinishedByMedicIdAndType(
+    public List<TherapyDTO> queryFindFinishedByMedicIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFinishedByMedicIdAndTypeQuery());
     }
 
-    public List<Therapy> queryFindFutureByMedicIdAndType(
+    public List<TherapyDTO> queryFindFutureByMedicIdAndType(
             Connection connection, long id, Therapy.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
@@ -287,13 +289,13 @@ public class TherapyQueryExecutor extends QueryExecutor<Therapy> {
 
 
     @Override
-    protected EntityRetriever<Therapy> getEntityRetriever() {
-        return entityRetriever;
+    protected DtoRetriever<TherapyDTO> getDtoRetriever() {
+        return dtoRetriever;
     }
 
     @Override
-    protected ValueSupplier<Therapy> getValueSupplier() {
-        return valueSupplier;
+    protected DtoValueSupplier<TherapyDTO> getDtoValueSupplier() {
+        return dtoValueSupplier;
     }
 
     @Override

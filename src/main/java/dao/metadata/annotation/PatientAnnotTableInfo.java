@@ -36,11 +36,6 @@ public class PatientAnnotTableInfo extends PersonAnnotTableInfo
         return stateColumn;
     }
 
-    @Override
-    public List<String> getEntityfulColumns() {
-        return null;
-    }
-
     void fillTableInfo() {
         super.fillTableInfo();
         Class<?> entityClass = PatientAnnotTableInfo.class
