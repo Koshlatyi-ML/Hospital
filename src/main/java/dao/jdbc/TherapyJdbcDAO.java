@@ -1,7 +1,9 @@
 package dao.jdbc;
 
+import dao.DaoFactory;
+import dao.DaoManager;
 import dao.TherapyDAO;
-import dao.connection.jdbc.ConnectionManager;
+import dao.connection.ConnectionManager;
 import dao.jdbc.query.QueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import dao.jdbc.query.TherapyQueryExecutor;
@@ -11,6 +13,8 @@ import domain.dto.TherapyDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 
 @Entity(Therapy.class)
@@ -31,7 +35,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindCurrentByDoctorIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -52,7 +56,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindCurrentByMedicIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -73,7 +77,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindCurrentByPatientIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -94,7 +98,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindFinishedByDoctorIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -115,7 +119,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindFinishedByMedicIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -136,7 +140,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindFinishedByPatientIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -157,7 +161,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindFutureByDoctorIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -178,7 +182,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindFutureByMedicIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -199,7 +203,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindFutureByPatientIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -220,7 +224,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindByDoctorIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -241,7 +245,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindByMedicIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -262,7 +266,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
                 return queryExecutor
                         .queryFindByPatientIdAndType(connection, id, type);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -278,5 +282,26 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     @Override
     protected QueryExecutor<TherapyDTO> getQueryExecutor() {
         return queryExecutor;
+    }
+
+    public static void main(String[] args) {
+        DaoManager daoManager = DaoManager.getInstance();
+        DaoFactory daoFactory = daoManager.getDaoFactory();
+        TherapyDAO therapyDAO = daoFactory.getTherapyDao();
+
+        TherapyDTO therapyDTO = new TherapyDTO.Builder()
+                .setName("headcutting")
+                .setType(TherapyDTO.Type.SURGERY_OPERATION.toString())
+                .setDescription("lol")
+                .setAppointmentDateTime(Timestamp.from(Instant.now()))
+                .setPatientId(4)
+                .setPerformerId(45)
+                .build();
+
+        therapyDAO.create(therapyDTO);
+
+        therapyDTO.setPerformerId(44);
+        therapyDAO.update(therapyDTO);
+        therapyDAO.delete(therapyDTO.getId());
     }
 }

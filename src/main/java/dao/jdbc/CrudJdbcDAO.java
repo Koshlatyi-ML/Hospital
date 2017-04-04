@@ -1,7 +1,7 @@
 package dao.jdbc;
 
 import dao.CrudDAO;
-import dao.connection.jdbc.ConnectionManager;
+import dao.connection.ConnectionManager;
 import dao.jdbc.query.QueryExecutor;
 import domain.dto.AbstractDTO;
 
@@ -20,7 +20,7 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
             try {
                 return getQueryExecutor().queryFindById(connection, id);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -39,7 +39,7 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
             try {
                 return getQueryExecutor().queryFindAll(connection);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -58,7 +58,7 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
             try {
                 getQueryExecutor().queryInsert(connection, dto);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -77,7 +77,7 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
             try {
                 getQueryExecutor().queryUpdate(connection, dto);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -101,7 +101,7 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
             try {
                 getQueryExecutor().queryDelete(connection, id);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {

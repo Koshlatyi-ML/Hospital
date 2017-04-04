@@ -18,7 +18,8 @@ public class MedicDtoValueSupplier implements StuffDtoValueSupplier<MedicDTO> {
     public int supplyStuffValues(PreparedStatement statement, MedicDTO dto) throws SQLException {
         statement.setString(1, dto.getName());
         statement.setString(2, dto.getSurname());
-        return 2;
+        statement.setLong(3, dto.getDepartmentId());
+        return 3;
     }
 
 }

@@ -1,26 +1,22 @@
 package dao.connection.jdbc;
 
 import dao.connection.ConnectionFactory;
-import org.postgresql.ds.PGConnectionPoolDataSource;
+import util.load.Jndi;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class JdbcConnectionFactory extends ConnectionFactory {
-    private PGConnectionPoolDataSource dataSource;
+    @Jndi("java:comp/env/jdbc/postgres")
+    private DataSource dataSource;
 
-    public JdbcConnectionFactory() {
-        this.dataSource = new PGConnectionPoolDataSource();
-        dataSource.setServerName("localhost");
-        dataSource.setDatabaseName("hospital");
-        dataSource.setUser("postgres_user");
-        dataSource.setPassword("HughL@urie");
-    }
+    private JdbcConnectionFactory() {    }
 
     @Override
     public Connection getConnection() {
         try {
-            return dataSource.getPooledConnection().getConnection();
+            return dataSource.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

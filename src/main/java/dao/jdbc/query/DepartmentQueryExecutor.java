@@ -4,6 +4,7 @@ import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.retrieve.DtoRetrieverFactory;
 import dao.jdbc.query.supply.DtoValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
+import dao.metadata.ColumnNameStyle;
 import dao.metadata.DepartmentTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Department;
@@ -13,10 +14,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
     private DepartmentTableInfo tableInfo;
+    private final List<String> selectingColumns;
+
     private DtoValueSupplier<DepartmentDTO> dtoValueSupplier;
     private DtoRetriever<DepartmentDTO> dtoRetriever;
 
@@ -27,12 +32,16 @@ public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
         dtoRetriever = dtoRetrieverFactory.getDepartmentDtoRetriever();
         dtoValueSupplier = valueSupplierFactory.getDepartmentDtoValueSupplier();
         tableInfo = tableInfoFactory.getDepartmentTableInfo();
+        selectingColumns = Arrays.asList(
+                tableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getNameColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindByNameQuery() {
-        return String.format("SELECT * FROM %s WHERE %s = ?;",
+        return String.format("SELECT %s FROM %s WHERE %s = ?;",
+                Queries.formatAliasedColumns(selectingColumns),
                 tableInfo.getTableName(),
-                tableInfo.getNameColumn());
+                tableInfo.getNameColumn(ColumnNameStyle.FULL));
     }
 
     public Optional<DepartmentDTO> queryFindByName(Connection connection, String name)
@@ -61,5 +70,10 @@ public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
     @Override
     protected DepartmentTableInfo getTableInfo() {
         return tableInfo;
+    }
+
+    @Override
+    protected List<String> getSelectingColumns() {
+        return selectingColumns;
     }
 }

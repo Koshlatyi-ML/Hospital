@@ -1,5 +1,6 @@
 package dao.jdbc.query.retrieve;
 
+import dao.metadata.ColumnNameStyle;
 import dao.metadata.DepartmentTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Department;
@@ -18,8 +19,8 @@ public class DepartmentDtoRetriever extends AbstractDtoRetriever<DepartmentDTO> 
     @Override
     public DepartmentDTO retrieve(ResultSet resultSet) throws SQLException{
         return new DepartmentDTO.Builder()
-                .setId(resultSet.getLong(tableInfo.getIdColumn()))
-                .setName(resultSet.getString(tableInfo.getNameColumn()))
+                .setId(resultSet.getLong(tableInfo.getIdColumn(ColumnNameStyle.FULL)))
+                .setName(resultSet.getString(tableInfo.getNameColumn(ColumnNameStyle.FULL)))
                 .build();
     }
 }

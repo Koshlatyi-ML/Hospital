@@ -1,5 +1,6 @@
 package dao.jdbc.query.retrieve;
 
+import dao.metadata.ColumnNameStyle;
 import dao.metadata.PatientTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.Patient;
@@ -18,13 +19,20 @@ public class PatientDtoRetriever extends AbstractDtoRetriever<PatientDTO> {
     @Override
     protected PatientDTO retrieve(ResultSet resultSet) throws SQLException {
         return new PatientDTO.Builder()
-                .setId(resultSet.getLong(tableInfo.getIdColumn()))
-                .setName(resultSet.getString(tableInfo.getNameColumn()))
-                .setSurname(resultSet.getString(tableInfo.getSurnameColumn()))
-                .setDoctorId(resultSet.getLong(tableInfo.getDoctorIdColumn()))
-                .setCompliants(resultSet.getString(tableInfo.getComplaintsColumn()))
-                .setDiagnosis(resultSet.getString(tableInfo.getDiagnosisColumn()))
-                .setState(PatientDTO.State.valueOf(resultSet.getString(tableInfo.getStateColumn())))
+                .setId(resultSet.getLong(tableInfo
+                        .getIdColumn(ColumnNameStyle.FULL)))
+                .setName(resultSet.getString(tableInfo
+                        .getNameColumn(ColumnNameStyle.FULL)))
+                .setSurname(resultSet.getString(tableInfo
+                        .getSurnameColumn(ColumnNameStyle.FULL)))
+                .setDoctorId(resultSet.getLong(tableInfo
+                        .getDoctorIdColumn(ColumnNameStyle.FULL)))
+                .setCompliants(resultSet.getString(tableInfo
+                        .getComplaintsColumn(ColumnNameStyle.FULL)))
+                .setDiagnosis(resultSet.getString(tableInfo
+                        .getDiagnosisColumn(ColumnNameStyle.FULL)))
+                .setState(resultSet.getString(tableInfo
+                        .getStateColumn(ColumnNameStyle.FULL)))
                 .build();
     }
 }

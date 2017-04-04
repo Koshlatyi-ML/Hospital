@@ -1,6 +1,5 @@
 package dao.jdbc.query;
 
-import dao.TherapyDAO;
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.retrieve.DtoRetrieverFactory;
 import dao.jdbc.query.supply.DtoValueSupplier;
@@ -11,6 +10,7 @@ import domain.dto.TherapyDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
@@ -18,6 +18,7 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     private PatientTableInfo patientTableInfo;
     private DoctorTableInfo doctorTableInfo;
     private MedicTableInfo medicTableInfo;
+    private final List<String> selectingColumns;
     private DtoValueSupplier<TherapyDTO> dtoValueSupplier;
     private DtoRetriever<TherapyDTO> dtoRetriever;
 
@@ -31,47 +32,50 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
         medicTableInfo = tableInfoFactory.getMedicTableInfo();
         dtoValueSupplier = valueSupplierFactory.getTherapyDtoValueSupplier();
         dtoRetriever = dtoRetrieverFactory.getTherapyEntityetriever();
-    }
 
-    private List<String> getSeekableColumns() {
-        List<String> seekableColumns = new ArrayList<>(tableInfo.getColumns());
-        seekableColumns.addAll(patientTableInfo.getColumns());
-        return seekableColumns;
+        selectingColumns = Arrays.asList(tableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getNameColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getDescriptionColumn(ColumnNameStyle.FULL),
+                tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL),
+                tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL),
+                tableInfo.getPatientIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getPerformerIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getSelectAllFromTherapies() {
         return String.format("SELECT %s FROM %s",
-                Queries.formatColumnNames(getSeekableColumns()),
+                Queries.formatAliasedColumns(selectingColumns),
                 tableInfo.getTableName());
     }
 
     private String getInnerJoinPatients() {
         return String.format(" INNER JOIN %s ON %s = %s ",
                 patientTableInfo.getTableName(),
-                tableInfo.getPatientIdColumn(),
-                patientTableInfo.getIdColumn());
+                tableInfo.getPatientIdColumn(ColumnNameStyle.FULL),
+                patientTableInfo.getIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getInnerJoinDoctors() {
         return String.format(" INNER JOIN %s ON %s = %s ",
                 doctorTableInfo.getTableName(),
-                tableInfo.getPerformerIdColumn(),
-                doctorTableInfo.getIdColumn());
+                tableInfo.getPerformerIdColumn(ColumnNameStyle.FULL),
+                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getInnerJoinMedics() {
         return String.format(" INNER JOIN %s ON %s = %s ",
                 medicTableInfo.getTableName(),
-                tableInfo.getPerformerIdColumn(),
-                medicTableInfo.getIdColumn());
+                tableInfo.getPerformerIdColumn(ColumnNameStyle.FULL),
+                medicTableInfo.getIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindByPatientIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
                         getInnerJoinPatients() +
                         "WHERE %s = ? AND %s = ?;",
-                patientTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn());
+                patientTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindCurrentByPatientIdAndTypeQuery() {
@@ -79,10 +83,10 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinPatients() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NULL AND %s < now();",
-                patientTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn(),
-                tableInfo.getCompleteDateColumn(),
-                tableInfo.getAppointmentDateColumn());
+                patientTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL),
+                tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindFinishedByPatientIdAndTypeQuery() {
@@ -90,9 +94,9 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinPatients() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NOT NULL;",
-                patientTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn(),
-                tableInfo.getCompleteDateColumn());
+                patientTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindFutureByPatientIdAndTypeQuery() {
@@ -100,9 +104,9 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinPatients() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s > now();",
-                patientTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn(),
-                tableInfo.getAppointmentDateColumn());
+                patientTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindByDoctorIdAndTypeQuery() {
@@ -110,8 +114,8 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinPatients() +
                         getInnerJoinDoctors() +
                         "WHERE %s = ? AND %s = ?;",
-                doctorTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn());
+                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindCurrentByDoctorIdAndTypeQuery() {
@@ -120,10 +124,10 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinDoctors() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NULL AND %s < now();",
-                doctorTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn(),
-                tableInfo.getCompleteDateColumn(),
-                tableInfo.getAppointmentDateColumn());
+                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL),
+                tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindFinishedByDoctorIdAndTypeQuery() {
@@ -132,9 +136,9 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinDoctors() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NOT NULL;",
-                doctorTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn(),
-                tableInfo.getCompleteDateColumn());
+                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindFutureByDoctorIdAndTypeQuery() {
@@ -143,9 +147,9 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinDoctors() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s > now();",
-                doctorTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn(),
-                tableInfo.getAppointmentDateColumn());
+                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindByMedicIdAndTypeQuery() {
@@ -153,8 +157,8 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinPatients() +
                         getInnerJoinMedics() +
                         "WHERE %s = ? AND %s = ?;",
-                medicTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn());
+                medicTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindCurrentByMedicIdAndTypeQuery() {
@@ -163,10 +167,10 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinMedics() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NULL AND %s < now();",
-                medicTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn(),
-                tableInfo.getCompleteDateColumn(),
-                tableInfo.getAppointmentDateColumn());
+                medicTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL),
+                tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindFinishedByMedicIdAndTypeQuery() {
@@ -175,9 +179,9 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinMedics() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s IS NOT NULL;",
-                medicTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn(),
-                tableInfo.getCompleteDateColumn());
+                medicTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindFutureByMedicIdAndTypeQuery() {
@@ -186,9 +190,9 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                         getInnerJoinMedics() +
                         "WHERE %s = ? AND %s = ? " +
                         "AND %s > now();",
-                medicTableInfo.getIdColumn(),
-                tableInfo.getTypeColumn(),
-                tableInfo.getAppointmentDateColumn());
+                medicTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getTypeColumn(ColumnNameStyle.FULL),
+                tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL));
     }
 
     private List<TherapyDTO> queryFindByIdAndType(
@@ -301,5 +305,10 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     @Override
     protected TherapyTableInfo getTableInfo() {
         return tableInfo;
+    }
+
+    @Override
+    protected List<String> getSelectingColumns() {
+        return selectingColumns;
     }
 }

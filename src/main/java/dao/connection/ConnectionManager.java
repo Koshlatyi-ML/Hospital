@@ -1,27 +1,19 @@
-package dao.connection.jdbc;
+package dao.connection;
 
-import dao.connection.ConnectionFactory;
+import dao.connection.exception.IllegalTransactionStateException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 import java.util.Optional;
 
 public class ConnectionManager {
     private ConnectionFactory connectionFactory;
     private ThreadLocal<Connection> connectionThreadLocal;
-    private ThreadLocal<Savepoint> savepointThreadLocal;
+    private boolean isTransactional;
 
-    private static final ConnectionManager INSTANCE = new ConnectionManager();
-
-    private ConnectionManager() {
-        connectionFactory = ConnectionFactory.getInstance();
-        connectionThreadLocal = new ThreadLocal<>();
-        savepointThreadLocal = new ThreadLocal<>();
-    }
-
-    public static ConnectionManager getInstance() {
-        return INSTANCE;
+    ConnectionManager(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+        this.connectionThreadLocal = new ThreadLocal<>();
     }
 
     public Connection getConnection() {
@@ -34,56 +26,61 @@ public class ConnectionManager {
     }
 
     public void beginTransaction(int isolationLevel) {
+        if (isTransactional) {
+            throw new IllegalTransactionStateException();
+        }
+
         Connection connection = connectionFactory.getConnection();
         try {
             connection.setAutoCommit(false);
             connection.setTransactionIsolation(isolationLevel);
-            savepointThreadLocal.set(connection.setSavepoint("init"));
-        } catch (SQLException onSetAutocommitFalse) {
+        } catch (SQLException e) {
             try {
                 connection.close();
             } catch (SQLException onClose) {
                 throw new RuntimeException(onClose);
             }
-            throw new RuntimeException(onSetAutocommitFalse);
+            throw new RuntimeException(e);
         }
         connectionThreadLocal.set(connection);
+        isTransactional = true;
     }
 
     public void finishTransaction() {
+        if (!isTransactional) {
+            throw new IllegalTransactionStateException();
+        }
+
+        isTransactional = false;
         try (Connection connection = connectionThreadLocal.get()) {
             connectionThreadLocal.set(null);
             try {
                 connection.commit();
             } catch (SQLException onCommit) {
-                connection.rollback(savepointThreadLocal.get());
+                connection.rollback();
             }
         } catch (SQLException onRollbackOrClose) {
             throw new RuntimeException(onRollbackOrClose);
         }
     }
 
-    public void setSavepoint() {
-        Connection connection = connectionThreadLocal.get();
-        try {
-            savepointThreadLocal.set(connection.setSavepoint("setted"));
-        } catch (SQLException e) {
-            rollbackAndClose(connection);
-            throw new RuntimeException(e);
+    public void rollbackTransaction() {
+        if (!isTransactional) {
+            throw new IllegalTransactionStateException();
         }
-    }
 
-    public void rollbackAndClose(Connection connection) {
+        Connection connection = connectionThreadLocal.get();
         connectionThreadLocal.set(null);
+
+        isTransactional = false;
         try (Connection localConnection = connection) {
-            localConnection.rollback(savepointThreadLocal.get());
-            localConnection.commit();
+            localConnection.rollback();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public boolean isTransactional() {
-        return Optional.ofNullable(connectionThreadLocal.get()).isPresent();
+        return isTransactional;
     }
 }

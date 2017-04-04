@@ -19,6 +19,5 @@ public abstract class DaoManager {
     public abstract DaoFactory getDaoFactory();
     public abstract void beginTransaction();
     public abstract void beginTransaction(int isolationLevel);
-    public abstract void setSavepoint();
     public abstract void finishTransaction();
 }

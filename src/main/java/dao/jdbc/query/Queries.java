@@ -21,4 +21,11 @@ class Queries {
                 .map(c -> c += "=?")
                 .collect(Collectors.joining(", "));
     }
+
+
+    static String formatAliasedColumns(List<String> strings) {
+        return strings.stream()
+                .map(s -> s += " AS \"" + s + "\"")
+                .collect(Collectors.joining(","));
+    }
 }

@@ -1,5 +1,6 @@
 package dao.jdbc.query.retrieve;
 
+import dao.metadata.ColumnNameStyle;
 import dao.metadata.StuffTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.dto.DoctorDTO;
@@ -17,10 +18,14 @@ public class DoctorDtoRetriever extends AbstractDtoRetriever<DoctorDTO> {
     @Override
     protected DoctorDTO retrieve(ResultSet resultSet) throws SQLException {
         return new DoctorDTO.Builder()
-                .setId(resultSet.getLong(stuffTableInfo.getIdColumn()))
-                .setName(resultSet.getString(stuffTableInfo.getNameColumn()))
-                .setSurname(resultSet.getString(stuffTableInfo.getSurnameColumn()))
-                .setDepartmentId(resultSet.getLong(stuffTableInfo.getDepartmentIdColumn()))
+                .setId(resultSet.getLong(stuffTableInfo
+                        .getIdColumn(ColumnNameStyle.FULL)))
+                .setName(resultSet.getString(stuffTableInfo
+                        .getNameColumn(ColumnNameStyle.FULL)))
+                .setSurname(resultSet.getString(stuffTableInfo
+                        .getSurnameColumn(ColumnNameStyle.FULL)))
+                .setDepartmentId(resultSet.getLong(stuffTableInfo
+                        .getDepartmentIdColumn(ColumnNameStyle.FULL)))
                 .build();
     }
 }

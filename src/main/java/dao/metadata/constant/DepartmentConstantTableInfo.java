@@ -1,13 +1,13 @@
 package dao.metadata.constant;
 
+import dao.metadata.ColumnNameStyle;
 import dao.metadata.DepartmentTableInfo;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class DepartmentConstantTableInfo extends IdHolderConstantTableInfo
-        implements DepartmentTableInfo {
+public class DepartmentConstantTableInfo implements DepartmentTableInfo {
 
     private static final String TABLE_NAME = "departments";
     private static final String ID_COLUMN = "id";
@@ -21,17 +21,21 @@ public class DepartmentConstantTableInfo extends IdHolderConstantTableInfo
     }
 
     @Override
-    public String getIdColumn() {
-        return ID_COLUMN;
+    public String getIdColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? ID_COLUMN
+                : TABLE_NAME + "." + ID_COLUMN;
     }
 
     @Override
-    public String getNameColumn() {
-        return NAME_COLUMN;
+    public String getNameColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? NAME_COLUMN
+                : TABLE_NAME + "." + NAME_COLUMN;
     }
 
     @Override
-    public List<String> getColumns() {
+    public List<String> getNonGeneratingColumns() {
         return Collections.singletonList(NAME_COLUMN);
     }
 }

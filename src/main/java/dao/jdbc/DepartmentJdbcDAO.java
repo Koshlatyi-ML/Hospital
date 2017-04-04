@@ -3,16 +3,14 @@ package dao.jdbc;
 import dao.DaoFactory;
 import dao.DaoManager;
 import dao.DepartmentDAO;
-import dao.connection.jdbc.ConnectionManager;
+import dao.connection.ConnectionManager;
 import dao.jdbc.query.DepartmentQueryExecutor;
 import dao.jdbc.query.QueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
-import domain.Department;
 import domain.dto.DepartmentDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements DepartmentDAO {
@@ -36,7 +34,7 @@ public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements Dep
             try {
                 departmentOptional = queryExecutor.queryFindByName(connection, name);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -77,6 +75,14 @@ public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements Dep
                 .setId(91)
                 .setName("фдфдфдфдф")
                 .build();
+
+//        departmentDao.findByName("Дядько").ifPresent(System.out::println);
+//        departmentDao.findByName("Хыдыш").ifPresent(System.out::println);
+
+        System.out.println();
+        System.out.println(departmentDao.find(93).toString());
+        System.out.println();
+        departmentDao.findAll().forEach(System.out::println);
 
         //        Department newDep2 = new Department.Builder()
 //                .setName("ddd")

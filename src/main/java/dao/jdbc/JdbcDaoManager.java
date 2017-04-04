@@ -2,7 +2,7 @@ package dao.jdbc;
 
 import dao.DaoFactory;
 import dao.DaoManager;
-import dao.connection.jdbc.ConnectionManager;
+import dao.connection.ConnectionManager;
 
 import java.sql.Connection;
 
@@ -12,7 +12,7 @@ public class JdbcDaoManager extends DaoManager {
 
     public JdbcDaoManager() {
         daoFactory = DaoFactory.getInstance();
-        connectionManager = ConnectionManager.getInstance();
+//        connectionManager = ConnectionManager.getInstance();
     }
 
     @Override
@@ -28,11 +28,6 @@ public class JdbcDaoManager extends DaoManager {
     @Override
     public void beginTransaction(int isolationLevel) {
         connectionManager.beginTransaction(isolationLevel);
-    }
-
-    @Override
-    public void setSavepoint() {
-        connectionManager.setSavepoint();
     }
 
     @Override

@@ -1,12 +1,12 @@
 package dao.metadata.constant;
 
+import dao.metadata.ColumnNameStyle;
 import dao.metadata.TherapyTableInfo;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class TherapyConstantTableInfo extends IdHolderConstantTableInfo
-        implements TherapyTableInfo {
+public class TherapyConstantTableInfo implements TherapyTableInfo {
 
     private static final String TABLE_NAME = "therapies";
     private static final String ID_COLUMN = "id";
@@ -24,47 +24,63 @@ public class TherapyConstantTableInfo extends IdHolderConstantTableInfo
     }
 
     @Override
-    public String getIdColumn() {
-        return ID_COLUMN;
+    public String getIdColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? ID_COLUMN
+                : TABLE_NAME + "." + ID_COLUMN;
     }
 
     @Override
-    public String getNameColumn() {
-        return NAME_COLUMN;
+    public String getNameColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? NAME_COLUMN
+                : TABLE_NAME + "." + NAME_COLUMN;
     }
 
     @Override
-    public String getTypeColumn() {
-        return TYPE_COLUMN;
+    public String getTypeColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? TYPE_COLUMN
+                : TABLE_NAME + "." + TYPE_COLUMN;
     }
 
     @Override
-    public String getDescriptionColumn() {
-        return DESCRIPTION_COLUMN;
+    public String getDescriptionColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? DESCRIPTION_COLUMN
+                : TABLE_NAME + "." + DESCRIPTION_COLUMN;
     }
 
     @Override
-    public String getAppointmentDateColumn() {
-        return APPOINTMENT_DATE_COLUMN;
+    public String getAppointmentDateColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? APPOINTMENT_DATE_COLUMN
+                : TABLE_NAME + "." + APPOINTMENT_DATE_COLUMN;
     }
 
     @Override
-    public String getCompleteDateColumn() {
-        return COMPLETE_DATE_COLUMN;
+    public String getCompleteDateColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? COMPLETE_DATE_COLUMN
+                : TABLE_NAME + "." + COMPLETE_DATE_COLUMN;
     }
 
     @Override
-    public String getPatientIdColumn() {
-        return PATIENT_ID_COLUMN;
+    public String getPatientIdColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? PATIENT_ID_COLUMN
+                : TABLE_NAME + "." + PATIENT_ID_COLUMN;
     }
 
     @Override
-    public String getPerformerIdColumn() {
-        return PERFORMER_ID_COLUMN;
+    public String getPerformerIdColumn(ColumnNameStyle style) {
+        return style == ColumnNameStyle.SHORT
+                ? PERFORMER_ID_COLUMN
+                : TABLE_NAME + "." + PERFORMER_ID_COLUMN;
     }
 
     @Override
-    public List<String> getColumns() {
+    public List<String> getNonGeneratingColumns() {
         return Arrays.asList(NAME_COLUMN, TYPE_COLUMN,
                 DESCRIPTION_COLUMN, APPOINTMENT_DATE_COLUMN,
                 COMPLETE_DATE_COLUMN, PATIENT_ID_COLUMN,

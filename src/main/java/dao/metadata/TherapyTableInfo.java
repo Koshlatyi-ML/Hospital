@@ -1,12 +1,12 @@
 package dao.metadata;
 
 public interface TherapyTableInfo extends PlainTableInfo {
-    String getNameColumn();
-    String getTypeColumn();
-    String getDescriptionColumn();
-    String getAppointmentDateColumn();
-    String getCompleteDateColumn();
-    String getPatientIdColumn();
-    String getPerformerIdColumn();
+    String getNameColumn(ColumnNameStyle columnNameStyle);
+    String getTypeColumn(ColumnNameStyle columnNameStyle);
+    String getDescriptionColumn(ColumnNameStyle columnNameStyle);
+    String getAppointmentDateColumn(ColumnNameStyle columnNameStyle);
+    String getCompleteDateColumn(ColumnNameStyle columnNameStyle);
+    String getPatientIdColumn(ColumnNameStyle columnNameStyle);
+    String getPerformerIdColumn(ColumnNameStyle columnNameStyle);
 
 }

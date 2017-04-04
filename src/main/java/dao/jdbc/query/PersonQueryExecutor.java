@@ -1,7 +1,7 @@
 package dao.jdbc.query;
 
+import dao.metadata.ColumnNameStyle;
 import dao.metadata.PersonTableInfo;
-import domain.Person;
 import domain.dto.AbstractPersonDTO;
 
 import java.sql.Connection;
@@ -13,18 +13,18 @@ import java.util.List;
 public abstract class PersonQueryExecutor<T extends AbstractPersonDTO> extends QueryExecutor<T> {
 
     String getFindByFullNameQuery() {
-        return String.format("SELECT * FROM %s WHERE %s LIKE %%?%% OR %s LIKE %%?%%;",
+        return String.format("SELECT %s FROM %s WHERE LOWER(%s || %s) LIKE LOWER(?);",
+                Queries.formatAliasedColumns(getSelectingColumns()),
                 getTableInfo().getTableName(),
-                getTableInfo().getNameColumn(),
-                getTableInfo().getSurnameColumn());
+                getTableInfo().getNameColumn(ColumnNameStyle.FULL),
+                getTableInfo().getSurnameColumn(ColumnNameStyle.FULL));
     }
 
-    public List<T> queryFindByFullName(Connection connection, String name, String surname)
+    public List<T> queryFindByFullName(Connection connection, String fullName)
             throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getFindByFullNameQuery())) {
-            statement.setString(1, name);
-            statement.setString(2, surname);
+            statement.setString(1, "%" + fullName + "%");
             ResultSet resultSet = statement.executeQuery();
             return getDtoRetriever().retrieveDTOList(resultSet);
         }

@@ -1,7 +1,9 @@
 package dao.jdbc;
 
+import dao.DaoFactory;
+import dao.DaoManager;
 import dao.PatientDAO;
-import dao.connection.jdbc.ConnectionManager;
+import dao.connection.ConnectionManager;
 import dao.jdbc.query.PatientQueryExecutor;
 import dao.jdbc.query.PersonQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
@@ -30,7 +32,7 @@ public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements Patient
             try {
                 return queryExecutor.queryFindByDepartmentId(connection, id);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -49,7 +51,7 @@ public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements Patient
             try {
                 return queryExecutor.queryFindByDoctorId(connection, id);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -68,7 +70,7 @@ public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements Patient
             try {
                 return queryExecutor.queryFindByState(connection, state);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
@@ -83,5 +85,26 @@ public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements Patient
     @Override
     protected PersonQueryExecutor<PatientDTO> getQueryExecutor() {
         return queryExecutor;
+    }
+
+    public static void main(String[] args) {
+        DaoManager daoManager = DaoManager.getInstance();
+        DaoFactory daoFactory = daoManager.getDaoFactory();
+        PatientDAO patientDAO = daoFactory.getPatientDao();
+
+        PatientDTO dto = new PatientDTO.Builder()
+                .setName("Kolya")
+                .setSurname("Koshlatyi")
+                .setDoctorId(44)
+                .setCompliants("Sore throat")
+                .setDiagnosis("Volchanka")
+                .setState("ADDMITTED")
+                .build();
+        patientDAO.create(dto);
+
+//        dto.setDiagnosis("Brain cancer");
+//        patientDAO.update(dto);
+//
+//        patientDAO.delete(dto);
     }
 }

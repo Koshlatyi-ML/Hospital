@@ -2,7 +2,6 @@ package dao.jdbc;
 
 import dao.PersonDAO;
 import dao.jdbc.query.PersonQueryExecutor;
-import domain.Person;
 import domain.dto.AbstractPersonDTO;
 
 import java.sql.Connection;
@@ -13,20 +12,20 @@ public abstract class PersonJdbcDAO<E extends AbstractPersonDTO> extends CrudJdb
         implements PersonDAO<E> {
 
     @Override
-    public List<E> findByFullName(String name, String surname) {
+    public List<E> findByFullName(String fullName) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
                 return getQueryExecutor()
-                        .queryFindByFullName(connection, name, surname);
+                        .queryFindByFullName(connection, fullName);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
             try (Connection localConnection = connectionManager.getConnection()) {
                 return getQueryExecutor()
-                        .queryFindByFullName(localConnection, name, surname);
+                        .queryFindByFullName(localConnection, fullName);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

@@ -1,6 +1,5 @@
 package dao.metadata;
 
-import dao.metadata.annotation.AnnotTableInfoFactory;
 import dao.metadata.constant.ConstantTableInfoFactory;
 import util.load.Implementation;
 import util.load.ImplementationLoader;

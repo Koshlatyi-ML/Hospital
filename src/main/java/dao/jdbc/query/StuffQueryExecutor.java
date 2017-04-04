@@ -1,6 +1,7 @@
 package dao.jdbc.query;
 
 import dao.jdbc.query.supply.StuffDtoValueSupplier;
+import dao.metadata.ColumnNameStyle;
 import dao.metadata.StuffTableInfo;
 import domain.dto.AbstractStuffDTO;
 
@@ -13,24 +14,24 @@ public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends Per
     private String getInsertStuffQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
                 getTableInfo().getTableName(),
-                Queries.formatColumnNames(getTableInfo().getColumns()),
-                Queries.formatPlaceholders(getTableInfo().getColumns().size()));
+                Queries.formatColumnNames(getTableInfo().getNonGeneratingColumns()),
+                Queries.formatPlaceholders(getTableInfo().getNonGeneratingColumns().size()));
     }
 
     private String getUpdateStuffQuery() {
         return String.format("UPDATE %s SET %s WHERE %s=?;",
                 getTableInfo().getTableName(),
-                Queries.formatColumnPlaceholders(getTableInfo().getColumns()),
-                getTableInfo().getIdColumn());
+                Queries.formatColumnPlaceholders(getTableInfo().getNonGeneratingColumns()),
+                getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
     }
 
     private String getDeleteStuffQuery() {
         return String.format("DELETE FROM %s WHERE %s = ?;",
                 getTableInfo().getTableName(),
-                getTableInfo().getIdColumn());
+                getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
     }
 
-    abstract String getFindByDepartmentIdQuery(); //todo
+    abstract String getFindByDepartmentIdQuery();
 
     void queryInsertStuff(Connection connection, T dto) throws SQLException {
         try (PreparedStatement statement =

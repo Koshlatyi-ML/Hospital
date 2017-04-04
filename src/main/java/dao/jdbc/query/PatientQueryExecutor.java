@@ -4,10 +4,7 @@ import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.retrieve.DtoRetrieverFactory;
 import dao.jdbc.query.supply.DtoValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
-import dao.metadata.DoctorTableInfo;
-import dao.metadata.PatientTableInfo;
-import dao.metadata.StuffTableInfo;
-import dao.metadata.TableInfoFactory;
+import dao.metadata.*;
 import domain.Patient;
 import domain.dto.PatientDTO;
 
@@ -15,12 +12,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
     private PatientTableInfo tableInfo;
     private StuffTableInfo stuffTableInfo;
     private DoctorTableInfo doctorTableInfo;
+    private final List<String> selectingColumns;
     private DtoValueSupplier<PatientDTO> dtoValueSupplier;
     private DtoRetriever<PatientDTO> dtoRetriever;
 
@@ -33,6 +32,14 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
         doctorTableInfo = tableInfoFactory.getDoctorTableInfo();
         dtoValueSupplier = valueSupplierFactory.getPatientDtoValueSupplier();
         dtoRetriever = dtoRetrieverFactory.getPatientDtoRetriever();
+
+        selectingColumns = Arrays.asList(tableInfo.getIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getNameColumn(ColumnNameStyle.FULL),
+                tableInfo.getSurnameColumn(ColumnNameStyle.FULL),
+                tableInfo.getDoctorIdColumn(ColumnNameStyle.FULL),
+                tableInfo.getComplaintsColumn(ColumnNameStyle.FULL),
+                tableInfo.getDiagnosisColumn(ColumnNameStyle.FULL),
+                tableInfo.getStateColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindByDepartmentIdQuery() {
@@ -40,27 +47,29 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
                         "INNER JOIN %s ON %s = %s " +
                         "INNER JOIN %s ON %s = %s " +
                         "WHERE %s = ?;",
-                Queries.formatColumnNames(tableInfo.getColumns()),
+                Queries.formatAliasedColumns(selectingColumns),
                 tableInfo.getTableName(),
                 doctorTableInfo.getTableName(),
-                tableInfo.getDoctorIdColumn(),
-                doctorTableInfo.getIdColumn(),
+                tableInfo.getDoctorIdColumn(ColumnNameStyle.FULL),
+                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 stuffTableInfo.getTableName(),
-                doctorTableInfo.getIdColumn(),
-                stuffTableInfo.getIdColumn(),
-                stuffTableInfo.getDepartmentIdColumn());
+                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                stuffTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                stuffTableInfo.getDepartmentIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindByDoctorIdQuery() {
-        return String.format("SELECT * FROM %s WHERE %s = ?;",
+        return String.format("SELECT %s FROM %s WHERE %s = ?;",
+                Queries.formatAliasedColumns(selectingColumns),
                 tableInfo.getTableName(),
-                tableInfo.getDoctorIdColumn());
+                tableInfo.getDoctorIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindByStateQuery() {
-        return String.format("SELECT * FROM %s WHERE %s = ?;",
+        return String.format("SELECT %s FROM %s WHERE %s = ?;",
+                Queries.formatAliasedColumns(selectingColumns),
                 tableInfo.getTableName(),
-                tableInfo.getStateColumn());
+                tableInfo.getStateColumn(ColumnNameStyle.FULL));
     }
 
     public List<PatientDTO> queryFindByDepartmentId(Connection connection, long id)
@@ -110,5 +119,10 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
     @Override
     protected DtoValueSupplier<PatientDTO> getDtoValueSupplier() {
         return dtoValueSupplier;
+    }
+
+    @Override
+    protected List<String> getSelectingColumns() {
+        return selectingColumns;
     }
 }

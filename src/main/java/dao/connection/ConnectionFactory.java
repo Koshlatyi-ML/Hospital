@@ -5,6 +5,8 @@ import util.load.Implementation;
 import util.load.ImplementationLoader;
 
 import java.sql.Connection;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 
 @Implementation(JdbcConnectionFactory.class)
 public abstract class ConnectionFactory {
@@ -15,7 +17,7 @@ public abstract class ConnectionFactory {
                 .loadInstance(ConnectionFactory.class);
     }
 
-    public static ConnectionFactory getInstance() {
+    static ConnectionFactory getInstance() {;
         return Holder.INSTANCE;
     }
 

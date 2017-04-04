@@ -1,7 +1,7 @@
 package dao.jdbc;
 
 import dao.*;
-import dao.connection.jdbc.ConnectionManager;
+import dao.connection.ConnectionManager;
 import dao.jdbc.query.QueryExecutorFactory;
 
 public class JdbcDaoFactory extends DaoFactory {
@@ -15,7 +15,7 @@ public class JdbcDaoFactory extends DaoFactory {
 
     private JdbcDaoFactory() {
         QueryExecutorFactory queryExecutorFactory = QueryExecutorFactory.getInstance();
-        connectionManager = ConnectionManager.getInstance();
+//        connectionManager = ConnectionManager.getInstance();
         departmentDao = new DepartmentJdbcDAO(queryExecutorFactory, this, connectionManager);
         doctorDao = new DoctorJdbcDAO(queryExecutorFactory, this, connectionManager);
         medicDao = new MedicJdbcDAO(queryExecutorFactory, this, connectionManager);

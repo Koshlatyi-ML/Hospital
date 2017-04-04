@@ -14,8 +14,8 @@ public class TherapyDtoValueSupplier implements DtoValueSupplier<TherapyDTO> {
         statement.setString(1, dto.getName());
         statement.setString(2, dto.getType().toString());
         statement.setString(3, dto.getDescription());
-        statement.setTimestamp(4, Timestamp.from(dto.getAppointmentDateTime()));
-        statement.setTimestamp(5, Timestamp.from(dto.getCompleteDateTime()));
+        statement.setTimestamp(4, dto.getAppointmentDateTime());
+        statement.setTimestamp(5, dto.getCompleteDateTime());
         statement.setLong(6, dto.getPatientId());
         statement.setLong(7, dto.getPerformerId());
         return 7;

@@ -1,5 +1,5 @@
 package dao.metadata;
 
 public interface DepartmentTableInfo extends PlainTableInfo {
-    String getNameColumn();
+    String getNameColumn(ColumnNameStyle columnNameStyle);
 }

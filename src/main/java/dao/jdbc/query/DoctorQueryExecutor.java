@@ -1,21 +1,17 @@
 package dao.jdbc.query;
 
-import dao.DoctorDAO;
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.retrieve.DtoRetrieverFactory;
 import dao.jdbc.query.supply.StuffDtoValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
-import dao.metadata.DoctorTableInfo;
-import dao.metadata.PatientTableInfo;
-import dao.metadata.StuffTableInfo;
-import dao.metadata.TableInfoFactory;
-import domain.Doctor;
+import dao.metadata.*;
 import domain.dto.DoctorDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +19,7 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
     private StuffTableInfo stuffTableInfo;
     private DoctorTableInfo doctorTableInfo;
     private PatientTableInfo patientTableInfo;
+    private final List<String> selectingColumns;
     private StuffDtoValueSupplier<DoctorDTO> valueSupplier;
     private DtoRetriever<DoctorDTO> dtoRetriever;
 
@@ -35,27 +32,26 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
         patientTableInfo = tableInfoFactory.getPatientTableInfo();
         valueSupplier = valueSupplierFactory.getDoctorDtoValueSupplier();
         dtoRetriever = dtoRetrieverFactory.getDoctorDtoRetriever();
+
+        selectingColumns = Arrays.asList(stuffTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                stuffTableInfo.getNameColumn(ColumnNameStyle.FULL),
+                stuffTableInfo.getSurnameColumn(ColumnNameStyle.FULL),
+                stuffTableInfo.getDepartmentIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getStuffInnerJoin() {
         return String.format(" %s INNER JOIN %s ON %s = %s ",
                 stuffTableInfo.getTableName(),
                 doctorTableInfo.getTableName(),
-                stuffTableInfo.getIdColumn(),
-                doctorTableInfo.getIdColumn());
-    }
-
-    private List<String> getJoinedColumns() {
-        List<String> columns = stuffTableInfo.getColumns();
-        columns.addAll(doctorTableInfo.getColumns());
-        return columns;
+                stuffTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL));
     }
 
     @Override
     String getFindAllQuery() {
         return String.format("SELECT %s FROM" +
                         getStuffInnerJoin() + ";",
-                Queries.formatColumnNames(getJoinedColumns()));
+                Queries.formatAliasedColumns(selectingColumns));
     }
 
     @Override
@@ -63,25 +59,27 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
         return String.format("SELECT %s FROM" +
                         getStuffInnerJoin() +
                         "WHERE %s = ?;",
-                Queries.formatColumnNames(getJoinedColumns()),
-                stuffTableInfo.getIdColumn());
+                Queries.formatAliasedColumns(selectingColumns),
+                stuffTableInfo.getIdColumn(ColumnNameStyle.FULL));
     }
 
-
-    public String getFindByFullNameQuery() {
+    @Override
+    String getFindByFullNameQuery() {
         return String.format("SELECT %s FROM" +
                         getStuffInnerJoin() +
-                        "WHERE %s LIKE %%?%% OR %s LIKE %%?%%;",
-                Queries.formatColumnNames(getJoinedColumns()),
-                stuffTableInfo.getNameColumn(),
-                stuffTableInfo.getSurnameColumn());
+                        "WHERE LOWER(%s || %s) LIKE LOWER(?);",
+                Queries.formatAliasedColumns(selectingColumns),
+                stuffTableInfo.getNameColumn(ColumnNameStyle.FULL),
+                stuffTableInfo.getSurnameColumn(ColumnNameStyle.FULL));
     }
 
     @Override
     String getFindByDepartmentIdQuery() {
-        return String.format("SELECT FROM %s WHERE %s = ?;",
-                Queries.formatColumnNames(getJoinedColumns()),
-                stuffTableInfo.getDepartmentIdColumn());
+        return String.format("SELECT %s FROM" +
+                        getStuffInnerJoin() +
+                        "WHERE %s = ?;",
+                Queries.formatAliasedColumns(selectingColumns),
+                stuffTableInfo.getDepartmentIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindByPatientIdQuery() {
@@ -89,31 +87,31 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
                         getStuffInnerJoin() +
                         "INNER JOIN %s ON %s = %s " +
                         "WHERE %s = ?;",
-                Queries.formatColumnNames(getJoinedColumns()),
+                Queries.formatAliasedColumns(selectingColumns),
                 patientTableInfo.getTableName(),
-                stuffTableInfo.getIdColumn(),
-                patientTableInfo.getDoctorIdColumn(),
-                patientTableInfo.getIdColumn());
+                stuffTableInfo.getIdColumn(ColumnNameStyle.FULL),
+                patientTableInfo.getDoctorIdColumn(ColumnNameStyle.FULL),
+                patientTableInfo.getIdColumn(ColumnNameStyle.FULL));
     }
 
     String getInsertQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
                 doctorTableInfo.getTableName(),
-                Queries.formatColumnNames(doctorTableInfo.getColumns()),
-                Queries.formatPlaceholders(doctorTableInfo.getColumns().size()));
+                Queries.formatColumnNames(doctorTableInfo.getNonGeneratingColumns()),
+                Queries.formatPlaceholders(doctorTableInfo.getNonGeneratingColumns().size()));
     }
 
     String getUpdateQuery() {
         return String.format("UPDATE %s SET %s WHERE %s = ?;",
                 doctorTableInfo.getTableName(),
-                Queries.formatColumnPlaceholders(doctorTableInfo.getColumns()),
-                doctorTableInfo.getIdColumn());
+                Queries.formatColumnPlaceholders(doctorTableInfo.getNonGeneratingColumns()),
+                doctorTableInfo.getIdColumn(ColumnNameStyle.SHORT));
     }
 
     String getDeleteQuery() {
         return String.format("DELETE FROM %s WHERE %s = ?;",
                 doctorTableInfo.getTableName(),
-                doctorTableInfo.getIdColumn());
+                doctorTableInfo.getIdColumn(ColumnNameStyle.SHORT));
     }
 
     @Override
@@ -163,5 +161,10 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
     @Override
     protected StuffDtoValueSupplier<DoctorDTO> getDtoValueSupplier() {
         return valueSupplier;
+    }
+
+    @Override
+    protected List<String> getSelectingColumns() {
+        return selectingColumns;
     }
 }

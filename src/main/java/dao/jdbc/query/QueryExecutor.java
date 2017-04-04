@@ -2,6 +2,7 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.DtoValueSupplier;
+import dao.metadata.ColumnNameStyle;
 import dao.metadata.PlainTableInfo;
 import domain.dto.AbstractDTO;
 
@@ -11,35 +12,37 @@ import java.util.Optional;
 
 public abstract class QueryExecutor<E extends AbstractDTO> {
     String getFindAllQuery() {
-        return String.format("SELECT * FROM %s;",
+        return String.format("SELECT %s FROM %s;",
+                Queries.formatAliasedColumns(getSelectingColumns()),
                 getTableInfo().getTableName());
     }
 
     String getFindByIdQuery() {
-        return String.format("SELECT * FROM %s WHERE %s = ?;",
+        return String.format("SELECT %s FROM %s WHERE %s = ?;",
+                Queries.formatAliasedColumns(getSelectingColumns()),
                 getTableInfo().getTableName(),
-                getTableInfo().getIdColumn());
+                getTableInfo().getIdColumn(ColumnNameStyle.FULL));
     }
 
 
     String getInsertQuery() {
         return String.format("INSERT INTO %s %s VALUES %s;",
                 getTableInfo().getTableName(),
-                Queries.formatColumnNames(getTableInfo().getColumns()),
-                Queries.formatPlaceholders(getTableInfo().getColumns().size()));
+                Queries.formatColumnNames(getTableInfo().getNonGeneratingColumns()),
+                Queries.formatPlaceholders(getTableInfo().getNonGeneratingColumns().size()));
     }
 
     String getUpdateQuery() {
         return String.format("UPDATE %s SET %s WHERE %s = ?;",
                 getTableInfo().getTableName(),
-                Queries.formatColumnPlaceholders(getTableInfo().getColumns()),
-                getTableInfo().getIdColumn());
+                Queries.formatColumnPlaceholders(getTableInfo().getNonGeneratingColumns()),
+                getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
     }
 
     String getDeleteQuery() {
         return String.format("DELETE FROM %s WHERE %s = ?;",
                 getTableInfo().getTableName(),
-                getTableInfo().getIdColumn());
+                getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
     }
 
     public List<E> queryFindAll(Connection connection) throws SQLException {
@@ -98,4 +101,6 @@ public abstract class QueryExecutor<E extends AbstractDTO> {
     protected abstract DtoValueSupplier<E> getDtoValueSupplier();
 
     protected abstract PlainTableInfo getTableInfo();
+
+    protected abstract List<String> getSelectingColumns();
 }

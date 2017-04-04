@@ -2,7 +2,6 @@ package dao.jdbc;
 
 import dao.StuffDAO;
 import dao.jdbc.query.StuffQueryExecutor;
-import domain.Person;
 import domain.dto.AbstractStuffDTO;
 
 import java.sql.Connection;
@@ -28,7 +27,7 @@ public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdb
         try {
             getQueryExecutor().queryInsert(connection, entity);
         } catch (SQLException e) {
-            connectionManager.rollbackAndClose(connection);
+            connectionManager.rollbackTransaction();
             throw new RuntimeException(e);
         }
     }
@@ -51,7 +50,7 @@ public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdb
         try {
             getQueryExecutor().queryUpdate(connection, dto);
         } catch (SQLException e) {
-            connectionManager.rollbackAndClose(connection);
+            connectionManager.rollbackTransaction();
             throw new RuntimeException(e);
         }
     }
@@ -72,7 +71,7 @@ public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdb
         try {
             getQueryExecutor().queryDelete(connection, dto);
         } catch (SQLException e) {
-            connectionManager.rollbackAndClose(connection);
+            connectionManager.rollbackTransaction();
             throw new RuntimeException(e);
         }
     }
@@ -84,7 +83,7 @@ public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdb
             try {
                 return getQueryExecutor().queryFindByDepartmentId(connection, id);
             } catch (SQLException e) {
-                connectionManager.rollbackAndClose(connection);
+                connectionManager.rollbackTransaction();
                 throw new RuntimeException(e);
             }
         } else {
