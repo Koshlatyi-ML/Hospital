@@ -1,5 +1,7 @@
 package domain.dto;
 
+import java.util.Optional;
+
 public abstract class AbstractPersonDTO extends AbstractDTO {
     private String name;
     private String surname;
@@ -9,7 +11,8 @@ public abstract class AbstractPersonDTO extends AbstractDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = Optional.ofNullable(name)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     public String getSurname() {
@@ -17,7 +20,8 @@ public abstract class AbstractPersonDTO extends AbstractDTO {
     }
 
     public void setSurname(String surname) {
-        this.surname = surname;
+        this.surname = Optional.ofNullable(surname)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     public abstract static class Builder<T extends AbstractPersonDTO, B extends Builder>

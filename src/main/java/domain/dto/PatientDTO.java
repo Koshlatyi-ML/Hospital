@@ -1,6 +1,7 @@
 package domain.dto;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class PatientDTO extends AbstractPersonDTO {
     private long doctorId;
@@ -30,7 +31,8 @@ public class PatientDTO extends AbstractPersonDTO {
     }
 
     public void setComplaints(String complaints) {
-        this.complaints = complaints;
+        this.complaints = Optional.ofNullable(complaints)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     public String getDiagnosis() {
@@ -46,7 +48,9 @@ public class PatientDTO extends AbstractPersonDTO {
     }
 
     public void setState(State state) {
-        this.state = state.toString();
+        this.state = Optional.ofNullable(state)
+                .orElseThrow(IllegalArgumentException::new)
+                .toString();
     }
 
     public static class Builder extends AbstractPersonDTO.Builder<PatientDTO, Builder> {

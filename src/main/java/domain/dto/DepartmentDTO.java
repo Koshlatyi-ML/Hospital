@@ -1,6 +1,7 @@
 package domain.dto;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class DepartmentDTO extends AbstractDTO {
     private String name;
@@ -13,7 +14,8 @@ public class DepartmentDTO extends AbstractDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = Optional.ofNullable(name)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     public static class Builder
@@ -21,11 +23,6 @@ public class DepartmentDTO extends AbstractDTO {
 
         public Builder() {
             instance = new DepartmentDTO();
-        }
-
-        public Builder setId(long id) {
-            instance.setId(id);
-            return getSelf();
         }
 
         public Builder setName(String name) {

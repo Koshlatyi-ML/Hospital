@@ -2,6 +2,7 @@ package domain.dto;
 
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Optional;
 
 public class TherapyDTO extends AbstractDTO {
     private String title;
@@ -11,19 +12,21 @@ public class TherapyDTO extends AbstractDTO {
     private Timestamp completeDateTime;
     private long patientId;
     private long performerId;
+    private boolean isCompleted;
+
+    public enum Type {
+        PHARMACOTHERAPY,
+        PHYSIOTHERAPY,
+        SURGERY_OPERATION
+    }
 
     public String getTitle() {
         return title;
     }
 
-    public enum Type {
-        PHARMACOTHERAPY,
-        PHYSIOTHERAPY,
-        SURGERY_OPERATION;
-    }
-
     public void setTitle(String title) {
-        this.title = title;
+        this.title = Optional.ofNullable(title)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     public String getType() {
@@ -31,7 +34,9 @@ public class TherapyDTO extends AbstractDTO {
     }
 
     public void setType(Type type) {
-        this.type = type.toString();
+        this.type = Optional.ofNullable(type)
+                .orElseThrow(IllegalArgumentException::new)
+                .toString();
     }
 
     public String getDescription() {
@@ -39,7 +44,8 @@ public class TherapyDTO extends AbstractDTO {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = Optional.ofNullable(description)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     public Timestamp getAppointmentDateTime() {
@@ -47,7 +53,8 @@ public class TherapyDTO extends AbstractDTO {
     }
 
     public void setAppointmentDateTime(Timestamp appointmentDateTime) {
-        this.appointmentDateTime = appointmentDateTime;
+        this.appointmentDateTime = Optional.ofNullable(appointmentDateTime)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     public Timestamp getCompleteDateTime() {
@@ -55,7 +62,13 @@ public class TherapyDTO extends AbstractDTO {
     }
 
     public void setCompleteDateTime(Timestamp completeDateTime) {
-        this.completeDateTime = completeDateTime;
+        if (isCompleted) {
+            throw new IllegalStateException();
+        }
+
+        this.completeDateTime = Optional.ofNullable(completeDateTime)
+                .orElseThrow(IllegalArgumentException::new);
+        isCompleted = true;
     }
 
     public long getPatientId() {
@@ -77,7 +90,7 @@ public class TherapyDTO extends AbstractDTO {
 
     public static class Builder extends AbstractDTO.Builder<TherapyDTO, Builder> {
 
-        public Builder(){
+        public Builder() {
             instance = new TherapyDTO();
         }
 
@@ -140,7 +153,7 @@ public class TherapyDTO extends AbstractDTO {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getTitle(), getType(), getDescription(),
-                getAppointmentDateTime(),getCompleteDateTime(), getPatientId(),
+                getAppointmentDateTime(), getCompleteDateTime(), getPatientId(),
                 getPerformerId());
     }
 }
