@@ -6,84 +6,130 @@ import dao.metadata.TherapyTableInfo;
 import java.util.Arrays;
 import java.util.List;
 
-public class TherapyConstantTableInfo implements TherapyTableInfo {
+public class TherapyConstantTableInfo extends AbstractTableInfo implements TherapyTableInfo {
 
-    private static final String TABLE_NAME = "therapies";
-    private static final String ID_COLUMN = "id";
-    private static final String NAME_COLUMN = "name";
-    private static final String TYPE_COLUMN = "type";
-    private static final String DESCRIPTION_COLUMN = "description";
-    private static final String APPOINTMENT_DATE_COLUMN = "appointment_date";
-    private static final String COMPLETE_DATE_COLUMN = "complete_date";
-    private static final String PATIENT_ID_COLUMN = "patient_id";
-    private static final String PERFORMER_ID_COLUMN = "performer_id";
+    private String titleColumn;
+    private String typeColumn;
+    private String descriptionColumn;
+    private String appointmentDateColumn;
+    private String completeDateColumn;
+    private String patientIdColumn;
+    private String performerIdColumn;
+
+    TherapyConstantTableInfo() {}
 
     @Override
-    public String getTableName() {
-        return TABLE_NAME;
+    public String getTitleColumn(ColumnNameStyle style) {
+        return getColumn(titleColumn, style);
     }
 
-    @Override
-    public String getIdColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? ID_COLUMN
-                : TABLE_NAME + "." + ID_COLUMN;
-    }
-
-    @Override
-    public String getNameColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? NAME_COLUMN
-                : TABLE_NAME + "." + NAME_COLUMN;
+    private void setTitleColumn(String titleColumn) {
+        this.titleColumn = titleColumn;
     }
 
     @Override
     public String getTypeColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? TYPE_COLUMN
-                : TABLE_NAME + "." + TYPE_COLUMN;
+        return getColumn(typeColumn, style);
+    }
+
+    private void setTypeColumn(String typeColumn) {
+        this.typeColumn = typeColumn;
     }
 
     @Override
     public String getDescriptionColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? DESCRIPTION_COLUMN
-                : TABLE_NAME + "." + DESCRIPTION_COLUMN;
+        return getColumn(descriptionColumn, style);
+    }
+
+    private void setDescriptionColumn(String descriptionColumn) {
+        this.descriptionColumn = descriptionColumn;
     }
 
     @Override
     public String getAppointmentDateColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? APPOINTMENT_DATE_COLUMN
-                : TABLE_NAME + "." + APPOINTMENT_DATE_COLUMN;
+        return getColumn(appointmentDateColumn, style);
+    }
+
+    private void setAppointmentDateColumn(String appointmentDateColumn) {
+        this.appointmentDateColumn = appointmentDateColumn;
     }
 
     @Override
     public String getCompleteDateColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? COMPLETE_DATE_COLUMN
-                : TABLE_NAME + "." + COMPLETE_DATE_COLUMN;
+        return getColumn(completeDateColumn, style);
+    }
+
+    private void setCompleteDateColumn(String completeDateColumn) {
+        this.completeDateColumn = completeDateColumn;
     }
 
     @Override
     public String getPatientIdColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? PATIENT_ID_COLUMN
-                : TABLE_NAME + "." + PATIENT_ID_COLUMN;
+        return getColumn(patientIdColumn, style);
+    }
+
+    private void setPatientIdColumn(String patientIdColumn) {
+        this.patientIdColumn = patientIdColumn;
     }
 
     @Override
     public String getPerformerIdColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? PERFORMER_ID_COLUMN
-                : TABLE_NAME + "." + PERFORMER_ID_COLUMN;
+        return getColumn(performerIdColumn, style);
+    }
+
+    private void setPerformerIdColumn(String performerIdColumn) {
+        this.performerIdColumn = performerIdColumn;
     }
 
     @Override
     public List<String> getNonGeneratingColumns() {
-        return Arrays.asList(NAME_COLUMN, TYPE_COLUMN,
-                DESCRIPTION_COLUMN, APPOINTMENT_DATE_COLUMN,
-                COMPLETE_DATE_COLUMN, PATIENT_ID_COLUMN,
-                PERFORMER_ID_COLUMN);
+        return Arrays.asList(titleColumn, typeColumn,
+                descriptionColumn, appointmentDateColumn,
+                completeDateColumn, patientIdColumn,
+                performerIdColumn);
+    }
+
+    public static class Builder
+            extends AbstractTableInfo.Builder<TherapyConstantTableInfo, Builder> {
+
+        Builder setTitleColumn(String titleColumn) {
+            instance.setTitleColumn(titleColumn);
+            return getSelf();
+        }
+
+        Builder setTypeColumn(String typeColumn) {
+            instance.setTypeColumn(typeColumn);
+            return getSelf();
+        }
+
+        Builder setDescriptionColumn(String descriptionColumn) {
+            instance.setDescriptionColumn(descriptionColumn);
+            return getSelf();
+        }
+
+        Builder setAppointmentDateColumn(String appointmentDateColumn) {
+            instance.setAppointmentDateColumn(appointmentDateColumn);
+            return getSelf();
+        }
+
+        Builder setCompleteDateColumn(String completeDateColumn) {
+            instance.setCompleteDateColumn(completeDateColumn);
+            return getSelf();
+        }
+
+        Builder setPatientIdColumn(String patientIdColumn) {
+            instance.setPatientIdColumn(patientIdColumn);
+            return getSelf();
+        }
+
+        Builder setPerformerIdColumn(String performerIdColumn) {
+            instance.setPerformerIdColumn(performerIdColumn);
+            return getSelf();
+        }
+
+        @Override
+        public Builder getSelf() {
+            return this;
+        }
     }
 }

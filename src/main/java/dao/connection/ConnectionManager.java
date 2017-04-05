@@ -9,11 +9,12 @@ import java.util.Optional;
 public class ConnectionManager {
     private ConnectionFactory connectionFactory;
     private ThreadLocal<Connection> connectionThreadLocal;
-    private boolean isTransactional;
+    private ThreadLocal<Boolean> isTransactionalThreadLocal;
 
     ConnectionManager(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
         this.connectionThreadLocal = new ThreadLocal<>();
+        this.isTransactionalThreadLocal = new ThreadLocal<>();
     }
 
     public Connection getConnection() {
@@ -26,7 +27,7 @@ public class ConnectionManager {
     }
 
     public void beginTransaction(int isolationLevel) {
-        if (isTransactional) {
+        if (isTransactionalThreadLocal.get()) {
             throw new IllegalTransactionStateException();
         }
 
@@ -43,15 +44,15 @@ public class ConnectionManager {
             throw new RuntimeException(e);
         }
         connectionThreadLocal.set(connection);
-        isTransactional = true;
+        isTransactionalThreadLocal.set(true);
     }
 
     public void finishTransaction() {
-        if (!isTransactional) {
+        if (!isTransactionalThreadLocal.get()) {
             throw new IllegalTransactionStateException();
         }
 
-        isTransactional = false;
+        isTransactionalThreadLocal.set(false);
         try (Connection connection = connectionThreadLocal.get()) {
             connectionThreadLocal.set(null);
             try {
@@ -65,14 +66,14 @@ public class ConnectionManager {
     }
 
     public void rollbackTransaction() {
-        if (!isTransactional) {
+        if (!isTransactionalThreadLocal.get()) {
             throw new IllegalTransactionStateException();
         }
 
         Connection connection = connectionThreadLocal.get();
         connectionThreadLocal.set(null);
 
-        isTransactional = false;
+        isTransactionalThreadLocal.set(false);
         try (Connection localConnection = connection) {
             localConnection.rollback();
         } catch (SQLException e) {
@@ -81,6 +82,6 @@ public class ConnectionManager {
     }
 
     public boolean isTransactional() {
-        return isTransactional;
+        return isTransactionalThreadLocal.get();
     }
 }

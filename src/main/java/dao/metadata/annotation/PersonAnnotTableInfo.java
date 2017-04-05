@@ -13,7 +13,7 @@
 //    private String nameColumn;
 //    private String surnameColumn;
 //
-//    public String getNameColumn() {
+//    public String getTitleColumn() {
 //        return nameColumn;
 //    }
 //

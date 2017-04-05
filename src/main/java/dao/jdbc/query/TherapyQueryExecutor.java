@@ -9,7 +9,6 @@ import domain.Therapy;
 import domain.dto.TherapyDTO;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
         dtoRetriever = dtoRetrieverFactory.getTherapyEntityetriever();
 
         selectingColumns = Arrays.asList(tableInfo.getIdColumn(ColumnNameStyle.FULL),
-                tableInfo.getNameColumn(ColumnNameStyle.FULL),
+                tableInfo.getTitleColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getDescriptionColumn(ColumnNameStyle.FULL),
                 tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL),

@@ -23,7 +23,7 @@
 //
 //    private TherapyAnnotTableInfo() {}
 //
-//    public String getNameColumn() {
+//    public String getTitleColumn() {
 //        return nameColumn;
 //    }
 //

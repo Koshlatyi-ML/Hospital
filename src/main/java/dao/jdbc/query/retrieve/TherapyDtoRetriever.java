@@ -21,7 +21,7 @@ public class TherapyDtoRetriever extends AbstractDtoRetriever<TherapyDTO> {
                 .setId(resultSet
                         .getLong(tableInfo.getIdColumn(ColumnNameStyle.FULL)))
                 .setName(resultSet
-                        .getString(tableInfo.getNameColumn(ColumnNameStyle.FULL)))
+                        .getString(tableInfo.getTitleColumn(ColumnNameStyle.FULL)))
                 .setDescription(resultSet
                         .getString(tableInfo.getDescriptionColumn(ColumnNameStyle.FULL)))
                 .setType(TherapyDTO.Type.valueOf(

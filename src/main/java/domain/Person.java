@@ -20,7 +20,7 @@ public abstract class Person extends IdHolder {
         this.surname = surname;
     }
 
-    public abstract static class Builder<T extends Person, B extends Builder>
+    abstract static class Builder<T extends Person, B extends Builder>
             extends IdHolder.Builder<T, B> {
 
         public B setName(String name) {

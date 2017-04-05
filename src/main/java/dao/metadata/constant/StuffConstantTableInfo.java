@@ -6,53 +6,67 @@ import dao.metadata.StuffTableInfo;
 import java.util.Arrays;
 import java.util.List;
 
-public class StuffConstantTableInfo implements StuffTableInfo {
+public class StuffConstantTableInfo extends AbstractTableInfo implements StuffTableInfo {
+    private String nameColumn;
+    private String surnameColumn;
+    private String departmentIdColumn;
 
-    private static final String TABLE_NAME = "stuff";
-    private static final String ID_COLUMN = "id";
-    private static final String NAME_COLUMN = "name";
-    private static final String SURNAME_COLUMN = "surname";
-    private static final String DEPARTMENT_ID_COLUMN = "department_id";
-
-    StuffConstantTableInfo() {
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String getIdColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? ID_COLUMN
-                : TABLE_NAME + "." + ID_COLUMN;
-    }
+    StuffConstantTableInfo() {}
 
     @Override
     public String getNameColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? NAME_COLUMN
-                : TABLE_NAME + "." + NAME_COLUMN;
+        return getColumn(nameColumn, style);
+    }
+
+    private void setNameColumn(String nameColumn) {
+        this.nameColumn = nameColumn;
     }
 
     @Override
     public String getSurnameColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? SURNAME_COLUMN
-                : TABLE_NAME + "." + SURNAME_COLUMN;
+        return getColumn(surnameColumn, style);
+    }
+
+    private void setSurnameColumn(String surnameColumn) {
+        this.surnameColumn = surnameColumn;
     }
 
     @Override
     public String getDepartmentIdColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? DEPARTMENT_ID_COLUMN
-                : TABLE_NAME + "." + DEPARTMENT_ID_COLUMN;
+        return getColumn(departmentIdColumn, style);
+    }
+
+    private void setDepartmentIdColumn(String departmentIdColumn) {
+        this.departmentIdColumn = departmentIdColumn;
     }
 
     @Override
     public List<String> getNonGeneratingColumns() {
-        return Arrays.asList(NAME_COLUMN, SURNAME_COLUMN,
-                DEPARTMENT_ID_COLUMN);
+        return Arrays.asList(nameColumn, surnameColumn,
+                departmentIdColumn);
+    }
+
+    public static class Builder
+            extends AbstractTableInfo.Builder<StuffConstantTableInfo, Builder> {
+
+        Builder setNameColumn(String nameColumn) {
+            instance.setNameColumn(nameColumn);
+            return getSelf();
+        }
+
+        Builder setSurnameColumn(String surnameColumn) {
+            instance.setSurnameColumn(surnameColumn);
+            return getSelf();
+        }
+
+        Builder setDepartmentIdColumn(String departmentIdColumn) {
+            instance.setDepartmentIdColumn(departmentIdColumn);
+            return getSelf();
+        }
+
+        @Override
+        public Builder getSelf() {
+            return this;
+        }
     }
 }

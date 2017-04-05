@@ -2,83 +2,118 @@ package dao.metadata.constant;
 
 import dao.metadata.ColumnNameStyle;
 import dao.metadata.PatientTableInfo;
+import util.AbstractBuilder;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class PatientConstantTableInfo implements PatientTableInfo {
+public class PatientConstantTableInfo extends AbstractTableInfo implements PatientTableInfo {
+    private String nameColumn;
+    private String surnameColumn;
+    private String doctorIdColumn;
+    private String complaintsColumn;
+    private String diagnosisColumn;
+    private String stateColumn;
 
-    private static final String TABLE_NAME = "patients";
-    private static final String ID_COLUMN = "id";
-    private static final String NAME_COLUMN = "name";
-    private static final String SURNAME_COLUMN = "surname";
-    private static final String DOCTOR_ID_COLUMN = "doctor_id";
-    private static final String COMPLAINTS_COLUMN = "complaints";
-    private static final String DIAGNOSIS_COLUMN = "diagnosis";
-    private static final String STATE_COLUMN = "state";
-
-    PatientConstantTableInfo() {
-    }
-
-    @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String getIdColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? ID_COLUMN
-                : TABLE_NAME + "." + ID_COLUMN;
-    }
+    PatientConstantTableInfo() {}
 
     @Override
     public String getNameColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? NAME_COLUMN
-                : TABLE_NAME + "." + NAME_COLUMN;
+        return getColumn(nameColumn, style);
+    }
+
+    private void setNameColumn(String nameColumn) {
+        this.nameColumn = nameColumn;
     }
 
     @Override
     public String getSurnameColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? SURNAME_COLUMN
-                : TABLE_NAME + "." + SURNAME_COLUMN;
+        return getColumn(surnameColumn, style);
+    }
+
+    private void setSurnameColumn(String surnameColumn) {
+        this.surnameColumn = surnameColumn;
     }
 
     @Override
     public String getDoctorIdColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? DOCTOR_ID_COLUMN
-                : TABLE_NAME + "." + DOCTOR_ID_COLUMN;
+        return getColumn(doctorIdColumn, style);
+    }
+
+    private void setDoctorIdColumn(String doctorIdColumn) {
+        this.doctorIdColumn = doctorIdColumn;
     }
 
     @Override
     public String getDiagnosisColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? DIAGNOSIS_COLUMN
-                : TABLE_NAME + "." + DIAGNOSIS_COLUMN;
+        return getColumn(diagnosisColumn, style);
+    }
+
+    private void setDiagnosisColumn(String diagnosisColumn) {
+        this.diagnosisColumn = diagnosisColumn;
     }
 
     @Override
     public String getComplaintsColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? COMPLAINTS_COLUMN
-                : TABLE_NAME + "." + COMPLAINTS_COLUMN;
+        return getColumn(complaintsColumn, style);
+    }
+
+    private void setComplaintsColumn(String complaintsColumn) {
+        this.complaintsColumn = complaintsColumn;
     }
 
     @Override
     public String getStateColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? STATE_COLUMN
-                : TABLE_NAME + "." + STATE_COLUMN;
+        return getColumn(stateColumn, style);
     }
 
+    private void setStateColumn(String stateColumn) {
+        this.stateColumn = stateColumn;
+    }
 
     @Override
     public List<String> getNonGeneratingColumns() {
-        return Arrays.asList(NAME_COLUMN, SURNAME_COLUMN,
-                DOCTOR_ID_COLUMN, COMPLAINTS_COLUMN,
-                DIAGNOSIS_COLUMN, STATE_COLUMN);
+        return Arrays.asList(nameColumn, surnameColumn,
+                doctorIdColumn, complaintsColumn,
+                diagnosisColumn, stateColumn);
+    }
+
+    public static class Builder
+            extends AbstractTableInfo.Builder<PatientConstantTableInfo, Builder> {
+
+        Builder setNameColumn(String nameColumn) {
+            instance.setNameColumn(nameColumn);
+            return getSelf();
+        }
+
+        Builder setSurnameColumn(String surnameColumn) {
+            instance.setSurnameColumn(surnameColumn);
+            return getSelf();
+        }
+
+        Builder setDoctorIdColumn(String doctorIdColumn) {
+            instance.setDoctorIdColumn(doctorIdColumn);
+            return getSelf();
+        }
+
+        Builder setDiagnosisColumn(String diagnosisColumn) {
+            instance.setDiagnosisColumn(diagnosisColumn);
+            return getSelf();
+        }
+
+        Builder setComplaintsColumn(String complaintsColumn) {
+            instance.setComplaintsColumn(complaintsColumn);
+            return getSelf();
+        }
+
+        Builder setStateColumn(String stateColumn) {
+            instance.setStateColumn(stateColumn);
+            return getSelf();
+        }
+
+        @Override
+        public Builder getSelf() {
+            return this;
+        }
     }
 }

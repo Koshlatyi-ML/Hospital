@@ -15,7 +15,7 @@
 //
 //    private DepartmentAnnotTableInfo() {}
 //
-//    public String getNameColumn() {
+//    public String getTitleColumn() {
 //        return nameColumn;
 //    }
 //

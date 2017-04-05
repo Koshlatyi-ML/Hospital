@@ -2,40 +2,42 @@ package dao.metadata.constant;
 
 import dao.metadata.ColumnNameStyle;
 import dao.metadata.DepartmentTableInfo;
+import util.AbstractBuilder;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class DepartmentConstantTableInfo implements DepartmentTableInfo {
-
-    private static final String TABLE_NAME = "departments";
-    private static final String ID_COLUMN = "id";
-    private static final String NAME_COLUMN = "name";
+public class DepartmentConstantTableInfo extends AbstractTableInfo
+        implements DepartmentTableInfo {
+    private String nameColumn;
 
     DepartmentConstantTableInfo() {}
 
     @Override
-    public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    @Override
-    public String getIdColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? ID_COLUMN
-                : TABLE_NAME + "." + ID_COLUMN;
-    }
-
-    @Override
     public String getNameColumn(ColumnNameStyle style) {
-        return style == ColumnNameStyle.SHORT
-                ? NAME_COLUMN
-                : TABLE_NAME + "." + NAME_COLUMN;
+        return getColumn(nameColumn, style);
+    }
+
+    private void setNameColumn(String nameColumn) {
+        this.nameColumn = nameColumn;
     }
 
     @Override
     public List<String> getNonGeneratingColumns() {
-        return Collections.singletonList(NAME_COLUMN);
+        return Collections.singletonList(nameColumn);
+    }
+
+    public static class Builder
+            extends AbstractTableInfo.Builder<DepartmentConstantTableInfo, Builder> {
+
+        Builder setNameColumn(String nameColumn) {
+            instance.setNameColumn(nameColumn);
+            return getSelf();
+        }
+
+        @Override
+        public Builder getSelf() {
+            return getSelf();
+        }
     }
 }

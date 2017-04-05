@@ -15,7 +15,7 @@ public abstract class IdHolder {
         this.id = id;
     }
 
-    public abstract static class Builder<T extends IdHolder, B extends Builder>
+    abstract static class Builder<T extends IdHolder, B extends Builder>
             extends AbstractBuilder<T> {
 
         public B setId(long id) {
