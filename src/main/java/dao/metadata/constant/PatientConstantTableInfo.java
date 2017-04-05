@@ -81,6 +81,10 @@ public class PatientConstantTableInfo extends AbstractTableInfo implements Patie
     public static class Builder
             extends AbstractTableInfo.Builder<PatientConstantTableInfo, Builder> {
 
+        public Builder() {
+            instance = new PatientConstantTableInfo();
+        }
+
         Builder setNameColumn(String nameColumn) {
             instance.setNameColumn(nameColumn);
             return getSelf();

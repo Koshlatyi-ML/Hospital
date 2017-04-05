@@ -9,7 +9,7 @@ public interface TherapyTableInfo extends PlainTableInfo {
     String APPOINTMENT_DATE_COLUMN = "appointment_date";
     String COMPLETE_DATE_COLUMN = "complete_date";
     String PATIENT_ID_COLUMN = "patient_id";
-    String PERFORMER_ID_COLUMN = "performet_id";
+    String PERFORMER_ID_COLUMN = "performer_id";
 
     String getTitleColumn(ColumnNameStyle columnNameStyle);
     String getTypeColumn(ColumnNameStyle columnNameStyle);

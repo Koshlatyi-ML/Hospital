@@ -11,7 +11,7 @@ public class PropertyLoaderTest {
 
     public PropertyLoaderTest() {
         propertyLoader = PropertyLoader.getInstance();
-        examplePropertyName = "example.properties";
+        examplePropertyName = "util/example.properties";
     }
 
     @Test(expected = NullPointerException.class)

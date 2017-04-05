@@ -3,7 +3,7 @@ package dao.metadata.constant;
 import dao.metadata.*;
 
 public class ConstantTableInfoFactory extends TableInfoFactory {
-    private DepartmentConstantTableInfo departmentTableInfo;
+    private DepartmentConstantTableInfo departmentConstantTableInfo;
     private StuffConstantTableInfo stuffTableInfo;
     private DoctorConstantTableInfo doctorTableInfo;
     private MedicConstantTableInfo medicTableInfo;
@@ -11,7 +11,7 @@ public class ConstantTableInfoFactory extends TableInfoFactory {
     private TherapyConstantTableInfo therapyTableInfo;
 
     private ConstantTableInfoFactory() {
-        departmentTableInfo = new DepartmentConstantTableInfo.Builder()
+        departmentConstantTableInfo = new DepartmentConstantTableInfo.Builder()
                 .setTableName(DepartmentTableInfo.TABLE_NAME)
                 .setIdColumn(DepartmentTableInfo.ID_COLUMN)
                 .setNameColumn(DepartmentTableInfo.NAME_COLUMN)
@@ -60,32 +60,32 @@ public class ConstantTableInfoFactory extends TableInfoFactory {
     }
 
     @Override
-    public DepartmentTableInfo getDepartmentTableInfo() {
-        return departmentTableInfo;
+    public DepartmentConstantTableInfo getDepartmentTableInfo() {
+        return departmentConstantTableInfo;
     }
 
     @Override
-    public StuffTableInfo getStuffTableInfo() {
+    public StuffConstantTableInfo getStuffTableInfo() {
         return stuffTableInfo;
     }
 
     @Override
-    public DoctorTableInfo getDoctorTableInfo() {
+    public DoctorConstantTableInfo getDoctorTableInfo() {
         return doctorTableInfo;
     }
 
     @Override
-    public MedicTableInfo getMedicTableInfo() {
+    public MedicConstantTableInfo getMedicTableInfo() {
         return medicTableInfo;
     }
 
     @Override
-    public PatientTableInfo getPatientTableInfo() {
+    public PatientConstantTableInfo getPatientTableInfo() {
         return patientTableInfo;
     }
 
     @Override
-    public TherapyTableInfo getTherapyTableInfo() {
+    public TherapyConstantTableInfo getTherapyTableInfo() {
         return therapyTableInfo;
     }
 }

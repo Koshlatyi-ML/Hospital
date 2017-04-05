@@ -49,6 +49,11 @@ public class StuffConstantTableInfo extends AbstractTableInfo implements StuffTa
     public static class Builder
             extends AbstractTableInfo.Builder<StuffConstantTableInfo, Builder> {
 
+        public Builder() {
+            instance = new StuffConstantTableInfo();
+        }
+
+
         Builder setNameColumn(String nameColumn) {
             instance.setNameColumn(nameColumn);
             return getSelf();

@@ -16,6 +16,10 @@ public class DoctorConstantTableInfo extends AbstractTableInfo implements Doctor
 
     public static class Builder extends AbstractTableInfo.Builder<DoctorConstantTableInfo, Builder> {
 
+        public Builder() {
+            instance = new DoctorConstantTableInfo();
+        }
+
         @Override
         public Builder getSelf() {
             return this;

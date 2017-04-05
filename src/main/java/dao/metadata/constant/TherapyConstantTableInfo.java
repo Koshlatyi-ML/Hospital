@@ -92,6 +92,10 @@ public class TherapyConstantTableInfo extends AbstractTableInfo implements Thera
     public static class Builder
             extends AbstractTableInfo.Builder<TherapyConstantTableInfo, Builder> {
 
+        public Builder() {
+            instance = new TherapyConstantTableInfo();
+        }
+
         Builder setTitleColumn(String titleColumn) {
             instance.setTitleColumn(titleColumn);
             return getSelf();

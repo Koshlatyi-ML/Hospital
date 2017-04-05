@@ -16,6 +16,10 @@ public class MedicConstantTableInfo extends AbstractTableInfo implements MedicTa
 
     public static class Builder extends AbstractTableInfo.Builder<MedicConstantTableInfo, Builder> {
 
+        public Builder() {
+            instance = new MedicConstantTableInfo();
+        }
+
         @Override
         public Builder getSelf() {
             return this;

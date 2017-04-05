@@ -8,7 +8,7 @@ public interface PatientTableInfo extends PersonTableInfo {
     String DOCTOR_ID_COLUMN = "doctor_id";
     String COMPLAINTS_COLUMN = "complaints";
     String DIAGNOSIS_COLUMN = "diagnosis";
-    String STATE_COLUMN = "sate";
+    String STATE_COLUMN = "state";
 
     String getDoctorIdColumn(ColumnNameStyle columnNameStyle);
     String getDiagnosisColumn(ColumnNameStyle columnNameStyle);

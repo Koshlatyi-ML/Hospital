@@ -1,6 +1,6 @@
 //package dao.metadata.annotation;
 //
-//import dao.metadata.DepartmentTableInfo;
+//import dao.metadata.DepartmentConstantTableInfo;
 //import dao.metadata.annotation.mapping.Entity;
 //import dao.metadata.annotation.util.AnnotTableInfos;
 //import domain.Department;
@@ -10,7 +10,7 @@
 //
 //@Entity(Department.class)
 //public class DepartmentAnnotTableInfo extends IdHolderAnnotTableInfo
-//                                      implements DepartmentTableInfo {
+//                                      implements DepartmentConstantTableInfo {
 //    private String nameColumn;
 //
 //    private DepartmentAnnotTableInfo() {}

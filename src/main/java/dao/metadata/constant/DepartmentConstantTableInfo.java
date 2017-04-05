@@ -1,14 +1,12 @@
 package dao.metadata.constant;
 
 import dao.metadata.ColumnNameStyle;
-import dao.metadata.DepartmentTableInfo;
-import util.AbstractBuilder;
 
 import java.util.Collections;
 import java.util.List;
 
 public class DepartmentConstantTableInfo extends AbstractTableInfo
-        implements DepartmentTableInfo {
+        implements dao.metadata.DepartmentTableInfo {
     private String nameColumn;
 
     DepartmentConstantTableInfo() {}
@@ -30,6 +28,10 @@ public class DepartmentConstantTableInfo extends AbstractTableInfo
     public static class Builder
             extends AbstractTableInfo.Builder<DepartmentConstantTableInfo, Builder> {
 
+        public Builder() {
+            instance = new DepartmentConstantTableInfo();
+        }
+
         Builder setNameColumn(String nameColumn) {
             instance.setNameColumn(nameColumn);
             return getSelf();
@@ -37,7 +39,7 @@ public class DepartmentConstantTableInfo extends AbstractTableInfo
 
         @Override
         public Builder getSelf() {
-            return getSelf();
+            return this;
         }
     }
 }
