@@ -291,7 +291,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
 
         TherapyDTO therapyDTO = new TherapyDTO.Builder()
                 .setName("headcutting")
-                .setType(TherapyDTO.Type.SURGERY_OPERATION.toString())
+//                .setType(TherapyDTO.Type.SURGERY_OPERATION.toString())
                 .setDescription("lol")
                 .setAppointmentDateTime(Timestamp.from(Instant.now()))
                 .setPatientId(4)

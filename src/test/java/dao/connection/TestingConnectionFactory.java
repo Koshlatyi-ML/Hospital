@@ -7,17 +7,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Properties;
 
 public class TestingConnectionFactory extends ConnectionFactory {
-    private Map<String, String> connectionProperies;
+    private Properties connectionProperies;
     private final String URL_KEY = "url";
     private final String USER_KEY = "user";
     private final String PASSWORD_KEY = "password";
 
     private TestingConnectionFactory() {
         String CONNECTION_PROPERTIES_PATH = "dao/connection.properties";
-        connectionProperies = PropertyLoader.getInstance().getProperties(
-                CONNECTION_PROPERTIES_PATH, Arrays.asList(URL_KEY, USER_KEY, PASSWORD_KEY));
+        connectionProperies = PropertyLoader.getInstance()
+                .getProperties(CONNECTION_PROPERTIES_PATH);
     }
 
     private static class Holder {
@@ -31,9 +32,9 @@ public class TestingConnectionFactory extends ConnectionFactory {
     public Connection getConnection() {
         try {
             return DriverManager.getConnection(
-                    connectionProperies.get(URL_KEY),
-                    connectionProperies.get(USER_KEY),
-                    connectionProperies.get(PASSWORD_KEY));
+                    connectionProperies.getProperty(URL_KEY),
+                    connectionProperies.getProperty(USER_KEY),
+                    connectionProperies.getProperty(PASSWORD_KEY));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

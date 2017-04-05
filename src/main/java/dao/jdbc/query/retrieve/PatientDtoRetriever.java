@@ -31,8 +31,8 @@ public class PatientDtoRetriever extends AbstractDtoRetriever<PatientDTO> {
                         .getComplaintsColumn(ColumnNameStyle.FULL)))
                 .setDiagnosis(resultSet.getString(tableInfo
                         .getDiagnosisColumn(ColumnNameStyle.FULL)))
-                .setState(resultSet.getString(tableInfo
-                        .getStateColumn(ColumnNameStyle.FULL)))
+                .setState(PatientDTO.State.valueOf(
+                        resultSet.getString(tableInfo.getStateColumn(ColumnNameStyle.FULL))))
                 .build();
     }
 }

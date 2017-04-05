@@ -98,7 +98,7 @@ public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements Patient
                 .setDoctorId(44)
                 .setCompliants("Sore throat")
                 .setDiagnosis("Volchanka")
-                .setState("ADDMITTED")
+//                .setState("ADDMITTED")
                 .build();
         patientDAO.create(dto);
 

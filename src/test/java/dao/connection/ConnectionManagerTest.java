@@ -14,7 +14,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class ConnectionManagerTest {
-    private TestingConnectionFactory connectionFactory = TestingConnectionFactory.getInstance();
 
     @Mock
     private ConnectionFactory mockConnectionFactory;
@@ -23,6 +22,7 @@ public class ConnectionManagerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
+        TestingConnectionFactory connectionFactory = TestingConnectionFactory.getInstance();
         when(mockConnectionFactory.getConnection())
                 .thenReturn(connectionFactory.getConnection())
                 .thenReturn(connectionFactory.getConnection())
@@ -83,9 +83,10 @@ public class ConnectionManagerTest {
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         try {
             connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
-        } catch (RuntimeException e) {}
+        } catch (RuntimeException e) {
+            assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        }
 
-        assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
     }
 
     @Test
@@ -102,8 +103,9 @@ public class ConnectionManagerTest {
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         try {
             connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
-        } catch (RuntimeException e) {}
-        assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        } catch (RuntimeException e) {
+            assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        }
     }
 
     @Test
@@ -120,8 +122,9 @@ public class ConnectionManagerTest {
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         try {
             connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
-        } catch (RuntimeException e) {}
-        assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        } catch (RuntimeException e) {
+            assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        }
     }
 
     @Test
@@ -138,8 +141,8 @@ public class ConnectionManagerTest {
         Connection mock = mock(Connection.class);
         when(mockConnectionFactory.getConnection())
                 .thenReturn(mock)
-                .thenReturn(connectionFactory.getConnection())
-                .thenReturn(connectionFactory.getConnection());
+                .thenReturn(mock(Connection.class))
+                .thenReturn(mock(Connection.class));
 
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
@@ -162,9 +165,9 @@ public class ConnectionManagerTest {
         connectionManager.beginTransaction();
         try {
             connectionManager.finishTransaction();
-        } catch (RuntimeException e) {}
-
-        verify(throwerMock).rollback();
+        } catch (RuntimeException e) {
+            verify(throwerMock).rollback();
+        }
     }
 
     @Test
@@ -181,9 +184,9 @@ public class ConnectionManagerTest {
         connectionManager.beginTransaction();
         try {
             connectionManager.finishTransaction();
-        } catch (RuntimeException e) {}
-
-        assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        } catch (RuntimeException e) {
+            assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        }
     }
 
     @Test
@@ -200,9 +203,9 @@ public class ConnectionManagerTest {
         connectionManager.beginTransaction();
         try {
             connectionManager.finishTransaction();
-        } catch (RuntimeException e) {}
-
-        assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        } catch (RuntimeException e) {
+            assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        }
     }
 
     @Test
@@ -219,9 +222,9 @@ public class ConnectionManagerTest {
         connectionManager.beginTransaction();
         try {
             connectionManager.finishTransaction();
-        } catch (RuntimeException e) {}
-
-        assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        } catch (RuntimeException e) {
+            assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        }
     }
 
     @Test
@@ -251,9 +254,9 @@ public class ConnectionManagerTest {
         connectionManager.beginTransaction();
         try {
             connectionManager.rollbackTransaction();
-        } catch (RuntimeException e) {}
-
-        assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        } catch (RuntimeException e) {
+            assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        }
     }
 
     @Test
@@ -270,9 +273,9 @@ public class ConnectionManagerTest {
         connectionManager.beginTransaction();
         try {
             connectionManager.rollbackTransaction();
-        } catch (RuntimeException e) {}
-
-        assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        } catch (RuntimeException e) {
+            assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
+        }
     }
 
     @Test

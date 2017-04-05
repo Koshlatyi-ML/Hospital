@@ -12,7 +12,7 @@ public class TherapyDtoValueSupplier implements DtoValueSupplier<TherapyDTO> {
     @Override
     public int supplyValues(PreparedStatement statement, TherapyDTO dto) throws SQLException {
         statement.setString(1, dto.getName());
-        statement.setString(2, dto.getType().toString());
+        statement.setString(2, dto.getType());
         statement.setString(3, dto.getDescription());
         statement.setTimestamp(4, dto.getAppointmentDateTime());
         statement.setTimestamp(5, dto.getCompleteDateTime());

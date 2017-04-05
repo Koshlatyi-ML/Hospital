@@ -1,16 +1,19 @@
 package util.load;
 
+import util.load.init.Initializer;
+import util.load.init.JndiInitializer;
+import util.load.init.JndiInitializerFactory;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
 
 public class ImplementationLoader {
-    private static ImplementationLoader instance = new ImplementationLoader();
+    private List<Initializer> initializers;
 
-    private ImplementationLoader() {
-    }
-
-    public static ImplementationLoader getInstance() {
-        return instance;
+    ImplementationLoader(List<Initializer> initializers) {
+        this.initializers = initializers;
     }
 
     public <T> T loadInstance(Class<T> supertypeClass) {
@@ -18,10 +21,14 @@ public class ImplementationLoader {
         Implementation implementationAnnot = supertypeClass
                 .getDeclaredAnnotation(Implementation.class);
 
-        Class<? extends T> value = implementationAnnot.value();
-        Constructor<? extends T> defaultConstructor;
+        Class actualClass = implementationAnnot.value();
+        if (!supertypeClass.isAssignableFrom(actualClass)) {
+            throw new ClassCastException();
+        }
+
+        Constructor defaultConstructor;
         try {
-            defaultConstructor = value.getDeclaredConstructor((Class<?>[]) null);
+            defaultConstructor = actualClass.getDeclaredConstructor((Class<?>[]) null);
         } catch (NoSuchMethodException e) {
             throw new NoDefaultConstructorException(e);
         }
@@ -29,7 +36,9 @@ public class ImplementationLoader {
         defaultConstructor.setAccessible(true);
 
         try {
-            return defaultConstructor.newInstance((Object[]) null);
+            T t = (T) defaultConstructor.newInstance((Object[]) null);
+            initializers.forEach(initializer -> initializer.initialize(t));
+            return t;
         } catch (InstantiationException
                 | IllegalAccessException
                 | InvocationTargetException e) {

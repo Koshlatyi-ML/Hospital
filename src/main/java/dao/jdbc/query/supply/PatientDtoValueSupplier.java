@@ -15,7 +15,7 @@ public class PatientDtoValueSupplier implements DtoValueSupplier<PatientDTO> {
         statement.setLong(3, dto.getDoctorId());
         statement.setString(4, dto.getComplaints());
         statement.setString(5, dto.getDiagnosis());
-        statement.setString(6, dto.getState().toString());
+        statement.setString(6, dto.getState());
         return 6;
     }
 }

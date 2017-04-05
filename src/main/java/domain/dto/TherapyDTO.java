@@ -1,17 +1,14 @@
 package domain.dto;
 
-import domain.IdHolder;
-import domain.Patient;
-import domain.Therapy;
-
+import java.sql.Timestamp;
 import java.time.Instant;
 
 public class TherapyDTO extends AbstractDTO {
     private String name;
-    private Type type;
+    private String type;
     private String description;
-    private Instant appointmentDateTime;
-    private Instant completeDateTime;
+    private Timestamp appointmentDateTime;
+    private Timestamp completeDateTime;
     private long patientId;
     private long performerId;
 
@@ -19,16 +16,22 @@ public class TherapyDTO extends AbstractDTO {
         return name;
     }
 
+    public enum Type {
+        PHARMACOTHERAPY,
+        PHYSIOTHERAPY,
+        SURGERY_OPERATION;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
     public void setType(Type type) {
-        this.type = type;
+        this.type = type.toString();
     }
 
     public String getDescription() {
@@ -39,19 +42,19 @@ public class TherapyDTO extends AbstractDTO {
         this.description = description;
     }
 
-    public Instant getAppointmentDateTime() {
+    public Timestamp getAppointmentDateTime() {
         return appointmentDateTime;
     }
 
-    public void setAppointmentDateTime(Instant appointmentDateTime) {
+    public void setAppointmentDateTime(Timestamp appointmentDateTime) {
         this.appointmentDateTime = appointmentDateTime;
     }
 
-    public Instant getCompleteDateTime() {
+    public Timestamp getCompleteDateTime() {
         return completeDateTime;
     }
 
-    public void setCompleteDateTime(Instant completeDateTime) {
+    public void setCompleteDateTime(Timestamp completeDateTime) {
         this.completeDateTime = completeDateTime;
     }
 
@@ -71,11 +74,6 @@ public class TherapyDTO extends AbstractDTO {
         this.performerId = performerId;
     }
 
-    public enum Type {
-        PHARMACOTHERAPY,
-        PHYSIOTHERAPY,
-        SURGERY_OPERATION;
-    }
 
     public static class Builder extends AbstractDTO.Builder<TherapyDTO, Builder> {
 
@@ -98,12 +96,12 @@ public class TherapyDTO extends AbstractDTO {
             return getSelf();
         }
 
-        public Builder setAppointmentDateTime(Instant time) {
+        public Builder setAppointmentDateTime(Timestamp time) {
             instance.setAppointmentDateTime(time);
             return getSelf();
         }
 
-        public Builder setCompleteDateTime(Instant time) {
+        public Builder setCompleteDateTime(Timestamp time) {
             instance.setCompleteDateTime(time);
             return getSelf();
         }
@@ -113,8 +111,8 @@ public class TherapyDTO extends AbstractDTO {
             return getSelf();
         }
 
-        public Builder setPerfomerId(long perfomerId) {
-            instance.setPatientId(perfomerId);
+        public Builder setPerformerId(long perfomerId) {
+            instance.setPerformerId(perfomerId);
             return getSelf();
         }
 

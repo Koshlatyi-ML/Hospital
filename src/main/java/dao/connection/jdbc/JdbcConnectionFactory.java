@@ -1,7 +1,7 @@
 package dao.connection.jdbc;
 
 import dao.connection.ConnectionFactory;
-import util.load.Jndi;
+import util.load.init.Jndi;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

@@ -24,8 +24,8 @@ public class TherapyDtoRetriever extends AbstractDtoRetriever<TherapyDTO> {
                         .getString(tableInfo.getNameColumn(ColumnNameStyle.FULL)))
                 .setDescription(resultSet
                         .getString(tableInfo.getDescriptionColumn(ColumnNameStyle.FULL)))
-                .setType(resultSet
-                        .getString(tableInfo.getTypeColumn(ColumnNameStyle.FULL)))
+                .setType(TherapyDTO.Type.valueOf(
+                        resultSet.getString(tableInfo.getTypeColumn(ColumnNameStyle.FULL))))
                 .setAppointmentDateTime(resultSet
                         .getTimestamp(tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL)))
                 .setCompleteDateTime(resultSet

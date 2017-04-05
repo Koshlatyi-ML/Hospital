@@ -4,10 +4,15 @@ public class PatientDTO extends AbstractPersonDTO {
     private long doctorId;
     private String complaints;
     private String diagnosis;
-    private State state;
+    private String state;
 
     private PatientDTO() {
-        state = State.APPLYIED;
+    }
+
+    public enum State {
+        APPLYIED,
+        ADDMITTED,
+        DISCHARGED //maybe redundant
     }
 
     public long getDoctorId() {
@@ -34,18 +39,12 @@ public class PatientDTO extends AbstractPersonDTO {
         this.diagnosis = diagnosis;
     }
 
-    public State getState() {
+    public String getState() {
         return state;
     }
 
     public void setState(State state) {
-        this.state = state;
-    }
-
-    public enum State {
-        APPLYIED,
-        ADDMITTED,
-        DISCHARGED //maybe redundant
+        this.state = state.toString();
     }
 
     public static class Builder extends AbstractPersonDTO.Builder<PatientDTO, Builder> {
