@@ -13,8 +13,8 @@ import java.sql.SQLException;
 public class MedicDtoRetriever extends AbstractDtoRetriever<MedicDTO> {
     private StuffTableInfo stuffTableInfo;
 
-    MedicDtoRetriever(TableInfoFactory tableInfoFactory) {
-        stuffTableInfo = tableInfoFactory.getStuffTableInfo();
+    MedicDtoRetriever(StuffTableInfo stuffTableInfo) {
+        this.stuffTableInfo = stuffTableInfo;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package dao.jdbc.query.retrieve;
 
 import dao.metadata.ColumnNameStyle;
+import dao.metadata.DoctorTableInfo;
 import dao.metadata.StuffTableInfo;
 import dao.metadata.TableInfoFactory;
 import domain.dto.DoctorDTO;
@@ -11,8 +12,8 @@ import java.sql.SQLException;
 public class DoctorDtoRetriever extends AbstractDtoRetriever<DoctorDTO> {
     private StuffTableInfo stuffTableInfo;
 
-    DoctorDtoRetriever(TableInfoFactory tableInfoFactory) {
-        stuffTableInfo = tableInfoFactory.getStuffTableInfo();
+    DoctorDtoRetriever(StuffTableInfo stuffTableInfo) {
+        this.stuffTableInfo = stuffTableInfo;
     }
 
     @Override

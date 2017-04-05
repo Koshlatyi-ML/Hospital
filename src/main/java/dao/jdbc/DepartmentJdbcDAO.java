@@ -15,14 +15,11 @@ import java.util.Optional;
 
 public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements DepartmentDAO {
     private DepartmentQueryExecutor queryExecutor;
-    private JdbcDaoFactory jdbcDaoFactory;
 
     DepartmentJdbcDAO(QueryExecutorFactory queryExecutorFactory,
-                      JdbcDaoFactory jdbcDaoFactory,
                       ConnectionManager connectionManager) {
 
         queryExecutor = queryExecutorFactory.getDepartmentQueryExecutor();
-        this.jdbcDaoFactory = jdbcDaoFactory;
         this.connectionManager = connectionManager;
     }
 
@@ -54,8 +51,8 @@ public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements Dep
     }
 
     public static void main(String[] args) throws SQLException {
-        DaoManager daoManager = DaoManager.getInstance();
-        DaoFactory daoFactory = daoManager.getDaoFactory();
+//        DaoManager daoManager = DaoManager.getInstance();
+//        DaoFactory daoFactory = daoManager.getDaoFactory();
 
 //        Connection connection = ConnectionManager.getInstance().getConnection();
 //        connection.setAutoCommit(false);
@@ -65,7 +62,7 @@ public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements Dep
 //                " VALUES ('C', 'D', NULL)").execute();
 //        connection.commit();
 
-        DepartmentDAO departmentDao = daoFactory.getDepartmentDao();
+//        DepartmentDAO departmentDao = daoFactory.getDepartmentDao();
 
         DepartmentDTO newDTO = new DepartmentDTO.Builder()
                 .setName("Дядько")
@@ -79,13 +76,13 @@ public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements Dep
 //        departmentDao.findByName("Дядько").ifPresent(System.out::println);
 //        departmentDao.findByName("Хыдыш").ifPresent(System.out::println);
 
-        System.out.println();
-        System.out.println(departmentDao.find(93).toString());
-        System.out.println();
-        departmentDao.findAll().forEach(System.out::println);
+//        System.out.println();
+//        System.out.println(departmentDao.find(93).toString());
+//        System.out.println();
+//        departmentDao.findAll().forEach(System.out::println);
 
         //        Department newDep2 = new Department.Builder()
-//                .setName("ddd")
+//                .setTitle("ddd")
 //                .build();
 //
 //        daoManager.beginTransaction();

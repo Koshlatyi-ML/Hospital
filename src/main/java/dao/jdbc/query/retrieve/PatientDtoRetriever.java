@@ -12,8 +12,8 @@ import java.sql.SQLException;
 public class PatientDtoRetriever extends AbstractDtoRetriever<PatientDTO> {
     private PatientTableInfo tableInfo;
 
-    PatientDtoRetriever(TableInfoFactory tableInfoFactory) {
-        tableInfo = tableInfoFactory.getPatientTableInfo();
+    PatientDtoRetriever(PatientTableInfo tableInfo) {
+        this.tableInfo = tableInfo;
     }
 
     @Override

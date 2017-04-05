@@ -14,11 +14,16 @@ public class DtoRetrieverFactory {
 
     private DtoRetrieverFactory() {
         TableInfoFactory tableInfoFactory = TableInfoFactory.getInstance();
-        departmentDtoRetriever = new DepartmentDtoRetriever(tableInfoFactory);
-        doctorDtoRetriever = new DoctorDtoRetriever(tableInfoFactory);
-        medicDtoRetriever = new MedicDtoRetriever(tableInfoFactory);
-        patientDtoRetriever = new PatientDtoRetriever(tableInfoFactory);
-        therapyDtoRetriever = new TherapyDtoRetriever(tableInfoFactory);
+        departmentDtoRetriever =
+                new DepartmentDtoRetriever(tableInfoFactory.getDepartmentTableInfo());
+        doctorDtoRetriever =
+                new DoctorDtoRetriever(tableInfoFactory.getStuffTableInfo());
+        medicDtoRetriever =
+                new MedicDtoRetriever(tableInfoFactory.getStuffTableInfo());
+        patientDtoRetriever =
+                new PatientDtoRetriever(tableInfoFactory.getPatientTableInfo());
+        therapyDtoRetriever =
+                new TherapyDtoRetriever(tableInfoFactory.getTherapyTableInfo());
     }
 
     public static DtoRetrieverFactory getInstance() {

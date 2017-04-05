@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 @Implementation(JdbcDaoManager.class)
-public abstract class DaoManager {
+public abstract class DaoManager implements DaoFactory {
     private static final DaoManager INSTANCE = ImplementationLoaderFactory.getInstance()
             .createImplementationLoader().loadInstance(DaoManager.class);
 
@@ -17,7 +17,6 @@ public abstract class DaoManager {
         return INSTANCE;
     }
 
-    public abstract DaoFactory getDaoFactory();
     public abstract void beginTransaction();
     public abstract void beginTransaction(int isolationLevel);
     public abstract void finishTransaction();

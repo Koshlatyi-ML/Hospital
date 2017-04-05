@@ -15,14 +15,11 @@ import java.util.stream.Collectors;
 
 public class DoctorJdbcDAO extends StuffJdbcDAO<DoctorDTO> implements DoctorDAO {
     private DoctorQueryExecutor queryExecutor;
-    private JdbcDaoFactory jdbcDaoFactory;
 
     DoctorJdbcDAO(QueryExecutorFactory queryExecutorFactory,
-                  JdbcDaoFactory jdbcDaoFactory,
                   ConnectionManager connectionManager) {
 
         this.queryExecutor = queryExecutorFactory.getDoctorQueryExecutor();
-        this.jdbcDaoFactory = jdbcDaoFactory;
         this.connectionManager = connectionManager;
     }
 
@@ -64,11 +61,11 @@ public class DoctorJdbcDAO extends StuffJdbcDAO<DoctorDTO> implements DoctorDAO 
 
     public static void main(String[] args) {
         DaoManager daoManager = DaoManager.getInstance();
-        DaoFactory daoFactory = daoManager.getDaoFactory();
-        DoctorDAO doctorDao = daoFactory.getDoctorDao();
+//        DaoFactory daoFactory = daoManager.getDaoFactory();
+//        DoctorDAO doctorDao = daoFactory.getDoctorDao();
 
 //        DoctorDTO doc = new DoctorDTO.Builder()
-//                .setName("qw")
+//                .setTitle("qw")
 //                .setSurname("sdfc")
 //                .setDepartmentId(93)
 //                .build();
@@ -91,24 +88,24 @@ public class DoctorJdbcDAO extends StuffJdbcDAO<DoctorDTO> implements DoctorDAO 
 
 
 
-        doctorDao.find(44).ifPresent(System.out::println);
-        doctorDao.find(440).ifPresent(System.out::println);
-        System.out.println();
-        doctorDao.findAll().forEach(System.out::println);
-        System.out.println();
-        doctorDao.findByDepartmentId(930);
-        System.out.println();
-        doctorDao.findByFullName("СаНя").forEach(System.out::println);
-        doctorDao.findByFullName("[SDFSDG").forEach(System.out::println);
-        System.out.println();
-        doctorDao.findByDepartmentId(93).forEach(System.out::println);
-        doctorDao.findByDepartmentId(930).forEach(System.out::println);
-        System.out.println();
-        doctorDao.findByPatientId(4).ifPresent(System.out::println);
-        doctorDao.findByPatientId(40).ifPresent(System.out::println);
+//        doctorDao.find(44).ifPresent(System.out::println);
+//        doctorDao.find(440).ifPresent(System.out::println);
+//        System.out.println();
+//        doctorDao.findAll().forEach(System.out::println);
+//        System.out.println();
+//        doctorDao.findByDepartmentId(930);
+//        System.out.println();
+//        doctorDao.findByFullName("СаНя").forEach(System.out::println);
+//        doctorDao.findByFullName("[SDFSDG").forEach(System.out::println);
+//        System.out.println();
+//        doctorDao.findByDepartmentId(93).forEach(System.out::println);
+//        doctorDao.findByDepartmentId(930).forEach(System.out::println);
+//        System.out.println();
+//        doctorDao.findByPatientId(4).ifPresent(System.out::println);
+//        doctorDao.findByPatientId(40).ifPresent(System.out::println);
 
 //        Doctor doc2 = new Doctor.Builder()
-//                .setName("lalik")
+//                .setTitle("lalik")
 //                .setSurname("banka")
 //                .build();
 

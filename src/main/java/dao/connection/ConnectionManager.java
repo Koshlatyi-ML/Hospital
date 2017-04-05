@@ -14,7 +14,7 @@ public class ConnectionManager {
     ConnectionManager(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
         this.connectionThreadLocal = new ThreadLocal<>();
-        this.isTransactionalThreadLocal = new ThreadLocal<>();
+        this.isTransactionalThreadLocal = ThreadLocal.withInitial(() -> Boolean.FALSE);
     }
 
     public Connection getConnection() {

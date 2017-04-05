@@ -1,9 +1,12 @@
 package domain.dto;
 
+import java.util.Objects;
+
 public class DepartmentDTO extends AbstractDTO {
     private String name;
 
-    private DepartmentDTO() {}
+    private DepartmentDTO() {
+    }
 
     public String getName() {
         return name;
@@ -34,5 +37,19 @@ public class DepartmentDTO extends AbstractDTO {
         protected Builder getSelf() {
             return this;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DepartmentDTO)) return false;
+        DepartmentDTO dto = (DepartmentDTO) o;
+        return getId() == dto.getId()
+                && Objects.equals(getName(), dto.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName());
     }
 }

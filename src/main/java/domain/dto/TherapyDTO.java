@@ -1,10 +1,10 @@
 package domain.dto;
 
 import java.sql.Timestamp;
-import java.time.Instant;
+import java.util.Objects;
 
 public class TherapyDTO extends AbstractDTO {
-    private String name;
+    private String title;
     private String type;
     private String description;
     private Timestamp appointmentDateTime;
@@ -12,8 +12,8 @@ public class TherapyDTO extends AbstractDTO {
     private long patientId;
     private long performerId;
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public enum Type {
@@ -22,8 +22,8 @@ public class TherapyDTO extends AbstractDTO {
         SURGERY_OPERATION;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getType() {
@@ -81,8 +81,8 @@ public class TherapyDTO extends AbstractDTO {
             instance = new TherapyDTO();
         }
 
-        public Builder setName(String name) {
-            instance.setName(name);
+        public Builder setTitle(String title) {
+            instance.setTitle(title);
             return getSelf();
         }
 
@@ -120,5 +120,27 @@ public class TherapyDTO extends AbstractDTO {
         protected Builder getSelf() {
             return this;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TherapyDTO)) return false;
+        TherapyDTO that = (TherapyDTO) o;
+        return getId() == that.getId()
+                && getPatientId() == that.getPatientId()
+                && getPerformerId() == that.getPerformerId()
+                && Objects.equals(getTitle(), that.getTitle())
+                && Objects.equals(getType(), that.getType())
+                && Objects.equals(getDescription(), that.getDescription())
+                && Objects.equals(getAppointmentDateTime(), that.getAppointmentDateTime())
+                && Objects.equals(getCompleteDateTime(), that.getCompleteDateTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTitle(), getType(), getDescription(),
+                getAppointmentDateTime(),getCompleteDateTime(), getPatientId(),
+                getPerformerId());
     }
 }

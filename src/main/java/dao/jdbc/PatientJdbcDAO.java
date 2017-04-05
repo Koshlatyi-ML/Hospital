@@ -7,7 +7,6 @@ import dao.connection.ConnectionManager;
 import dao.jdbc.query.PatientQueryExecutor;
 import dao.jdbc.query.PersonQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
-import dao.metadata.annotation.mapping.Entity;
 import domain.Patient;
 import domain.dto.PatientDTO;
 
@@ -15,7 +14,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-@Entity(Patient.class)
 public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements PatientDAO {
     private PatientQueryExecutor queryExecutor;
 
@@ -89,8 +87,8 @@ public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements Patient
 
     public static void main(String[] args) {
         DaoManager daoManager = DaoManager.getInstance();
-        DaoFactory daoFactory = daoManager.getDaoFactory();
-        PatientDAO patientDAO = daoFactory.getPatientDao();
+//        DaoFactory daoFactory = daoManager.getDaoFactory();
+//        PatientDAO patientDAO = daoFactory.getPatientDao();
 
         PatientDTO dto = new PatientDTO.Builder()
                 .setName("Kolya")
@@ -100,7 +98,7 @@ public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements Patient
                 .setDiagnosis("Volchanka")
 //                .setState("ADDMITTED")
                 .build();
-        patientDAO.create(dto);
+//        patientDAO.create(dto);
 
 //        dto.setDiagnosis("Brain cancer");
 //        patientDAO.update(dto);

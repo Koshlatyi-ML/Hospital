@@ -7,7 +7,6 @@ import dao.connection.ConnectionManager;
 import dao.jdbc.query.QueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import dao.jdbc.query.TherapyQueryExecutor;
-import dao.metadata.annotation.mapping.Entity;
 import domain.Therapy;
 import domain.dto.TherapyDTO;
 
@@ -17,7 +16,6 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
 
-@Entity(Therapy.class)
 public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDAO {
     private TherapyQueryExecutor queryExecutor;
 
@@ -285,23 +283,23 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     public static void main(String[] args) {
-        DaoManager daoManager = DaoManager.getInstance();
-        DaoFactory daoFactory = daoManager.getDaoFactory();
-        TherapyDAO therapyDAO = daoFactory.getTherapyDao();
-
-        TherapyDTO therapyDTO = new TherapyDTO.Builder()
-                .setName("headcutting")
-//                .setType(TherapyDTO.Type.SURGERY_OPERATION.toString())
-                .setDescription("lol")
-                .setAppointmentDateTime(Timestamp.from(Instant.now()))
-                .setPatientId(4)
-                .setPerformerId(45)
-                .build();
-
-        therapyDAO.create(therapyDTO);
-
-        therapyDTO.setPerformerId(44);
-        therapyDAO.update(therapyDTO);
-        therapyDAO.delete(therapyDTO.getId());
+//        DaoManager daoManager = DaoManager.getInstance();
+//        DaoFactory daoFactory = daoManager.getDaoFactory();
+//        TherapyDAO therapyDAO = daoFactory.getTherapyDao();
+//
+//        TherapyDTO therapyDTO = new TherapyDTO.Builder()
+//                .setTitle("headcutting")
+////                .setType(TherapyDTO.Type.SURGERY_OPERATION.toString())
+//                .setDescription("lol")
+//                .setAppointmentDateTime(Timestamp.from(Instant.now()))
+//                .setPatientId(4)
+//                .setPerformerId(45)
+//                .build();
+//
+//        therapyDAO.create(therapyDTO);
+//
+//        therapyDTO.setPerformerId(44);
+//        therapyDAO.update(therapyDTO);
+//        therapyDAO.delete(therapyDTO.getId());
     }
 }

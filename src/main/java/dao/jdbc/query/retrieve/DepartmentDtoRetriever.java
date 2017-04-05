@@ -12,8 +12,8 @@ import java.sql.SQLException;
 public class DepartmentDtoRetriever extends AbstractDtoRetriever<DepartmentDTO> {
     private DepartmentTableInfo tableInfo;
 
-    DepartmentDtoRetriever(TableInfoFactory tableInfoFactory) {
-        tableInfo = tableInfoFactory.getDepartmentTableInfo();
+    DepartmentDtoRetriever(DepartmentTableInfo tableInfo) {
+        this.tableInfo = tableInfo;
     }
 
     @Override

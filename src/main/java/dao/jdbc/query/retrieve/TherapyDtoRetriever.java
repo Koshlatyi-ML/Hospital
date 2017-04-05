@@ -11,8 +11,8 @@ import java.sql.SQLException;
 public class TherapyDtoRetriever extends AbstractDtoRetriever<TherapyDTO> {
     private TherapyTableInfo tableInfo;
 
-    TherapyDtoRetriever(TableInfoFactory tableInfoFactory) {
-        tableInfo = tableInfoFactory.getTherapyTableInfo();
+    TherapyDtoRetriever(TherapyTableInfo tableInfo) {
+        this.tableInfo = tableInfo;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class TherapyDtoRetriever extends AbstractDtoRetriever<TherapyDTO> {
         return new TherapyDTO.Builder()
                 .setId(resultSet
                         .getLong(tableInfo.getIdColumn(ColumnNameStyle.FULL)))
-                .setName(resultSet
+                .setTitle(resultSet
                         .getString(tableInfo.getTitleColumn(ColumnNameStyle.FULL)))
                 .setDescription(resultSet
                         .getString(tableInfo.getDescriptionColumn(ColumnNameStyle.FULL)))

@@ -1,23 +1,53 @@
 package dao.jdbc;
 
-import dao.DaoFactory;
-import dao.DaoManager;
+import dao.*;
 import dao.connection.ConnectionManager;
+import dao.connection.ConnectionManagerFactory;
+import dao.jdbc.query.QueryExecutorFactory;
 
 import java.sql.Connection;
 
 public class JdbcDaoManager extends DaoManager {
-    private DaoFactory daoFactory;
+    private DepartmentJdbcDAO departmentDao;
+    private DoctorJdbcDAO doctorDao;
+    private MedicJdbcDAO medicDao;
+    private PatientJdbcDAO patientDao;
+    private TherapyJdbcDAO therapyDao;
     private ConnectionManager connectionManager;
 
-    public JdbcDaoManager() {
-        daoFactory = DaoFactory.getInstance();
-//        connectionManager = ConnectionManager.getInstance();
+    private JdbcDaoManager() {
+        connectionManager = ConnectionManagerFactory.getInstance().createConnectionManager();
+        QueryExecutorFactory queryExecutorFactory = QueryExecutorFactory.getInstance();
+        departmentDao = new DepartmentJdbcDAO(queryExecutorFactory, connectionManager);
+        doctorDao = new DoctorJdbcDAO(queryExecutorFactory, connectionManager);
+        medicDao = new MedicJdbcDAO(queryExecutorFactory, connectionManager);
+        patientDao = new PatientJdbcDAO(queryExecutorFactory, connectionManager);
+        therapyDao = new TherapyJdbcDAO(queryExecutorFactory, connectionManager);
     }
 
     @Override
-    public DaoFactory getDaoFactory() {
-        return daoFactory;
+    public DepartmentDAO getDepartmentDao() {
+        return departmentDao;
+    }
+
+    @Override
+    public DoctorDAO getDoctorDao() {
+        return doctorDao;
+    }
+
+    @Override
+    public MedicDAO getMedicDao() {
+        return medicDao;
+    }
+
+    @Override
+    public PatientDAO getPatientDao() {
+        return patientDao;
+    }
+
+    @Override
+    public TherapyDAO getTherapyDao() {
+        return therapyDao;
     }
 
     @Override

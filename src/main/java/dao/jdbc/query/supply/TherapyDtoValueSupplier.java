@@ -4,14 +4,13 @@ import domain.dto.TherapyDTO;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 public class TherapyDtoValueSupplier implements DtoValueSupplier<TherapyDTO> {
     TherapyDtoValueSupplier() {}
 
     @Override
     public int supplyValues(PreparedStatement statement, TherapyDTO dto) throws SQLException {
-        statement.setString(1, dto.getName());
+        statement.setString(1, dto.getTitle());
         statement.setString(2, dto.getType());
         statement.setString(3, dto.getDescription());
         statement.setTimestamp(4, dto.getAppointmentDateTime());
