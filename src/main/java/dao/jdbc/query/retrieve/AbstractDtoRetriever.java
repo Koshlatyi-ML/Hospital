@@ -18,7 +18,7 @@ public abstract class AbstractDtoRetriever<T extends AbstractDTO> implements Dto
     }
 
     @Override
-    public List<T> retrieveDTOList(ResultSet resultSet) throws SQLException {
+    public List<T> retrieveDtoList(ResultSet resultSet) throws SQLException {
         List<T> dtoList = new ArrayList<>();
         while (resultSet.next()) {
             T dto = retrieve(resultSet);

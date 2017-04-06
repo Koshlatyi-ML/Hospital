@@ -73,7 +73,7 @@ public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends Per
                      connection.prepareStatement(getFindByDepartmentIdQuery())) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            return getDtoRetriever().retrieveDTOList(resultSet);
+            return getDtoRetriever().retrieveDtoList(resultSet);
         }
     }
 

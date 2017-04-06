@@ -202,7 +202,7 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
             statement.setLong(1, id);
             statement.setString(2, type.toString());
             ResultSet resultSet = statement.executeQuery();
-            return dtoRetriever.retrieveDTOList(resultSet);
+            return dtoRetriever.retrieveDtoList(resultSet);
         }
     }
 

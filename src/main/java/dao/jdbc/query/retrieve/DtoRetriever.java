@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface DtoRetriever<T extends AbstractDTO> {
     Optional<T> retrieveDTO(ResultSet resultSet) throws SQLException;
-    List<T> retrieveDTOList(ResultSet resultSet) throws SQLException;
+    List<T> retrieveDtoList(ResultSet resultSet) throws SQLException;
 }

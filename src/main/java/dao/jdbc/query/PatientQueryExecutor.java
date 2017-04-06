@@ -80,7 +80,7 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            return dtoRetriever.retrieveDTOList(resultSet);
+            return dtoRetriever.retrieveDtoList(resultSet);
         }
     }
 
@@ -90,7 +90,7 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            return dtoRetriever.retrieveDTOList(resultSet);
+            return dtoRetriever.retrieveDtoList(resultSet);
         }
     }
 
@@ -102,7 +102,7 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
 
             statement.setString(1, state.toString());
             ResultSet resultSet = statement.executeQuery();
-            return dtoRetriever.retrieveDTOList(resultSet);
+            return dtoRetriever.retrieveDtoList(resultSet);
         }
     }
 

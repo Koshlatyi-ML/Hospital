@@ -49,7 +49,7 @@ public abstract class QueryExecutor<E extends AbstractDTO> {
         try (PreparedStatement statement =
                      connection.prepareStatement(getFindAllQuery())) {
             ResultSet resultSet = statement.executeQuery();
-            return getDtoRetriever().retrieveDTOList(resultSet);
+            return getDtoRetriever().retrieveDtoList(resultSet);
         }
     }
 

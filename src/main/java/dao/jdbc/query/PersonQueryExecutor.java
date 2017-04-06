@@ -26,7 +26,7 @@ public abstract class PersonQueryExecutor<T extends AbstractPersonDTO> extends Q
                      connection.prepareStatement(getFindByFullNameQuery())) {
             statement.setString(1, "%" + fullName + "%");
             ResultSet resultSet = statement.executeQuery();
-            return getDtoRetriever().retrieveDTOList(resultSet);
+            return getDtoRetriever().retrieveDtoList(resultSet);
         }
     }
 
