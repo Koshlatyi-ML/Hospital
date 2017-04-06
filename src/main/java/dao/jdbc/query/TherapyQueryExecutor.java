@@ -17,21 +17,15 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     private PatientTableInfo patientTableInfo;
     private DoctorTableInfo doctorTableInfo;
     private MedicTableInfo medicTableInfo;
-    private final List<String> selectingColumns;
+    private List<String> selectingColumns;
     private DtoValueSupplier<TherapyDTO> dtoValueSupplier;
     private DtoRetriever<TherapyDTO> dtoRetriever;
 
-    TherapyQueryExecutor(TableInfoFactory tableInfoFactory,
-                                ValueSupplierFactory valueSupplierFactory,
-                                DtoRetrieverFactory dtoRetrieverFactory) {
+    TherapyQueryExecutor() {
+    }
 
-        tableInfo = tableInfoFactory.getTherapyTableInfo();
-        patientTableInfo = tableInfoFactory.getPatientTableInfo();
-        doctorTableInfo = tableInfoFactory.getDoctorTableInfo();
-        medicTableInfo = tableInfoFactory.getMedicTableInfo();
-        dtoValueSupplier = valueSupplierFactory.getTherapyDtoValueSupplier();
-        dtoRetriever = dtoRetrieverFactory.getTherapyEntityetriever();
-
+    public void setTableInfo(TherapyTableInfo tableInfo) {
+        this.tableInfo = tableInfo;
         selectingColumns = Arrays.asList(tableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTitleColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
@@ -42,6 +36,26 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                 tableInfo.getPerformerIdColumn(ColumnNameStyle.FULL));
     }
 
+    void setPatientTableInfo(PatientTableInfo patientTableInfo) {
+        this.patientTableInfo = patientTableInfo;
+    }
+
+    void setDoctorTableInfo(DoctorTableInfo doctorTableInfo) {
+        this.doctorTableInfo = doctorTableInfo;
+    }
+
+    void setMedicTableInfo(MedicTableInfo medicTableInfo) {
+        this.medicTableInfo = medicTableInfo;
+    }
+
+    public void setDtoValueSupplier(DtoValueSupplier<TherapyDTO> dtoValueSupplier) {
+        this.dtoValueSupplier = dtoValueSupplier;
+    }
+
+    public void setDtoRetriever(DtoRetriever<TherapyDTO> dtoRetriever) {
+        this.dtoRetriever = dtoRetriever;
+    }
+
     private String getSelectAllFromTherapies() {
         return String.format("SELECT %s FROM %s",
                 Queries.formatAliasedColumns(selectingColumns),
@@ -49,21 +63,21 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     }
 
     private String getInnerJoinPatients() {
-        return String.format(" INNER JOIN %s ON %s = %s ",
+        return String.format(" INNER JOIN %s ON %s=%s ",
                 patientTableInfo.getTableName(),
                 tableInfo.getPatientIdColumn(ColumnNameStyle.FULL),
                 patientTableInfo.getIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getInnerJoinDoctors() {
-        return String.format(" INNER JOIN %s ON %s = %s ",
+        return String.format(" INNER JOIN %s ON %s=%s ",
                 doctorTableInfo.getTableName(),
                 tableInfo.getPerformerIdColumn(ColumnNameStyle.FULL),
                 doctorTableInfo.getIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getInnerJoinMedics() {
-        return String.format(" INNER JOIN %s ON %s = %s ",
+        return String.format(" INNER JOIN %s ON %s=%s ",
                 medicTableInfo.getTableName(),
                 tableInfo.getPerformerIdColumn(ColumnNameStyle.FULL),
                 medicTableInfo.getIdColumn(ColumnNameStyle.FULL));
@@ -72,7 +86,7 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     private String getFindByPatientIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
                         getInnerJoinPatients() +
-                        "WHERE %s = ? AND %s = ?;",
+                        "WHERE %s=? AND %s=?",
                 patientTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL));
     }
@@ -80,8 +94,8 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     private String getFindCurrentByPatientIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
                         getInnerJoinPatients() +
-                        "WHERE %s = ? AND %s = ? " +
-                        "AND %s IS NULL AND %s < now();",
+                        "WHERE %s=? AND %s=? " +
+                        "AND %s IS NULL AND %s<now()",
                 patientTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL),
@@ -91,8 +105,8 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     private String getFindFinishedByPatientIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
                         getInnerJoinPatients() +
-                        "WHERE %s = ? AND %s = ? " +
-                        "AND %s IS NOT NULL;",
+                        "WHERE %s=? AND %s=? " +
+                        "AND %s IS NOT NULL",
                 patientTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL));
@@ -101,8 +115,8 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     private String getFindFutureByPatientIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
                         getInnerJoinPatients() +
-                        "WHERE %s = ? AND %s = ? " +
-                        "AND %s > now();",
+                        "WHERE %s=? AND %s=? " +
+                        "AND %s>now()",
                 patientTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL));
@@ -110,19 +124,19 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
 
     private String getFindByDoctorIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
-                        getInnerJoinPatients() +
+//                        getInnerJoinPatients() +
                         getInnerJoinDoctors() +
-                        "WHERE %s = ? AND %s = ?;",
+                        "WHERE %s=? AND %s=?",
                 doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindCurrentByDoctorIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
-                        getInnerJoinPatients() +
+//                        getInnerJoinPatients() +
                         getInnerJoinDoctors() +
-                        "WHERE %s = ? AND %s = ? " +
-                        "AND %s IS NULL AND %s < now();",
+                        "WHERE %s=? AND %s=? " +
+                        "AND %s IS NULL AND %s<now()",
                 doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL),
@@ -131,10 +145,10 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
 
     private String getFindFinishedByDoctorIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
-                        getInnerJoinPatients() +
+//                        getInnerJoinPatients() +
                         getInnerJoinDoctors() +
-                        "WHERE %s = ? AND %s = ? " +
-                        "AND %s IS NOT NULL;",
+                        "WHERE %s=? AND %s=? " +
+                        "AND %s IS NOT NULL",
                 doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL));
@@ -142,10 +156,10 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
 
     private String getFindFutureByDoctorIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
-                        getInnerJoinPatients() +
+//                        getInnerJoinPatients() +
                         getInnerJoinDoctors() +
-                        "WHERE %s = ? AND %s = ? " +
-                        "AND %s > now();",
+                        "WHERE %s=? AND %s=? " +
+                        "AND %s>now()",
                 doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL));
@@ -153,19 +167,19 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
 
     private String getFindByMedicIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
-                        getInnerJoinPatients() +
+//                        getInnerJoinPatients() +
                         getInnerJoinMedics() +
-                        "WHERE %s = ? AND %s = ?;",
+                        "WHERE %s=? AND %s=?",
                 medicTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindCurrentByMedicIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
-                        getInnerJoinPatients() +
+//                        getInnerJoinPatients() +
                         getInnerJoinMedics() +
-                        "WHERE %s = ? AND %s = ? " +
-                        "AND %s IS NULL AND %s < now();",
+                        "WHERE %s=? AND %s=? " +
+                        "AND %s IS NULL AND %s<now()",
                 medicTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL),
@@ -174,10 +188,10 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
 
     private String getFindFinishedByMedicIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
-                        getInnerJoinPatients() +
+//                        getInnerJoinPatients() +
                         getInnerJoinMedics() +
-                        "WHERE %s = ? AND %s = ? " +
-                        "AND %s IS NOT NULL;",
+                        "WHERE %s=? AND %s=? " +
+                        "AND %s IS NOT NULL",
                 medicTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL));
@@ -185,17 +199,17 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
 
     private String getFindFutureByMedicIdAndTypeQuery() {
         return String.format(getSelectAllFromTherapies() +
-                        getInnerJoinPatients() +
+//                        getInnerJoinPatients() +
                         getInnerJoinMedics() +
-                        "WHERE %s = ? AND %s = ? " +
-                        "AND %s > now();",
+                        "WHERE %s=? AND %s=? " +
+                        "AND %s>now()",
                 medicTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getTypeColumn(ColumnNameStyle.FULL),
                 tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL));
     }
 
-    private List<TherapyDTO> queryFindByIdAndType(
-            Connection connection, long id, Therapy.Type type, String sqlQuery)
+    private List<TherapyDTO> queryFindByIdAndType(Connection connection, long id,
+                                                  TherapyDTO.Type type, String sqlQuery)
             throws SQLException {
 
         try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
@@ -207,84 +221,84 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     }
 
     public List<TherapyDTO> queryFindByPatientIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindByPatientIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindCurrentByPatientIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindCurrentByPatientIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindFinishedByPatientIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFinishedByPatientIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindFutureByPatientIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFutureByPatientIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindByDoctorIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindByDoctorIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindCurrentByDoctorIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindCurrentByDoctorIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindFinishedByDoctorIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFinishedByDoctorIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindFutureByDoctorIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFutureByDoctorIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindByMedicIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindByMedicIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindCurrentByMedicIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindCurrentByMedicIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindFinishedByMedicIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFinishedByMedicIdAndTypeQuery());
     }
 
     public List<TherapyDTO> queryFindFutureByMedicIdAndType(
-            Connection connection, long id, Therapy.Type type) throws SQLException {
+            Connection connection, long id, TherapyDTO.Type type) throws SQLException {
 
         return queryFindByIdAndType(connection, id, type,
                 getFindFutureByMedicIdAndTypeQuery());

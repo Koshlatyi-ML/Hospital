@@ -19,20 +19,14 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
     private PatientTableInfo tableInfo;
     private StuffTableInfo stuffTableInfo;
     private DoctorTableInfo doctorTableInfo;
-    private final List<String> selectingColumns;
+    private List<String> selectingColumns;
     private DtoValueSupplier<PatientDTO> dtoValueSupplier;
     private DtoRetriever<PatientDTO> dtoRetriever;
 
-    PatientQueryExecutor(TableInfoFactory tableInfoFactory,
-                                ValueSupplierFactory valueSupplierFactory,
-                                DtoRetrieverFactory dtoRetrieverFactory) {
+    PatientQueryExecutor() {}
 
-        tableInfo = tableInfoFactory.getPatientTableInfo();
-        stuffTableInfo = tableInfoFactory.getStuffTableInfo();
-        doctorTableInfo = tableInfoFactory.getDoctorTableInfo();
-        dtoValueSupplier = valueSupplierFactory.getPatientDtoValueSupplier();
-        dtoRetriever = dtoRetrieverFactory.getPatientDtoRetriever();
-
+    void setTableInfo(PatientTableInfo tableInfo) {
+        this.tableInfo = tableInfo;
         selectingColumns = Arrays.asList(tableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getNameColumn(ColumnNameStyle.FULL),
                 tableInfo.getSurnameColumn(ColumnNameStyle.FULL),
@@ -42,11 +36,27 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
                 tableInfo.getStateColumn(ColumnNameStyle.FULL));
     }
 
+    void setStuffTableInfo(StuffTableInfo stuffTableInfo) {
+        this.stuffTableInfo = stuffTableInfo;
+    }
+
+    void setDoctorTableInfo(DoctorTableInfo doctorTableInfo) {
+        this.doctorTableInfo = doctorTableInfo;
+    }
+
+    void setDtoValueSupplier(DtoValueSupplier<PatientDTO> dtoValueSupplier) {
+        this.dtoValueSupplier = dtoValueSupplier;
+    }
+
+    void setDtoRetriever(DtoRetriever<PatientDTO> dtoRetriever) {
+        this.dtoRetriever = dtoRetriever;
+    }
+
     private String getFindByDepartmentIdQuery() {
         return String.format("SELECT %s FROM %s " +
-                        "INNER JOIN %s ON %s = %s " +
-                        "INNER JOIN %s ON %s = %s " +
-                        "WHERE %s = ?;",
+                        "INNER JOIN %s ON %s=%s " +
+                        "INNER JOIN %s ON %s=%s " +
+                        "WHERE %s=?",
                 Queries.formatAliasedColumns(selectingColumns),
                 tableInfo.getTableName(),
                 doctorTableInfo.getTableName(),
@@ -59,14 +69,14 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
     }
 
     private String getFindByDoctorIdQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s = ?;",
+        return String.format("SELECT %s FROM %s WHERE %s=?",
                 Queries.formatAliasedColumns(selectingColumns),
                 tableInfo.getTableName(),
                 tableInfo.getDoctorIdColumn(ColumnNameStyle.FULL));
     }
 
     private String getFindByStateQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s = ?;",
+        return String.format("SELECT %s FROM %s WHERE %s=?",
                 Queries.formatAliasedColumns(selectingColumns),
                 tableInfo.getTableName(),
                 tableInfo.getStateColumn(ColumnNameStyle.FULL));

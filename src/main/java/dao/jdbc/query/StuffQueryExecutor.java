@@ -11,22 +11,22 @@ import java.util.List;
 
 public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends PersonQueryExecutor<T> {
 
-    private String getInsertStuffQuery() {
-        return String.format("INSERT INTO %s %s VALUES %s;",
+     private String getInsertStuffQuery() {
+        return String.format("INSERT INTO %s %s VALUES %s",
                 getTableInfo().getTableName(),
-                Queries.formatColumnNames(getTableInfo().getNonGeneratingColumns()),
-                Queries.formatPlaceholders(getTableInfo().getNonGeneratingColumns().size()));
+                Queries.formatInsertColumnNames(getTableInfo().getNonGeneratingColumns()),
+                Queries.formatInsertPlaceholders(getTableInfo().getNonGeneratingColumns().size()));
     }
 
     private String getUpdateStuffQuery() {
-        return String.format("UPDATE %s SET %s WHERE %s=?;",
+        return String.format("UPDATE %s SET %s WHERE %s=?",
                 getTableInfo().getTableName(),
-                Queries.formatColumnPlaceholders(getTableInfo().getNonGeneratingColumns()),
+                Queries.formatUpdateColumnPlaceholders(getTableInfo().getNonGeneratingColumns()),
                 getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
     }
 
     private String getDeleteStuffQuery() {
-        return String.format("DELETE FROM %s WHERE %s = ?;",
+        return String.format("DELETE FROM %s WHERE %s=?",
                 getTableInfo().getTableName(),
                 getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
     }

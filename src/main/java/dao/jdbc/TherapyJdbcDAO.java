@@ -26,7 +26,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findCurrentByDoctorIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findCurrentByDoctorIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -47,7 +47,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findCurrentByMedicIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findCurrentByMedicIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -68,7 +68,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findCurrentByPatientIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findCurrentByPatientIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -89,7 +89,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFinishedByDoctorIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findFinishedByDoctorIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -110,7 +110,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFinishedByMedicIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findFinishedByMedicIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -131,7 +131,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFinishedByPatientIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findFinishedByPatientIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -152,7 +152,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFutureByDoctorIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findFutureByDoctorIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -173,7 +173,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFutureByMedicIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findFutureByMedicIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -194,7 +194,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFutureByPatientIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findFutureByPatientIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -215,7 +215,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findByDoctorIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findByDoctorIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -236,7 +236,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findByMedicIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findByMedicIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {
@@ -257,7 +257,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findByPatientIdAndType(long id, Therapy.Type type) {
+    public List<TherapyDTO> findByPatientIdAndType(long id, TherapyDTO.Type type) {
         Connection connection = connectionManager.getConnection();
         if (connectionManager.isTransactional()) {
             try {

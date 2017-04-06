@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class PersonQueryExecutor<T extends AbstractPersonDTO> extends QueryExecutor<T> {
 
     String getFindByFullNameQuery() {
-        return String.format("SELECT %s FROM %s WHERE LOWER(%s || %s) LIKE LOWER(?);",
+        return String.format("SELECT %s FROM %s WHERE LOWER(%s||%s) LIKE LOWER(?)",
                 Queries.formatAliasedColumns(getSelectingColumns()),
                 getTableInfo().getTableName(),
                 getTableInfo().getNameColumn(ColumnNameStyle.FULL),

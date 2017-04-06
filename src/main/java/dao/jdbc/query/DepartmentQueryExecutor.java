@@ -20,25 +20,30 @@ import java.util.Optional;
 
 public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
     private DepartmentTableInfo tableInfo;
-    private final List<String> selectingColumns;
-
     private DtoValueSupplier<DepartmentDTO> dtoValueSupplier;
     private DtoRetriever<DepartmentDTO> dtoRetriever;
 
-    DepartmentQueryExecutor(TableInfoFactory tableInfoFactory,
-                                   ValueSupplierFactory valueSupplierFactory,
-                                   DtoRetrieverFactory dtoRetrieverFactory) {
+    private List<String> selectingColumns;
 
-        dtoRetriever = dtoRetrieverFactory.getDepartmentDtoRetriever();
-        dtoValueSupplier = valueSupplierFactory.getDepartmentDtoValueSupplier();
-        tableInfo = tableInfoFactory.getDepartmentTableInfo();
+    DepartmentQueryExecutor() {}
+
+    void setTableInfo(DepartmentTableInfo tableInfo) {
+        this.tableInfo = tableInfo;
         selectingColumns = Arrays.asList(
                 tableInfo.getIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getNameColumn(ColumnNameStyle.FULL));
     }
 
+    void setDtoValueSupplier(DtoValueSupplier<DepartmentDTO> dtoValueSupplier) {
+        this.dtoValueSupplier = dtoValueSupplier;
+    }
+
+    void setDtoRetriever(DtoRetriever<DepartmentDTO> dtoRetriever) {
+        this.dtoRetriever = dtoRetriever;
+    }
+
     private String getFindByNameQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s = ?;",
+        return String.format("SELECT %s FROM %s WHERE %s=?",
                 Queries.formatAliasedColumns(selectingColumns),
                 tableInfo.getTableName(),
                 tableInfo.getNameColumn(ColumnNameStyle.FULL));

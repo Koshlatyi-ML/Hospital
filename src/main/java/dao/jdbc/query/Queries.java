@@ -8,18 +8,22 @@ class Queries {
     private Queries() {
     }
 
-    static String formatColumnNames(List<String> columns) {
+    static String formatInsertColumnNames(List<String> columns) {
         return "(" + String.join(",", columns) + ")";
     }
 
-    static String formatPlaceholders(int count) {
+    static String formatInsertPlaceholders(int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException();
+        }
+
         return "(" + String.join(",", Collections.nCopies(count, "?")) + ")";
     }
 
-    static String formatColumnPlaceholders(List<String> columns) {
+    static String formatUpdateColumnPlaceholders(List<String> columns) {
         return columns.stream()
                 .map(c -> c += "=?")
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining(","));
     }
 
 

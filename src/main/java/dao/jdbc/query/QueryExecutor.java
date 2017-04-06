@@ -10,15 +10,15 @@ import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class QueryExecutor<E extends AbstractDTO> {
+public abstract class QueryExecutor<T extends AbstractDTO> {
     String getFindAllQuery() {
-        return String.format("SELECT %s FROM %s;",
+        return String.format("SELECT %s FROM %s",
                 Queries.formatAliasedColumns(getSelectingColumns()),
                 getTableInfo().getTableName());
     }
 
     String getFindByIdQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s = ?;",
+        return String.format("SELECT %s FROM %s WHERE %s=?",
                 Queries.formatAliasedColumns(getSelectingColumns()),
                 getTableInfo().getTableName(),
                 getTableInfo().getIdColumn(ColumnNameStyle.FULL));
@@ -26,26 +26,26 @@ public abstract class QueryExecutor<E extends AbstractDTO> {
 
 
     String getInsertQuery() {
-        return String.format("INSERT INTO %s %s VALUES %s;",
+        return String.format("INSERT INTO %s %s VALUES %s",
                 getTableInfo().getTableName(),
-                Queries.formatColumnNames(getTableInfo().getNonGeneratingColumns()),
-                Queries.formatPlaceholders(getTableInfo().getNonGeneratingColumns().size()));
+                Queries.formatInsertColumnNames(getTableInfo().getNonGeneratingColumns()),
+                Queries.formatInsertPlaceholders(getTableInfo().getNonGeneratingColumns().size()));
     }
 
     String getUpdateQuery() {
-        return String.format("UPDATE %s SET %s WHERE %s = ?;",
+        return String.format("UPDATE %s SET %s WHERE %s=?",
                 getTableInfo().getTableName(),
-                Queries.formatColumnPlaceholders(getTableInfo().getNonGeneratingColumns()),
+                Queries.formatUpdateColumnPlaceholders(getTableInfo().getNonGeneratingColumns()),
                 getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
     }
 
     String getDeleteQuery() {
-        return String.format("DELETE FROM %s WHERE %s = ?;",
+        return String.format("DELETE FROM %s WHERE %s=?",
                 getTableInfo().getTableName(),
                 getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
     }
 
-    public List<E> queryFindAll(Connection connection) throws SQLException {
+    public List<T> queryFindAll(Connection connection) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getFindAllQuery())) {
             ResultSet resultSet = statement.executeQuery();
@@ -53,7 +53,7 @@ public abstract class QueryExecutor<E extends AbstractDTO> {
         }
     }
 
-    public Optional<E> queryFindById(Connection connection, long id) throws SQLException {
+    public Optional<T> queryFindById(Connection connection, long id) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getFindByIdQuery())) {
             statement.setLong(1, id);
@@ -62,7 +62,7 @@ public abstract class QueryExecutor<E extends AbstractDTO> {
         }
     }
 
-    public void queryInsert(Connection connection, E dto) throws SQLException {
+    public void queryInsert(Connection connection, T dto) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getInsertQuery(),
                              Statement.RETURN_GENERATED_KEYS)) {
@@ -75,7 +75,7 @@ public abstract class QueryExecutor<E extends AbstractDTO> {
         }
     }
 
-    public void queryUpdate(Connection connection, E dto) throws SQLException {
+    public void queryUpdate(Connection connection, T dto) throws SQLException {
         try (PreparedStatement statement =
                      connection.prepareStatement(getUpdateQuery())) {
             int index = getDtoValueSupplier().supplyValues(statement, dto);
@@ -84,7 +84,7 @@ public abstract class QueryExecutor<E extends AbstractDTO> {
         }
     }
 
-    public void queryDelete(Connection connection, E dto) throws SQLException {
+    public void queryDelete(Connection connection, T dto) throws SQLException {
         queryDelete(connection, dto.getId());
     }
 
@@ -96,9 +96,9 @@ public abstract class QueryExecutor<E extends AbstractDTO> {
         }
     }
 
-    protected abstract DtoRetriever<E> getDtoRetriever();
+    protected abstract DtoRetriever<T> getDtoRetriever();
 
-    protected abstract DtoValueSupplier<E> getDtoValueSupplier();
+    protected abstract DtoValueSupplier<T> getDtoValueSupplier();
 
     protected abstract PlainTableInfo getTableInfo();
 
