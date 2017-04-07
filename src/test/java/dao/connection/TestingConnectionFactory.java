@@ -1,5 +1,7 @@
 package dao.connection;
 
+import org.postgresql.ds.PGConnectionPoolDataSource;
+import org.postgresql.ds.PGPooledConnection;
 import util.load.PropertyLoader;
 
 import java.sql.Connection;
@@ -10,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class TestingConnectionFactory extends ConnectionFactory {
+    private PGConnectionPoolDataSource dataSource;
     private Properties connectionProperies;
     private final String URL_KEY = "url";
     private final String USER_KEY = "user";
@@ -19,6 +22,10 @@ public class TestingConnectionFactory extends ConnectionFactory {
         String CONNECTION_PROPERTIES_PATH = "dao/connection.properties";
         connectionProperies = PropertyLoader.getInstance()
                 .getProperties(CONNECTION_PROPERTIES_PATH);
+        dataSource = new PGConnectionPoolDataSource();
+        dataSource.setUrl(connectionProperies.getProperty(URL_KEY));
+        dataSource.setUser(connectionProperies.getProperty(USER_KEY));
+        dataSource.setPassword(connectionProperies.getProperty(PASSWORD_KEY));
     }
 
     private static class Holder {
@@ -31,10 +38,7 @@ public class TestingConnectionFactory extends ConnectionFactory {
 
     public Connection getConnection() {
         try {
-            return DriverManager.getConnection(
-                    connectionProperies.getProperty(URL_KEY),
-                    connectionProperies.getProperty(USER_KEY),
-                    connectionProperies.getProperty(PASSWORD_KEY));
+            return dataSource.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

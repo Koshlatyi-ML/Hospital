@@ -48,13 +48,6 @@ public class PersonJdbcDAOTest {
         verify(connectionMock).close();
     }
 
-    @Test
-    public void findByFullNameTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        personJdbcDaoSpy.findByFullName("Misha");
-        verify(connectionMock, Mockito.never()).close();
-    }
-
     @Test(expected = RuntimeException.class)
     public void findByFullNameTransactionalSqlExceptionRollback() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(true);

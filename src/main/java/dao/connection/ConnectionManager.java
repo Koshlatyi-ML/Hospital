@@ -2,8 +2,6 @@ package dao.connection;
 
 import dao.connection.exception.IllegalTransactionStateException;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,12 +19,14 @@ public class ConnectionManager {
     }
 
     public Connection getConnection() {
-        Connection connection = Optional.ofNullable(connectionThreadLocal.get())
+        return Optional.ofNullable(connectionThreadLocal.get())
                 .orElse(connectionFactory.getConnection());
+    }
 
+    private Connection transactionalProxyConnection(Connection connection) {
         return (Connection) Proxy.newProxyInstance(
                 getClass().getClassLoader(),
-                Connection.class.getInterfaces(),
+                new Class[]{Connection.class, AutoCloseable.class},
                 (proxy, method, args) -> {
                     if (method.getName().equals("close") && isTransactional()) {
                         return null;
@@ -41,7 +41,7 @@ public class ConnectionManager {
     }
 
     public void beginTransaction(int isolationLevel) {
-        Connection connection = connectionFactory.getConnection();
+        Connection connection = getConnection();
         try {
             connection.setAutoCommit(false);
             connection.setTransactionIsolation(isolationLevel);
@@ -54,8 +54,12 @@ public class ConnectionManager {
             }
             throw new RuntimeException(e);
         }
-        connectionThreadLocal.set(connection);
+
         nestedTransactionsThreadLocal.set(nestedTransactionsThreadLocal.get() + 1);
+
+        if (!isTransactional()) {
+            connectionThreadLocal.set(transactionalProxyConnection(connection));
+        }
     }
 
     public void finishTransaction() {

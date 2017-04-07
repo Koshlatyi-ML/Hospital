@@ -15,8 +15,8 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
 
     @Override
     public Optional<T> find(long id) {
-        try (Connection connection1 = connectionManager.getConnection()) {
-            return getQueryExecutor().queryFindById(connection1, id);
+        try (Connection connection = connectionManager.getConnection()) {
+            return getQueryExecutor().queryFindById(connection, id);
         } catch (SQLException e) {
             connectionManager.tryRollback();
             throw new RuntimeException(e);

@@ -51,13 +51,6 @@ public class CrudJdbcDAOTest {
         verify(connectionMock).close();
     }
 
-    @Test
-    public void findTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        crudJdbcDaoSpy.find(100L);
-        verify(connectionMock, Mockito.never()).close();
-    }
-
     @Test(expected = RuntimeException.class)
     public void findTransactionalSqlExceptionRollback() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
@@ -79,13 +72,6 @@ public class CrudJdbcDAOTest {
         when(crudJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         crudJdbcDaoSpy.findAll();
         verify(connectionMock).close();
-    }
-
-    @Test
-    public void findAllTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        crudJdbcDaoSpy.findAll();
-        verify(connectionMock, Mockito.never()).close();
     }
 
     @Test(expected = RuntimeException.class)
@@ -111,13 +97,6 @@ public class CrudJdbcDAOTest {
         verify(connectionMock).close();
     }
 
-    @Test
-    public void createTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        crudJdbcDaoSpy.create(mock(AbstractDTO.class));
-        verify(connectionMock, Mockito.never()).close();
-    }
-
     @Test(expected = RuntimeException.class)
     public void createTransactionalSqlExceptionRollback() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
@@ -139,13 +118,6 @@ public class CrudJdbcDAOTest {
         when(crudJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         crudJdbcDaoSpy.update(mock(AbstractDTO.class));
         verify(connectionMock).close();
-    }
-
-    @Test
-    public void updateTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        crudJdbcDaoSpy.update(mock(AbstractDTO.class));
-        verify(connectionMock, Mockito.never()).close();
     }
 
     @Test(expected = RuntimeException.class)
@@ -173,13 +145,6 @@ public class CrudJdbcDAOTest {
         when(crudJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         crudJdbcDaoSpy.delete(100L);
         verify(connectionMock).close();
-    }
-
-    @Test
-    public void deleteTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        crudJdbcDaoSpy.delete(100L);
-        verify(connectionMock, Mockito.never()).close();
     }
 
     @Test(expected = RuntimeException.class)

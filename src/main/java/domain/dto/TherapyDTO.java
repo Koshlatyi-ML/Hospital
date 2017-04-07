@@ -66,8 +66,7 @@ public class TherapyDTO extends AbstractDTO {
             throw new IllegalStateException();
         }
 
-        this.completeDateTime = Optional.ofNullable(completeDateTime)
-                .orElseThrow(IllegalArgumentException::new);
+        this.completeDateTime = completeDateTime;
         isCompleted = true;
     }
 

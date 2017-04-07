@@ -51,13 +51,6 @@ public class StuffJdbcDAOTest {
         verify(connectionMock).close();
     }
 
-    @Test
-    public void createTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        stuffJdbcDaoSpy.create(mock(AbstractStuffDTO.class));
-        verify(connectionMock, Mockito.never()).close();
-    }
-
     @Test(expected = RuntimeException.class)
     public void createTransactionalSqlExceptionRollback() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
@@ -83,13 +76,6 @@ public class StuffJdbcDAOTest {
         when(stuffJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         stuffJdbcDaoSpy.update(mock(AbstractStuffDTO.class));
         verify(connectionMock).close();
-    }
-
-    @Test
-    public void updateTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        stuffJdbcDaoSpy.update(mock(AbstractStuffDTO.class));
-        verify(connectionMock, Mockito.never()).close();
     }
 
     @Test(expected = RuntimeException.class)
@@ -119,13 +105,6 @@ public class StuffJdbcDAOTest {
         verify(connectionMock).close();
     }
 
-    @Test
-    public void deleteTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        stuffJdbcDaoSpy.delete(mock(AbstractStuffDTO.class));
-        verify(connectionMock, Mockito.never()).close();
-    }
-
     @Test(expected = RuntimeException.class)
     public void deleteTransactionalSqlExceptionRollback() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
@@ -140,13 +119,6 @@ public class StuffJdbcDAOTest {
         when(stuffJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         stuffJdbcDaoSpy.findByDepartmentId(100L);
         verify(connectionMock).close();
-    }
-
-    @Test
-    public void findByDepartmentIdTransactionalNotCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        stuffJdbcDaoSpy.findByDepartmentId(100L);
-        verify(connectionMock, Mockito.never()).close();
     }
 
     @Test(expected = RuntimeException.class)
