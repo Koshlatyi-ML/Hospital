@@ -3,7 +3,6 @@ package dao.jdbc;
 import dao.TherapyDAO;
 import dao.connection.ConnectionManager;
 import dao.jdbc.query.QueryExecutor;
-import dao.jdbc.query.QueryExecutorFactory;
 import dao.jdbc.query.TherapyQueryExecutor;
 import domain.dto.TherapyDTO;
 
@@ -22,253 +21,121 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
 
     @Override
     public List<TherapyDTO> findCurrentByDoctorIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindCurrentByDoctorIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindCurrentByDoctorIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindCurrentByDoctorIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findCurrentByMedicIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindCurrentByMedicIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindCurrentByMedicIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindCurrentByMedicIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findCurrentByPatientIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindCurrentByPatientIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindCurrentByPatientIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindCurrentByPatientIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findFinishedByDoctorIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindFinishedByDoctorIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindFinishedByDoctorIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindFinishedByDoctorIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findFinishedByMedicIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindFinishedByMedicIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindFinishedByMedicIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindFinishedByMedicIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findFinishedByPatientIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindFinishedByPatientIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindFinishedByPatientIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindFinishedByPatientIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findFutureByDoctorIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindFutureByDoctorIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindFutureByDoctorIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindFutureByDoctorIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findFutureByMedicIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindFutureByMedicIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindFutureByMedicIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindFutureByMedicIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findFutureByPatientIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindFutureByPatientIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindFutureByPatientIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindFutureByPatientIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findByDoctorIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindByDoctorIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindByDoctorIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByDoctorIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findByMedicIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindByMedicIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindByMedicIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByMedicIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<TherapyDTO> findByPatientIdAndType(long id, TherapyDTO.Type type) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return queryExecutor
-                        .queryFindByPatientIdAndType(connection, id, type);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return queryExecutor
-                        .queryFindByPatientIdAndType(localConnection, id, type);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByPatientIdAndType(connection, id, type);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 

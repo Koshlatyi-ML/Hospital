@@ -1,9 +1,7 @@
 package dao.jdbc;
 
 import dao.connection.ConnectionManager;
-import dao.jdbc.query.PersonQueryExecutor;
 import dao.jdbc.query.StuffQueryExecutor;
-import domain.dto.AbstractDTO;
 import domain.dto.AbstractStuffDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +10,6 @@ import org.mockito.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -66,7 +63,7 @@ public class StuffJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(stuffJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         stuffJdbcDaoSpy.create(mock(AbstractStuffDTO.class));
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -100,7 +97,7 @@ public class StuffJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(stuffJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         stuffJdbcDaoSpy.update(mock(AbstractStuffDTO.class));
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -134,7 +131,7 @@ public class StuffJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(stuffJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         stuffJdbcDaoSpy.delete(mock(AbstractStuffDTO.class));
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test(expected = RuntimeException.class)
@@ -157,6 +154,6 @@ public class StuffJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(stuffJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         stuffJdbcDaoSpy.findByDepartmentId(100L);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 }

@@ -1,7 +1,6 @@
 package dao.jdbc;
 
 import dao.connection.ConnectionManager;
-import dao.jdbc.query.DepartmentQueryExecutor;
 import dao.jdbc.query.PatientQueryExecutor;
 import domain.Patient;
 import org.junit.Before;
@@ -13,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -61,7 +59,7 @@ public class PatientJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
         jdbcDao.findByDepartmentId(100L);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -91,7 +89,7 @@ public class PatientJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
         jdbcDao.findByDoctorId(100L);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -121,6 +119,6 @@ public class PatientJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
         jdbcDao.findByState(Patient.State.ADDMITTED);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 }

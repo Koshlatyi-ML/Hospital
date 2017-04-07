@@ -25,7 +25,8 @@ public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
 
     private List<String> selectingColumns;
 
-    DepartmentQueryExecutor() {}
+    DepartmentQueryExecutor() {
+    }
 
     void setTableInfo(DepartmentTableInfo tableInfo) {
         this.tableInfo = tableInfo;
@@ -52,12 +53,11 @@ public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
     public Optional<DepartmentDTO> queryFindByName(Connection connection, String name)
             throws SQLException {
 
-        try (PreparedStatement statement =
-                     connection.prepareStatement(getFindByNameQuery())) {
+        try (PreparedStatement statement = connection.prepareStatement(getFindByNameQuery())) {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDTO(resultSet);
-        } catch (SQLException e) {
+        } catch(SQLException e){
             throw new RuntimeException(e);
         }
     }

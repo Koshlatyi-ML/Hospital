@@ -13,22 +13,12 @@ public abstract class PersonJdbcDAO<E extends AbstractPersonDTO> extends CrudJdb
 
     @Override
     public List<E> findByFullName(String fullName) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return getQueryExecutor()
-                        .queryFindByFullName(connection, fullName);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connectionManager.getConnection()) {
-                return getQueryExecutor()
-                        .queryFindByFullName(localConnection, fullName);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return getQueryExecutor()
+                    .queryFindByFullName(connection, fullName);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 

@@ -15,77 +15,40 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
 
     @Override
     public Optional<T> find(long id) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return getQueryExecutor().queryFindById(connection, id);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return getQueryExecutor().queryFindById(localConnection, id);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection1 = connectionManager.getConnection()) {
+            return getQueryExecutor().queryFindById(connection1, id);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<T> findAll() {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                return getQueryExecutor().queryFindAll(connection);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                return getQueryExecutor().queryFindAll(localConnection);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return getQueryExecutor().queryFindAll(connection);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void create(T dto) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                getQueryExecutor().queryInsert(connection, dto);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                getQueryExecutor().queryInsert(localConnection, dto);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            getQueryExecutor().queryInsert(connection, dto);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void update(T dto) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                getQueryExecutor().queryUpdate(connection, dto);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                getQueryExecutor().queryUpdate(localConnection, dto);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            getQueryExecutor().queryUpdate(connection, dto);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 
@@ -96,20 +59,11 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
 
     @Override
     public void delete(long id) {
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                getQueryExecutor().queryDelete(connection, id);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                getQueryExecutor().queryDelete(localConnection, id);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            getQueryExecutor().queryDelete(connection, id);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
     }
 

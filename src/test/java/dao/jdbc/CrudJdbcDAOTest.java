@@ -63,7 +63,7 @@ public class CrudJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(crudJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         crudJdbcDaoSpy.find(100L);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -93,7 +93,7 @@ public class CrudJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(crudJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         crudJdbcDaoSpy.findAll();
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -123,7 +123,7 @@ public class CrudJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(crudJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         crudJdbcDaoSpy.create(mock(AbstractDTO.class));
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -153,7 +153,7 @@ public class CrudJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(crudJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         crudJdbcDaoSpy.update(mock(AbstractDTO.class));
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -187,7 +187,7 @@ public class CrudJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(crudJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         crudJdbcDaoSpy.delete(100L);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test

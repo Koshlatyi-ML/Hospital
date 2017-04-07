@@ -23,38 +23,17 @@ public class DoctorJdbcDAO extends StuffJdbcDAO<DoctorDTO> implements DoctorDAO 
 
     @Override
     public Optional<DoctorDTO> findByPatientId(long id) {
-        Optional<DoctorDTO> doctorOptional;
-
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                doctorOptional =
-                        queryExecutor.queryFindByPatientId(connection, id);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                doctorOptional =
-                        queryExecutor.queryFindByPatientId(localConnection, id);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByPatientId(connection, id);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
-
-        return doctorOptional;
     }
 
     @Override
     protected DoctorQueryExecutor getQueryExecutor() {
         return queryExecutor;
-    }
-
-    private static String getAliased(List<String> strings) {
-        return strings.stream()
-                .map(s -> s += " AS \"" + s + "\"")
-                .collect(Collectors.joining(","));
     }
 
     public static void main(String[] args) {
@@ -82,8 +61,6 @@ public class DoctorJdbcDAO extends StuffJdbcDAO<DoctorDTO> implements DoctorDAO 
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
-
-
 
 
 //        doctorDao.find(44).ifPresent(System.out::println);

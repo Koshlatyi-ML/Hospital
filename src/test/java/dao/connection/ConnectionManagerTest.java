@@ -238,7 +238,7 @@ public class ConnectionManagerTest {
 
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
-        connectionManager.rollbackTransaction();
+        connectionManager.tryRollback();
 
         verify(observedMock).rollback();
     }
@@ -253,7 +253,7 @@ public class ConnectionManagerTest {
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         try {
-            connectionManager.rollbackTransaction();
+            connectionManager.tryRollback();
         } catch (RuntimeException e) {
             assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
         }
@@ -272,7 +272,7 @@ public class ConnectionManagerTest {
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         try {
-            connectionManager.rollbackTransaction();
+            connectionManager.tryRollback();
         } catch (RuntimeException e) {
             assertNotSame(connectionManager.getConnection(), connectionManager.getConnection());
         }
@@ -288,7 +288,7 @@ public class ConnectionManagerTest {
     public void isTransactionalFalseRollbacked() throws Exception {
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
-        connectionManager.rollbackTransaction();
+        connectionManager.tryRollback();
         assertFalse(connectionManager.isTransactional());
     }
 
@@ -308,16 +308,9 @@ public class ConnectionManagerTest {
     }
 
     @Test(expected = IllegalTransactionStateException.class)
-    public void IllegalTransactionalMultiplyBegin() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
-        connectionManager.beginTransaction();
-        connectionManager.beginTransaction();
-    }
-
-    @Test(expected = IllegalTransactionStateException.class)
     public void IllegalTransactionalRollbackWithoutBegin() throws Exception {
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
-        connectionManager.rollbackTransaction();
+        connectionManager.tryRollback();
         assertTrue(connectionManager.isTransactional());
     }
 

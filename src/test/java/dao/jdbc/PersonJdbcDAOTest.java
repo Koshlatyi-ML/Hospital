@@ -2,7 +2,6 @@ package dao.jdbc;
 
 import dao.connection.ConnectionManager;
 import dao.jdbc.query.PersonQueryExecutor;
-import dao.jdbc.query.QueryExecutor;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -61,6 +60,6 @@ public class PersonJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(personJdbcDaoSpy.getQueryExecutor()).thenThrow(SQLException.class);
         personJdbcDaoSpy.findByFullName("Misha");
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 }

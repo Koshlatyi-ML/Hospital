@@ -16,30 +16,18 @@ public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements Dep
     DepartmentJdbcDAO(DepartmentQueryExecutor queryExecutor,
                       ConnectionManager connectionManager) {
 
-        this.queryExecutor  = queryExecutor;
+        this.queryExecutor = queryExecutor;
         this.connectionManager = connectionManager;
     }
 
     @Override
     public Optional<DepartmentDTO> findByName(String name) {
-        Optional<DepartmentDTO> departmentOptional;
-        Connection connection = connectionManager.getConnection();
-        if (connectionManager.isTransactional()) {
-            try {
-                departmentOptional = queryExecutor.queryFindByName(connection, name);
-            } catch (SQLException e) {
-                connectionManager.rollbackTransaction();
-                throw new RuntimeException(e);
-            }
-        } else {
-            try (Connection localConnection = connection) {
-                departmentOptional = queryExecutor.queryFindByName(localConnection, name);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByName(connection, name);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
         }
-
-        return departmentOptional;
     }
 
     @Override

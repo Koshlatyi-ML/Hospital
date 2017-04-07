@@ -1,7 +1,6 @@
 package dao.jdbc;
 
 import dao.connection.ConnectionManager;
-import dao.jdbc.query.PatientQueryExecutor;
 import dao.jdbc.query.TherapyQueryExecutor;
 import domain.dto.TherapyDTO;
 import org.junit.Before;
@@ -13,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -62,7 +60,7 @@ public class TherapyJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
         jdbcDao.findCurrentByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -93,7 +91,7 @@ public class TherapyJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
         jdbcDao.findCurrentByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -124,7 +122,7 @@ public class TherapyJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
         jdbcDao.findCurrentByPatientIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -155,7 +153,7 @@ public class TherapyJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
         jdbcDao.findFinishedByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -186,7 +184,7 @@ public class TherapyJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
         jdbcDao.findFinishedByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -217,7 +215,7 @@ public class TherapyJdbcDAOTest {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
         jdbcDao.findFinishedByPatientIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionManagerMock).rollbackTransaction();
+        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
