@@ -1,27 +1,22 @@
 package dao.jdbc;
 
-import dao.DaoFactory;
-import dao.DaoManager;
 import dao.TherapyDAO;
 import dao.connection.ConnectionManager;
 import dao.jdbc.query.QueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import dao.jdbc.query.TherapyQueryExecutor;
-import domain.Therapy;
 import domain.dto.TherapyDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.*;
 
 public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDAO {
     private TherapyQueryExecutor queryExecutor;
 
-    TherapyJdbcDAO(QueryExecutorFactory queryExecutorFactory,
+    TherapyJdbcDAO(TherapyQueryExecutor queryExecutor,
                    ConnectionManager connectionManager) {
-        queryExecutor = queryExecutorFactory.getTherapyQueryExecutor();
+        this.queryExecutor = queryExecutor;
         this.connectionManager = connectionManager;
     }
 

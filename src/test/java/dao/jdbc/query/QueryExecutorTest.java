@@ -82,7 +82,7 @@ public class QueryExecutorTest {
         String tested = queryExecutorSpy.getUpdateQuery();
         assertEquals(
                 "UPDATE " + TABLE_NAME +
-                        " SET (b=?,c=?)" +
+                        " SET b=?,c=?" +
                         " WHERE " + ID + "=?",
                 tested);
     }

@@ -1,11 +1,9 @@
 package dao.jdbc;
 
-import dao.DaoFactory;
 import dao.DaoManager;
 import dao.DoctorDAO;
 import dao.connection.ConnectionManager;
 import dao.jdbc.query.DoctorQueryExecutor;
-import dao.jdbc.query.QueryExecutorFactory;
 import domain.dto.DoctorDTO;
 
 import java.sql.*;
@@ -16,10 +14,10 @@ import java.util.stream.Collectors;
 public class DoctorJdbcDAO extends StuffJdbcDAO<DoctorDTO> implements DoctorDAO {
     private DoctorQueryExecutor queryExecutor;
 
-    DoctorJdbcDAO(QueryExecutorFactory queryExecutorFactory,
+    DoctorJdbcDAO(DoctorQueryExecutor queryExecutor,
                   ConnectionManager connectionManager) {
 
-        this.queryExecutor = queryExecutorFactory.getDoctorQueryExecutor();
+        this.queryExecutor = queryExecutor;
         this.connectionManager = connectionManager;
     }
 

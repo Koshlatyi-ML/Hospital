@@ -18,11 +18,16 @@ public class JdbcDaoManager extends DaoManager {
     private JdbcDaoManager() {
         connectionManager = ConnectionManagerFactory.getInstance().createConnectionManager();
         QueryExecutorFactory queryExecutorFactory = QueryExecutorFactory.getInstance();
-        departmentDao = new DepartmentJdbcDAO(queryExecutorFactory, connectionManager);
-        doctorDao = new DoctorJdbcDAO(queryExecutorFactory, connectionManager);
-        medicDao = new MedicJdbcDAO(queryExecutorFactory, connectionManager);
-        patientDao = new PatientJdbcDAO(queryExecutorFactory, connectionManager);
-        therapyDao = new TherapyJdbcDAO(queryExecutorFactory, connectionManager);
+        departmentDao = new DepartmentJdbcDAO(queryExecutorFactory.getDepartmentQueryExecutor(),
+                connectionManager);
+        doctorDao = new DoctorJdbcDAO(queryExecutorFactory.getDoctorQueryExecutor(),
+                connectionManager);
+        medicDao = new MedicJdbcDAO(queryExecutorFactory.getMedicQueryExecutor(),
+                connectionManager);
+        patientDao = new PatientJdbcDAO(queryExecutorFactory.getPatientQueryExecutor(),
+                connectionManager);
+        therapyDao = new TherapyJdbcDAO(queryExecutorFactory.getTherapyQueryExecutor(),
+                connectionManager);
     }
 
     @Override

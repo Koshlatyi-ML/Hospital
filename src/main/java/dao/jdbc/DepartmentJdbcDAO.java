@@ -1,12 +1,9 @@
 package dao.jdbc;
 
-import dao.DaoFactory;
-import dao.DaoManager;
 import dao.DepartmentDAO;
 import dao.connection.ConnectionManager;
 import dao.jdbc.query.DepartmentQueryExecutor;
 import dao.jdbc.query.QueryExecutor;
-import dao.jdbc.query.QueryExecutorFactory;
 import domain.dto.DepartmentDTO;
 
 import java.sql.Connection;
@@ -16,10 +13,10 @@ import java.util.Optional;
 public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements DepartmentDAO {
     private DepartmentQueryExecutor queryExecutor;
 
-    DepartmentJdbcDAO(QueryExecutorFactory queryExecutorFactory,
+    DepartmentJdbcDAO(DepartmentQueryExecutor queryExecutor,
                       ConnectionManager connectionManager) {
 
-        queryExecutor = queryExecutorFactory.getDepartmentQueryExecutor();
+        this.queryExecutor  = queryExecutor;
         this.connectionManager = connectionManager;
     }
 

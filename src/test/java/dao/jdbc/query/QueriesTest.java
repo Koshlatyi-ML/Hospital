@@ -52,14 +52,14 @@ public class QueriesTest {
     @Test
     public void formatColumnPlaceholdersEmpty() throws Exception {
         String tested = Queries.formatUpdateColumnPlaceholders(Collections.emptyList());
-        assertEquals("()", tested);
+        assertEquals("", tested);
     }
 
     @Test
     public void formatColumnPlaceholders() throws Exception {
         List<String> strings = Arrays.asList("a", "b", "c");
         String tested = Queries.formatUpdateColumnPlaceholders(strings);
-        assertEquals("(a=?,b=?,c=?)", tested);
+        assertEquals("a=?,b=?,c=?", tested);
     }
 
     @Test(expected = NullPointerException.class)

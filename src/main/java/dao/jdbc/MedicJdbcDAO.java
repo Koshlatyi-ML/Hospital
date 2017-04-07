@@ -1,20 +1,18 @@
 package dao.jdbc;
 
-import dao.DaoFactory;
 import dao.DaoManager;
 import dao.MedicDAO;
 import dao.connection.ConnectionManager;
 import dao.jdbc.query.MedicQueryExecutor;
-import dao.jdbc.query.QueryExecutorFactory;
 import domain.dto.MedicDTO;
 
 public class MedicJdbcDAO extends StuffJdbcDAO<MedicDTO> implements MedicDAO {
     private MedicQueryExecutor queryExecutor;
 
-    MedicJdbcDAO(QueryExecutorFactory queryExecutorFactory,
+    MedicJdbcDAO(MedicQueryExecutor queryExecutor,
                  ConnectionManager connectionManager) {
 
-        this.queryExecutor = queryExecutorFactory.getMedicQueryExecutor();
+        this.queryExecutor = queryExecutor;
         this.connectionManager = connectionManager;
     }
 

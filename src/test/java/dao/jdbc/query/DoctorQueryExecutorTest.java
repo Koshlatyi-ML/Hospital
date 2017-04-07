@@ -137,7 +137,7 @@ public class DoctorQueryExecutorTest {
     @Test
     public void getUpdateQuery() throws Exception {
         assertEquals("UPDATE " + DOCTOR_TABLE +
-                        " SET (" + DOCTOR_A +"=?," + DOCTOR_B + "=?)" +
+                        " SET " + DOCTOR_A +"=?," + DOCTOR_B + "=?" +
                         " WHERE " + DOCTOR_ID_SHORT + "=?",
                 queryExecutor.getUpdateQuery());
     }
