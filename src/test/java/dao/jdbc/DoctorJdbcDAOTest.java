@@ -61,6 +61,7 @@ public class DoctorJdbcDAOTest {
                 .setName("DoctorName1")
                 .setSurname("DoctorSurname1")
                 .setDepartmentId(95)
+                .setCredentialsId(1)
                 .build();
         assertEquals(desired, tested);
     }
@@ -77,6 +78,7 @@ public class DoctorJdbcDAOTest {
                 .setName("name")
                 .setSurname("surname")
                 .setDepartmentId(95)
+                .setCredentialsId(21)
                 .build();
 
         dao.create(dto);
@@ -92,6 +94,7 @@ public class DoctorJdbcDAOTest {
                 .setName("name")
                 .setSurname("surname")
                 .setDepartmentId(95)
+                .setCredentialsId(21)
                 .build();
 
         dao.create(dto);
@@ -107,6 +110,7 @@ public class DoctorJdbcDAOTest {
                 .setName("name")
                 .setSurname("surname")
                 .setDepartmentId(95)
+                .setCredentialsId(21)
                 .build();
         dao.create(tested);
 
@@ -130,6 +134,22 @@ public class DoctorJdbcDAOTest {
                 .setName("DoctorName2")
                 .setSurname("DoctorSurname2")
                 .setDepartmentId(96)
+                .setCredentialsId(2)
+                .build();
+
+        assertEquals(desired, tested);
+    }
+
+    @Test
+    public void findByCredentialsId() throws Exception {
+        DoctorDTO tested = dao.findByCredentialsId(2).orElseThrow(Exception::new);
+
+        DoctorDTO desired = new DoctorDTO.Builder()
+                .setId(55)
+                .setName("DoctorName2")
+                .setSurname("DoctorSurname2")
+                .setDepartmentId(96)
+                .setCredentialsId(2)
                 .build();
 
         assertEquals(desired, tested);

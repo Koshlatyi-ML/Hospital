@@ -1,9 +1,7 @@
 package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
-import dao.jdbc.query.retrieve.DtoRetrieverFactory;
 import dao.jdbc.query.supply.DtoValueSupplier;
-import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.*;
 import domain.Patient;
 import domain.dto.PatientDTO;
@@ -14,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
     private PatientTableInfo tableInfo;
@@ -23,7 +22,8 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
     private DtoValueSupplier<PatientDTO> dtoValueSupplier;
     private DtoRetriever<PatientDTO> dtoRetriever;
 
-    PatientQueryExecutor() {}
+    PatientQueryExecutor() {
+    }
 
     void setTableInfo(PatientTableInfo tableInfo) {
         this.tableInfo = tableInfo;
@@ -33,7 +33,8 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
                 tableInfo.getDoctorIdColumn(ColumnNameStyle.FULL),
                 tableInfo.getComplaintsColumn(ColumnNameStyle.FULL),
                 tableInfo.getDiagnosisColumn(ColumnNameStyle.FULL),
-                tableInfo.getStateColumn(ColumnNameStyle.FULL));
+                tableInfo.getStateColumn(ColumnNameStyle.FULL),
+                tableInfo.getCredentialsIdColumn(ColumnNameStyle.FULL));
     }
 
     void setStuffTableInfo(StuffTableInfo stuffTableInfo) {
@@ -82,6 +83,13 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
                 tableInfo.getStateColumn(ColumnNameStyle.FULL));
     }
 
+    private String getFindByCredentialsIdQuery() {
+        return String.format("SELECT %s FROM %s WHERE %s=?",
+                Queries.formatAliasedColumns(selectingColumns),
+                tableInfo.getTableName(),
+                tableInfo.getCredentialsIdColumn(ColumnNameStyle.FULL));
+    }
+
     public List<PatientDTO> queryFindByDepartmentId(Connection connection, long id)
             throws SQLException {
 
@@ -114,6 +122,13 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDtoList(resultSet);
         }
+    }
+
+    public Optional<PatientDTO> queryFindByCredentialsId(Connection connection, long id)
+            throws SQLException {
+
+        return AppUserStatementExecutor.queryFindByCredentialsId(
+                connection, id, getFindByCredentialsIdQuery(), dtoRetriever);
     }
 
     @Override

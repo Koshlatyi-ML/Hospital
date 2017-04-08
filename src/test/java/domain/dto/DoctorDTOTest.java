@@ -71,6 +71,7 @@ public class DoctorDTOTest {
                 .setName(name)
                 .setSurname(surname)
                 .setDepartmentId(depId)
+                .setCredentialsId(12)
                 .build();
 
         DoctorDTO dto2 = new DoctorDTO.Builder()
@@ -78,6 +79,7 @@ public class DoctorDTOTest {
                 .setName(name)
                 .setSurname(surname)
                 .setDepartmentId(depId)
+                .setCredentialsId(12)
                 .build();
 
         assertTrue(dto1.equals(dto2));
@@ -94,13 +96,15 @@ public class DoctorDTOTest {
                 .setName(name)
                 .setSurname(surname)
                 .setDepartmentId(depId)
+                .setCredentialsId(900)
                 .build();
 
         DoctorDTO dto2 = new DoctorDTO.Builder()
-                .setId(102L)
+                .setId(101L)
                 .setName(name)
                 .setSurname(surname)
                 .setDepartmentId(depId)
+                .setCredentialsId(901)
                 .build();
 
         assertFalse(dto1.equals(dto2));
@@ -130,6 +134,7 @@ public class DoctorDTOTest {
                 .setName(name)
                 .setSurname(surname)
                 .setDepartmentId(depId)
+                .setCredentialsId(1)
                 .build();
 
         DoctorDTO dto2 = new DoctorDTO.Builder()
@@ -137,6 +142,7 @@ public class DoctorDTOTest {
                 .setName(name)
                 .setSurname(surname)
                 .setDepartmentId(depId)
+                .setCredentialsId(1)
                 .build();
 
         assertEquals(dto1.hashCode(), dto2.hashCode());

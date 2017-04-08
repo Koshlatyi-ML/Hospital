@@ -4,10 +4,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class PatientDTO extends AbstractPersonDTO {
+
     private long doctorId;
     private String complaints;
     private String diagnosis;
     private String state;
+    private long credentialsId;
+
 
     private PatientDTO() {
     }
@@ -53,6 +56,14 @@ public class PatientDTO extends AbstractPersonDTO {
                 .toString();
     }
 
+    public long getCredentialsId() {
+        return credentialsId;
+    }
+
+    public void setCredentialsId(long credentialsId) {
+        this.credentialsId = credentialsId;
+    }
+
     public static class Builder extends AbstractPersonDTO.Builder<PatientDTO, Builder> {
         public Builder() {
             instance = new PatientDTO();
@@ -78,6 +89,11 @@ public class PatientDTO extends AbstractPersonDTO {
             return getSelf();
         }
 
+        public Builder setCredentialsId(long credentialsId) {
+            instance.setCredentialsId(credentialsId);
+            return getSelf();
+        }
+
         @Override
         protected Builder getSelf() {
             return this;
@@ -96,12 +112,13 @@ public class PatientDTO extends AbstractPersonDTO {
                 && getDoctorId() == that.getDoctorId()
                 && Objects.equals(getComplaints(), that.getComplaints())
                 && Objects.equals(getDiagnosis(), that.getDiagnosis())
-                && Objects.equals(getState(), that.getState());
+                && Objects.equals(getState(), that.getState())
+                && getCredentialsId() == that.getCredentialsId();
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getSurname(), getDoctorId(),
-                getComplaints(), getDiagnosis(), getState());
+                getComplaints(), getDiagnosis(), getState(), getCredentialsId());
     }
 }

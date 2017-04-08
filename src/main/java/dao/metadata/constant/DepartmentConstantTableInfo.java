@@ -7,7 +7,14 @@ import java.util.List;
 
 public class DepartmentConstantTableInfo extends AbstractTableInfo
         implements dao.metadata.DepartmentTableInfo {
+
     private String nameColumn;
+
+    static class ColumnNames{
+        final static String TABLE_NAME = "departments";
+        final static String ID_COLUMN = "id";
+        final static String NAME_COLUMN = "name";
+    }
 
     DepartmentConstantTableInfo() {}
 

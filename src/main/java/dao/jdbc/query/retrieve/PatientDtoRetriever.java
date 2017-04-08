@@ -33,6 +33,8 @@ public class PatientDtoRetriever extends AbstractDtoRetriever<PatientDTO> {
                         .getDiagnosisColumn(ColumnNameStyle.FULL)))
                 .setState(PatientDTO.State.valueOf(
                         resultSet.getString(tableInfo.getStateColumn(ColumnNameStyle.FULL))))
+                .setCredentialsId(resultSet.getLong(tableInfo
+                        .getCredentialsIdColumn(ColumnNameStyle.FULL)))
                 .build();
     }
 }

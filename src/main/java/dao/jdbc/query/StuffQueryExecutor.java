@@ -56,7 +56,7 @@ public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends Per
         }
     }
 
-    public void queryDeleteStuff(Connection connection, T dto) throws SQLException {
+    void queryDeleteStuff(Connection connection, T dto) throws SQLException {
         queryDelete(connection, dto.getId());
     }
 

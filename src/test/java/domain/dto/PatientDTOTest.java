@@ -121,6 +121,7 @@ public class PatientDTOTest {
                 .setCompliants(complaints)
                 .setDiagnosis(diagnosis)
                 .setState(state)
+                .setCredentialsId(1)
                 .build();
 
         PatientDTO dto2 = new PatientDTO.Builder()
@@ -131,6 +132,7 @@ public class PatientDTOTest {
                 .setCompliants(complaints)
                 .setDiagnosis(diagnosis)
                 .setState(state)
+                .setCredentialsId(1)
                 .build();
 
         assertTrue(dto1.equals(dto2));
@@ -153,16 +155,18 @@ public class PatientDTOTest {
                 .setCompliants(complaints)
                 .setDiagnosis(diagnosis)
                 .setState(state)
+                .setCredentialsId(1)
                 .build();
 
         PatientDTO dto2 = new PatientDTO.Builder()
-                .setId(300L)
+                .setId(200L)
                 .setName(name)
                 .setSurname(surname)
                 .setDoctorId(docId)
                 .setCompliants(complaints)
                 .setDiagnosis(diagnosis)
                 .setState(state)
+                .setCredentialsId(2)
                 .build();
 
         assertFalse(dto1.equals(dto2));

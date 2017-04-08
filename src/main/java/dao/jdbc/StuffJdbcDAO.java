@@ -37,14 +37,12 @@ public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdb
 
     @Override
     public void delete(E dto) {
-        connectionManager.beginTransaction();
         try (Connection connection = connectionManager.getConnection()) {
             getQueryExecutor().queryDelete(connection, dto);
         } catch (SQLException e) {
             connectionManager.tryRollback();
             throw new RuntimeException(e);
         }
-        connectionManager.finishTransaction();
     }
 
     @Override

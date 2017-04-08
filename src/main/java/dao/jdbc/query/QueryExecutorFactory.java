@@ -10,6 +10,7 @@ public class QueryExecutorFactory {
     private MedicQueryExecutor medicQueryExecutor;
     private PatientQueryExecutor patientQueryExecutor;
     private TherapyQueryExecutor therapyQueryExecutor;
+    private CredentialsQueryExecutor credentialsQueryExecutor;
 
     private QueryExecutorFactory() {
         TableInfoFactory tableInfoFactory = TableInfoFactory.getInstance();
@@ -46,8 +47,13 @@ public class QueryExecutorFactory {
         therapyQueryExecutor.setDoctorTableInfo(tableInfoFactory.getDoctorTableInfo());
         therapyQueryExecutor.setMedicTableInfo(tableInfoFactory.getMedicTableInfo());
         therapyQueryExecutor.setPatientTableInfo(tableInfoFactory.getPatientTableInfo());
-        therapyQueryExecutor.setDtoRetriever(dtoRetrieverFactory.getTherapyEntityetriever());
+        therapyQueryExecutor.setDtoRetriever(dtoRetrieverFactory.getTherapyDtoRetriever());
         therapyQueryExecutor.setDtoValueSupplier(valueSupplierFactory.getTherapyDtoValueSupplier());
+
+        credentialsQueryExecutor = new CredentialsQueryExecutor();
+        credentialsQueryExecutor.setTableInfo(tableInfoFactory.getCredentialsTableInfo());
+        credentialsQueryExecutor.setDtoRetriever(dtoRetrieverFactory.getCredentialsDtoRetriever());
+        credentialsQueryExecutor.setValueSupplier(valueSupplierFactory.getCredentialsValueSupplier());
     }
 
     private static final QueryExecutorFactory INSTANCE = new QueryExecutorFactory();
@@ -74,5 +80,9 @@ public class QueryExecutorFactory {
 
     public TherapyQueryExecutor getTherapyQueryExecutor() {
         return therapyQueryExecutor;
+    }
+
+    public CredentialsQueryExecutor getCredentialsQueryExecutor() {
+        return credentialsQueryExecutor;
     }
 }

@@ -44,6 +44,6 @@ public class PatientDtoValueSupplierTest {
     public void supplyValuesCountSetting() throws Exception {
         PatientDTO dtoMock = mock(PatientDTO.class);
         PreparedStatement preparedStatementMock = mock(PreparedStatement.class);
-        assertEquals(6, dtoValueSupplier.supplyValues(preparedStatementMock, dtoMock));
+        assertEquals(7, dtoValueSupplier.supplyValues(preparedStatementMock, dtoMock));
     }
 }

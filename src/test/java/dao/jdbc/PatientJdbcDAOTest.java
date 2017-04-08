@@ -5,6 +5,7 @@ import dao.connection.TestingConnectionFactory;
 import dao.jdbc.query.PatientQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import domain.Patient;
+import domain.dto.MedicDTO;
 import domain.dto.PatientDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,6 +67,7 @@ public class PatientJdbcDAOTest {
                 .setCompliants("Complaints2")
                 .setDiagnosis(null)
                 .setState(PatientDTO.State.ADDMITTED)
+                .setCredentialsId(18)
                 .build();
         assertEquals(desired, tested);
         Thread.sleep(25);
@@ -86,6 +88,7 @@ public class PatientJdbcDAOTest {
                 .setCompliants("ccc")
                 .setDiagnosis(null)
                 .setState(PatientDTO.State.APPLYIED)
+                .setCredentialsId(21)
                 .build();
 
         dao.create(dto);
@@ -104,6 +107,7 @@ public class PatientJdbcDAOTest {
                 .setCompliants("ccc")
                 .setDiagnosis(null)
                 .setState(PatientDTO.State.APPLYIED)
+                .setCredentialsId(21)
                 .build();
 
         dao.create(dto);
@@ -122,6 +126,7 @@ public class PatientJdbcDAOTest {
                 .setCompliants("ccc")
                 .setDiagnosis(null)
                 .setState(PatientDTO.State.APPLYIED)
+                .setCredentialsId(21)
                 .build();
         dao.create(tested);
 
@@ -135,6 +140,24 @@ public class PatientJdbcDAOTest {
         assertEquals(tested, updated);
 
         dao.delete(tested.getId());
+    }
+
+    @Test
+    public void findByCredentialsId() throws Exception {
+        PatientDTO tested = dao.findByCredentialsId(18).orElseThrow(Exception::new);
+
+        PatientDTO desired = new PatientDTO.Builder()
+                .setId(tested.getId())
+                .setName("PatientName2")
+                .setSurname("PatientSurname2")
+                .setDoctorId(54)
+                .setCompliants("Complaints2")
+                .setDiagnosis(null)
+                .setState(PatientDTO.State.ADDMITTED)
+                .setCredentialsId(18)
+                .build();
+
+        assertEquals(desired, tested);
     }
 
     @Test

@@ -7,9 +7,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class StuffConstantTableInfo extends AbstractTableInfo implements StuffTableInfo {
+
     private String nameColumn;
     private String surnameColumn;
     private String departmentIdColumn;
+
+    static class ColumnNames {
+        final static String TABLE_NAME = "stuff";
+        final static String ID_COLUMN = "id";
+        final static String NAME_COLUMN = "name";
+        final static String SURNAME_COLUMN = "surname";
+        final static String DEPARTMENT_ID_COLUMN = "department_id";
+    }
 
     StuffConstantTableInfo() {}
 

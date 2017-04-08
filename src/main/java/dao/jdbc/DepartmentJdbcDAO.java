@@ -34,45 +34,4 @@ public class DepartmentJdbcDAO extends CrudJdbcDAO<DepartmentDTO> implements Dep
     protected QueryExecutor<DepartmentDTO> getQueryExecutor() {
         return queryExecutor;
     }
-
-    public static void main(String[] args) throws SQLException {
-//        DaoManager daoManager = DaoManager.getInstance();
-//        DaoFactory daoFactory = daoManager.getDaoFactory();
-
-//        Connection connection = ConnectionManager.getInstance().getConnection();
-//        connection.setAutoCommit(false);
-//        connection.prepareStatement("INSERT INTO stuff (name, surname, department_id)" +
-//                " VALUES ('A', 'B', NULL)").execute();
-//        connection.prepareStatement("INSERT INTO stuff (name, surname, department_id)" +
-//                " VALUES ('C', 'D', NULL)").execute();
-//        connection.commit();
-
-//        DepartmentDAO departmentDao = daoFactory.getDepartmentDao();
-
-        DepartmentDTO newDTO = new DepartmentDTO.Builder()
-                .setName("Дядько")
-                .build();
-
-        DepartmentDTO dto = new DepartmentDTO.Builder()
-                .setId(91)
-                .setName("фдфдфдфдф")
-                .build();
-
-//        departmentDao.findByName("Дядько").ifPresent(System.out::println);
-//        departmentDao.findByName("Хыдыш").ifPresent(System.out::println);
-
-//        System.out.println();
-//        System.out.println(departmentDao.find(93).toString());
-//        System.out.println();
-//        departmentDao.findAll().forEach(System.out::println);
-
-        //        Department newDep2 = new Department.Builder()
-//                .setTitle("ddd")
-//                .build();
-//
-//        daoManager.beginTransaction();
-//        departmentDao.create(newDep1);
-//        departmentDao.create(newDep2);
-//        daoManager.finishTransaction();
-    }
 }

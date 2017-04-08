@@ -38,7 +38,8 @@ public class DoctorConstantTableInfoTest {
     }
     @Test
     public void getNonGeneratingColumns() throws Exception {
-        assertArrayEquals(new String[]{tableProperties.getProperty("id")},
+        assertArrayEquals(new String[]{tableProperties.getProperty("id"),
+                        tableProperties.getProperty("credentials_id")},
                 tableInfo.getNonGeneratingColumns().toArray());
     }
 }

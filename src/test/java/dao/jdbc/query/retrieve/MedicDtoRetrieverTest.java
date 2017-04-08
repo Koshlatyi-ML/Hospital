@@ -1,6 +1,7 @@
 package dao.jdbc.query.retrieve;
 
 import dao.metadata.ColumnNameStyle;
+import dao.metadata.MedicTableInfo;
 import dao.metadata.StuffTableInfo;
 import domain.dto.MedicDTO;
 import org.junit.Before;
@@ -18,7 +19,9 @@ public class MedicDtoRetrieverTest {
     private MedicDtoRetriever dtoRetriever;
 
     @Mock
-    private StuffTableInfo tableInfoMock;
+    private StuffTableInfo stuffTableInfoMock;
+    @Mock
+    private MedicTableInfo medicTableInfoMock;
 
     private final String COLUMN_ONE = "col1";
     private final String COLUMN_TWO = "col2";
@@ -28,12 +31,12 @@ public class MedicDtoRetrieverTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        when(tableInfoMock.getIdColumn(ColumnNameStyle.FULL)).thenReturn(COLUMN_ONE);
-        when(tableInfoMock.getNameColumn(ColumnNameStyle.FULL)).thenReturn(COLUMN_TWO);
-        when(tableInfoMock.getSurnameColumn(ColumnNameStyle.FULL)).thenReturn(COLUMN_THREE);
-        when(tableInfoMock.getDepartmentIdColumn(ColumnNameStyle.FULL)).thenReturn(COLUMN_FOUR);
+        when(stuffTableInfoMock.getIdColumn(ColumnNameStyle.FULL)).thenReturn(COLUMN_ONE);
+        when(stuffTableInfoMock.getNameColumn(ColumnNameStyle.FULL)).thenReturn(COLUMN_TWO);
+        when(stuffTableInfoMock.getSurnameColumn(ColumnNameStyle.FULL)).thenReturn(COLUMN_THREE);
+        when(stuffTableInfoMock.getDepartmentIdColumn(ColumnNameStyle.FULL)).thenReturn(COLUMN_FOUR);
 
-        dtoRetriever = new MedicDtoRetriever(tableInfoMock);
+        dtoRetriever = new MedicDtoRetriever(stuffTableInfoMock, medicTableInfoMock);
     }
 
     @Test(expected = NullPointerException.class)

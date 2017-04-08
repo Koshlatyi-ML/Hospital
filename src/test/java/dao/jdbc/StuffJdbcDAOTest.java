@@ -86,17 +86,6 @@ public class StuffJdbcDAOTest {
         verify(connectionManagerMock).tryRollback();
     }
 
-    @Test
-    public void deleteNonTransactionalDoTransaction() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        AbstractStuffDTO dtoMock = mock(AbstractStuffDTO.class);
-        stuffJdbcDaoSpy.delete(dtoMock);
-        InOrder inOrder = Mockito.inOrder(connectionManagerMock, queryExecutorMock);
-        inOrder.verify(connectionManagerMock).beginTransaction();
-        inOrder.verify(queryExecutorMock).queryDelete(connectionMock, dtoMock);
-        inOrder.verify(connectionManagerMock).finishTransaction();
-    }
-
     @Test(expected = RuntimeException.class)
     public void deleteNonTransactionalSqlExceptionCloseConnection() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(false);

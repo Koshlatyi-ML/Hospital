@@ -3,8 +3,6 @@ package dao.jdbc.query.retrieve;
 import dao.metadata.ColumnNameStyle;
 import dao.metadata.MedicTableInfo;
 import dao.metadata.StuffTableInfo;
-import dao.metadata.TableInfoFactory;
-import domain.Medic;
 import domain.dto.MedicDTO;
 
 import java.sql.ResultSet;
@@ -12,9 +10,11 @@ import java.sql.SQLException;
 
 public class MedicDtoRetriever extends AbstractDtoRetriever<MedicDTO> {
     private StuffTableInfo stuffTableInfo;
+    private MedicTableInfo medicTableInfo;
 
-    MedicDtoRetriever(StuffTableInfo stuffTableInfo) {
+    MedicDtoRetriever(StuffTableInfo stuffTableInfo, MedicTableInfo medicTableInfo) {
         this.stuffTableInfo = stuffTableInfo;
+        this.medicTableInfo = medicTableInfo;
     }
 
     @Override
@@ -28,6 +28,8 @@ public class MedicDtoRetriever extends AbstractDtoRetriever<MedicDTO> {
                         .getSurnameColumn(ColumnNameStyle.FULL)))
                 .setDepartmentId(resultSet.getLong(stuffTableInfo
                         .getDepartmentIdColumn(ColumnNameStyle.FULL)))
+                .setCredentialsId(resultSet.getLong(medicTableInfo
+                        .getCredentialsIdColumn(ColumnNameStyle.FULL)))
                 .build();
     }
 }

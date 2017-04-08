@@ -11,7 +11,8 @@ public class MedicDtoValueSupplier implements StuffDtoValueSupplier<MedicDTO> {
     @Override
     public int supplyValues(PreparedStatement statement, MedicDTO dto) throws SQLException {
         statement.setLong(1, dto.getId());
-        return 1;
+        statement.setLong(2, dto.getCredentialsId());
+        return 2;
     }
 
     @Override

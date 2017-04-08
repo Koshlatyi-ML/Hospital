@@ -1,6 +1,7 @@
 package dao.jdbc;
 
 import dao.DaoManager;
+import dao.MedicDAO;
 import dao.PatientDAO;
 import dao.connection.ConnectionManager;
 import dao.jdbc.query.PatientQueryExecutor;
@@ -11,6 +12,7 @@ import domain.dto.PatientDTO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements PatientDAO {
     private PatientQueryExecutor queryExecutor;
@@ -52,28 +54,17 @@ public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements Patient
     }
 
     @Override
-    protected PersonQueryExecutor<PatientDTO> getQueryExecutor() {
-        return queryExecutor;
+    public Optional<PatientDTO> findByCredentialsId(long id) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByCredentialsId(connection, id);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
+        }
     }
 
-    public static void main(String[] args) {
-        DaoManager daoManager = DaoManager.getInstance();
-//        DaoFactory daoFactory = daoManager.getDaoFactory();
-//        PatientDAO patientDAO = daoFactory.getPatientDao();
-
-        PatientDTO dto = new PatientDTO.Builder()
-                .setName("Kolya")
-                .setSurname("Koshlatyi")
-                .setDoctorId(44)
-                .setCompliants("Sore throat")
-                .setDiagnosis("Volchanka")
-//                .setState("ADDMITTED")
-                .build();
-//        patientDAO.create(dto);
-
-//        dto.setDiagnosis("Brain cancer");
-//        patientDAO.update(dto);
-//
-//        patientDAO.delete(dto);
+    @Override
+    protected PersonQueryExecutor<PatientDTO> getQueryExecutor() {
+        return queryExecutor;
     }
 }

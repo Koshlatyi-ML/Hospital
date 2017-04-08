@@ -9,6 +9,7 @@ public class DtoRetrieverFactory {
     private MedicDtoRetriever medicDtoRetriever;
     private PatientDtoRetriever patientDtoRetriever;
     private TherapyDtoRetriever therapyDtoRetriever;
+    private CredentialsDtoRetriever credentialsDtoRetriever;
 
     private static final DtoRetrieverFactory INSTANCE = new DtoRetrieverFactory();
 
@@ -17,13 +18,17 @@ public class DtoRetrieverFactory {
         departmentDtoRetriever =
                 new DepartmentDtoRetriever(tableInfoFactory.getDepartmentTableInfo());
         doctorDtoRetriever =
-                new DoctorDtoRetriever(tableInfoFactory.getStuffTableInfo());
+                new DoctorDtoRetriever(tableInfoFactory.getStuffTableInfo(),
+                        tableInfoFactory.getDoctorTableInfo());
         medicDtoRetriever =
-                new MedicDtoRetriever(tableInfoFactory.getStuffTableInfo());
+                new MedicDtoRetriever(tableInfoFactory.getStuffTableInfo(),
+                        tableInfoFactory.getMedicTableInfo());
         patientDtoRetriever =
                 new PatientDtoRetriever(tableInfoFactory.getPatientTableInfo());
         therapyDtoRetriever =
                 new TherapyDtoRetriever(tableInfoFactory.getTherapyTableInfo());
+        credentialsDtoRetriever =
+                new CredentialsDtoRetriever(tableInfoFactory.getCredentialsTableInfo());
     }
 
     public static DtoRetrieverFactory getInstance() {
@@ -46,7 +51,11 @@ public class DtoRetrieverFactory {
         return patientDtoRetriever;
     }
 
-    public DtoRetriever<TherapyDTO> getTherapyEntityetriever() {
+    public DtoRetriever<TherapyDTO> getTherapyDtoRetriever() {
         return therapyDtoRetriever;
+    }
+
+    public DtoRetriever<CredentialsDTO> getCredentialsDtoRetriever() {
+        return credentialsDtoRetriever;
     }
 }

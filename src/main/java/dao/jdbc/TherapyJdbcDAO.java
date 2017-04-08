@@ -144,24 +144,4 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
         return queryExecutor;
     }
 
-    public static void main(String[] args) {
-//        DaoManager daoManager = DaoManager.getInstance();
-//        DaoFactory daoFactory = daoManager.getDaoFactory();
-//        TherapyDAO therapyDAO = daoFactory.getTherapyDao();
-//
-//        TherapyDTO therapyDTO = new TherapyDTO.Builder()
-//                .setTitle("headcutting")
-////                .setType(TherapyDTO.Type.SURGERY_OPERATION.toString())
-//                .setDescription("lol")
-//                .setAppointmentDateTime(Timestamp.from(Instant.now()))
-//                .setPatientId(4)
-//                .setPerformerId(45)
-//                .build();
-//
-//        therapyDAO.create(therapyDTO);
-//
-//        therapyDTO.setPerformerId(44);
-//        therapyDAO.update(therapyDTO);
-//        therapyDAO.delete(therapyDTO.getId());
-    }
 }

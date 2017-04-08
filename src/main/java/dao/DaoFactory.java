@@ -6,4 +6,5 @@ public interface DaoFactory {
     MedicDAO getMedicDao();
     PatientDAO getPatientDao();
     TherapyDAO getTherapyDao();
+    CredentialsDAO getCredentialsDao();
 }

@@ -6,6 +6,7 @@ import dao.jdbc.query.supply.StuffDtoValueSupplier;
 import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.*;
 import domain.dto.DoctorDTO;
+import domain.dto.PatientDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,14 +24,16 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
     private StuffDtoValueSupplier<DoctorDTO> valueSupplier;
     private DtoRetriever<DoctorDTO> dtoRetriever;
 
-    DoctorQueryExecutor() {}
+    DoctorQueryExecutor() {
+    }
 
     void setStuffTableInfo(StuffTableInfo stuffTableInfo) {
         this.stuffTableInfo = stuffTableInfo;
         selectingColumns = Arrays.asList(stuffTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 stuffTableInfo.getNameColumn(ColumnNameStyle.FULL),
                 stuffTableInfo.getSurnameColumn(ColumnNameStyle.FULL),
-                stuffTableInfo.getDepartmentIdColumn(ColumnNameStyle.FULL));
+                stuffTableInfo.getDepartmentIdColumn(ColumnNameStyle.FULL),
+                doctorTableInfo.getCredentialsIdColumn(ColumnNameStyle.FULL));
     }
 
     void setDoctorTableInfo(DoctorTableInfo doctorTableInfo) {
@@ -103,6 +106,13 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
                 patientTableInfo.getIdColumn(ColumnNameStyle.FULL));
     }
 
+    private String getFindByCredentialsIdQuery() {
+        return String.format("SELECT %s FROM %s WHERE %s=?",
+                Queries.formatAliasedColumns(selectingColumns),
+                getStuffInnerJoin(),
+                doctorTableInfo.getCredentialsIdColumn(ColumnNameStyle.FULL));
+    }
+
     String getInsertQuery() {
         return String.format("INSERT INTO %s %s VALUES %s",
                 doctorTableInfo.getTableName(),
@@ -142,7 +152,6 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
 
     @Override
     public void queryDelete(Connection connection, long id) throws SQLException {
-        super.queryDelete(connection, id);
         queryDeleteStuff(connection, id);
     }
 
@@ -155,6 +164,13 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDTO(resultSet);
         }
+    }
+
+    public Optional<DoctorDTO> queryFindByCredentialsId(Connection connection, long id)
+            throws SQLException {
+
+        return AppUserStatementExecutor.queryFindByCredentialsId(
+                connection, id, getFindByCredentialsIdQuery(), dtoRetriever);
     }
 
     @Override

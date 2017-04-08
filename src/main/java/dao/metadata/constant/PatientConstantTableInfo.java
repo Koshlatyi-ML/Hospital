@@ -8,12 +8,26 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PatientConstantTableInfo extends AbstractTableInfo implements PatientTableInfo {
+
     private String nameColumn;
     private String surnameColumn;
     private String doctorIdColumn;
     private String complaintsColumn;
     private String diagnosisColumn;
     private String stateColumn;
+    private String credentialsIdColumn;
+
+    static class ColumnNames {
+        final static String TABLE_NAME = "patients";
+        final static String ID_COLUMN = "id";
+        final static String NAME_COLUMN = "name";
+        final static String SURNAME_COLUMN = "surname";
+        final static String DOCTOR_ID_COLUMN = "doctor_id";
+        final static String COMPLAINTS_COLUMN = "complaints";
+        final static String DIAGNOSIS_COLUMN = "diagnosis";
+        final static String STATE_COLUMN = "state";
+        final static String CREDENTIALS_ID_COLUMN = "credentials_id";
+    }
 
     PatientConstantTableInfo() {}
 
@@ -72,10 +86,20 @@ public class PatientConstantTableInfo extends AbstractTableInfo implements Patie
     }
 
     @Override
+    public String getCredentialsIdColumn(ColumnNameStyle columnNameStyle) {
+        return getColumn(credentialsIdColumn, columnNameStyle);
+    }
+
+    private void setCredentialsIdColumn(String credentialsIdColumn) {
+        this.credentialsIdColumn = credentialsIdColumn;
+    }
+
+    @Override
     public List<String> getNonGeneratingColumns() {
         return Arrays.asList(nameColumn, surnameColumn,
                 doctorIdColumn, complaintsColumn,
-                diagnosisColumn, stateColumn);
+                diagnosisColumn, stateColumn,
+                credentialsIdColumn);
     }
 
     public static class Builder
@@ -112,6 +136,11 @@ public class PatientConstantTableInfo extends AbstractTableInfo implements Patie
 
         Builder setStateColumn(String stateColumn) {
             instance.setStateColumn(stateColumn);
+            return getSelf();
+        }
+
+        Builder setCredentialsIdColumn(String credentialsIdColumn) {
+            instance.setCredentialsIdColumn(credentialsIdColumn);
             return getSelf();
         }
 

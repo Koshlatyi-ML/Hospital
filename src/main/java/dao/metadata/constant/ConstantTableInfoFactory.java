@@ -9,53 +9,65 @@ public class ConstantTableInfoFactory extends TableInfoFactory {
     private MedicConstantTableInfo medicTableInfo;
     private PatientConstantTableInfo patientTableInfo;
     private TherapyConstantTableInfo therapyTableInfo;
+    private CredentialsConstantTableInfo credentialsTableInfo;
 
     private ConstantTableInfoFactory() {
         departmentConstantTableInfo = new DepartmentConstantTableInfo.Builder()
-                .setTableName(DepartmentTableInfo.TABLE_NAME)
-                .setIdColumn(DepartmentTableInfo.ID_COLUMN)
-                .setNameColumn(DepartmentTableInfo.NAME_COLUMN)
+                .setTableName(DepartmentConstantTableInfo.ColumnNames.TABLE_NAME)
+                .setIdColumn(DepartmentConstantTableInfo.ColumnNames.ID_COLUMN)
+                .setNameColumn(DepartmentConstantTableInfo.ColumnNames.NAME_COLUMN)
                 .build();
 
         doctorTableInfo = new DoctorConstantTableInfo.Builder()
-                .setTableName(DoctorTableInfo.TABLE_NAME)
-                .setIdColumn(DoctorTableInfo.STUFF_ID_COLUMN)
+                .setTableName(DoctorConstantTableInfo.ColumnNames.TABLE_NAME)
+                .setIdColumn(DoctorConstantTableInfo.ColumnNames.STUFF_ID_COLUMN)
+                .setCredentialsIdColumn(DoctorConstantTableInfo.ColumnNames.CREDENTIALS_ID_COLUMN)
                 .build();
 
         medicTableInfo = new MedicConstantTableInfo.Builder()
-                .setTableName(MedicTableInfo.TABLE_NAME)
-                .setIdColumn(MedicTableInfo.STUFF_ID_COLUMN)
+                .setTableName(MedicConstantTableInfo.ColumnNames.TABLE_NAME)
+                .setIdColumn(MedicConstantTableInfo.ColumnNames.STUFF_ID_COLUMN)
+                .setCredentialsIdColumn(MedicConstantTableInfo.ColumnNames.CREDENTIALS_ID_COLUMN)
                 .build();
 
         stuffTableInfo = new StuffConstantTableInfo.Builder()
-                .setTableName(StuffTableInfo.TABLE_NAME)
-                .setIdColumn(StuffTableInfo.ID_COLUMN)
-                .setNameColumn(StuffTableInfo.NAME_COLUMN)
-                .setSurnameColumn(StuffTableInfo.SURNAME_COLUMN)
-                .setDepartmentIdColumn(StuffTableInfo.DEPARTMENT_ID_COLUMN)
+                .setTableName(StuffConstantTableInfo.ColumnNames.TABLE_NAME)
+                .setIdColumn(StuffConstantTableInfo.ColumnNames.ID_COLUMN)
+                .setNameColumn(StuffConstantTableInfo.ColumnNames.NAME_COLUMN)
+                .setSurnameColumn(StuffConstantTableInfo.ColumnNames.SURNAME_COLUMN)
+                .setDepartmentIdColumn(StuffConstantTableInfo.ColumnNames.DEPARTMENT_ID_COLUMN)
                 .build();
 
         patientTableInfo = new PatientConstantTableInfo.Builder()
-                .setTableName(PatientTableInfo.TABLE_NAME)
-                .setIdColumn(PatientTableInfo.ID_COLUMN)
-                .setNameColumn(PatientTableInfo.NAME_COLUMN)
-                .setSurnameColumn(PatientTableInfo.SURNAME_COLUMN)
-                .setDoctorIdColumn(PatientTableInfo.DOCTOR_ID_COLUMN)
-                .setComplaintsColumn(PatientTableInfo.COMPLAINTS_COLUMN)
-                .setDiagnosisColumn(PatientTableInfo.DIAGNOSIS_COLUMN)
-                .setStateColumn(PatientTableInfo.STATE_COLUMN)
+                .setTableName(PatientConstantTableInfo.ColumnNames.TABLE_NAME)
+                .setIdColumn(PatientConstantTableInfo.ColumnNames.ID_COLUMN)
+                .setNameColumn(PatientConstantTableInfo.ColumnNames.NAME_COLUMN)
+                .setSurnameColumn(PatientConstantTableInfo.ColumnNames.SURNAME_COLUMN)
+                .setDoctorIdColumn(PatientConstantTableInfo.ColumnNames.DOCTOR_ID_COLUMN)
+                .setComplaintsColumn(PatientConstantTableInfo.ColumnNames.COMPLAINTS_COLUMN)
+                .setDiagnosisColumn(PatientConstantTableInfo.ColumnNames.DIAGNOSIS_COLUMN)
+                .setStateColumn(PatientConstantTableInfo.ColumnNames.STATE_COLUMN)
+                .setCredentialsIdColumn(PatientConstantTableInfo.ColumnNames.CREDENTIALS_ID_COLUMN)
                 .build();
 
         therapyTableInfo = new TherapyConstantTableInfo.Builder()
-                .setTableName(TherapyTableInfo.TABLE_NAME)
-                .setIdColumn(TherapyTableInfo.ID_COLUMN)
-                .setTitleColumn(TherapyTableInfo.TITLE_COLUMN)
-                .setTypeColumn(TherapyTableInfo.TYPE_COLUMN)
-                .setDescriptionColumn(TherapyTableInfo.DESCRIPTION_COLUMN)
-                .setAppointmentDateColumn(TherapyTableInfo.APPOINTMENT_DATE_COLUMN)
-                .setCompleteDateColumn(TherapyTableInfo.COMPLETE_DATE_COLUMN)
-                .setPatientIdColumn(TherapyTableInfo.PATIENT_ID_COLUMN)
-                .setPerformerIdColumn(TherapyTableInfo.PERFORMER_ID_COLUMN)
+                .setTableName(TherapyConstantTableInfo.ColumnNames.TABLE_NAME)
+                .setIdColumn(TherapyConstantTableInfo.ColumnNames.ID_COLUMN)
+                .setTitleColumn(TherapyConstantTableInfo.ColumnNames.TITLE_COLUMN)
+                .setTypeColumn(TherapyConstantTableInfo.ColumnNames.TYPE_COLUMN)
+                .setDescriptionColumn(TherapyConstantTableInfo.ColumnNames.DESCRIPTION_COLUMN)
+                .setAppointmentDateColumn(TherapyConstantTableInfo.ColumnNames.APPOINTMENT_DATE_COLUMN)
+                .setCompleteDateColumn(TherapyConstantTableInfo.ColumnNames.COMPLETE_DATE_COLUMN)
+                .setPatientIdColumn(TherapyConstantTableInfo.ColumnNames.PATIENT_ID_COLUMN)
+                .setPerformerIdColumn(TherapyConstantTableInfo.ColumnNames.PERFORMER_ID_COLUMN)
+                .build();
+
+        credentialsTableInfo = new CredentialsConstantTableInfo.Builder()
+                .setTableName(CredentialsConstantTableInfo.ColumnNames.TABLE_NAME)
+                .setIdColumn(CredentialsConstantTableInfo.ColumnNames.ID)
+                .setLoginColumn(CredentialsConstantTableInfo.ColumnNames.LOGIN)
+                .setPasswordColumn(CredentialsConstantTableInfo.ColumnNames.PASSWORD)
+                .setRoleColumn(CredentialsConstantTableInfo.ColumnNames.ROLE)
                 .build();
     }
 
@@ -87,5 +99,10 @@ public class ConstantTableInfoFactory extends TableInfoFactory {
     @Override
     public TherapyConstantTableInfo getTherapyTableInfo() {
         return therapyTableInfo;
+    }
+
+    @Override
+    public CredentialsTableInfo getCredentialsTableInfo() {
+        return credentialsTableInfo;
     }
 }

@@ -8,6 +8,7 @@ public class ValueSupplierFactory {
     private MedicDtoValueSupplier medicDtoValueSupplier;
     private PatientDtoValueSupplier patientDtoValueSupplier;
     private TherapyDtoValueSupplier therapyDtoValueSupplier;
+    private CredentialsDtoValueSupplier credentialsDtoValueSupplier;
 
     private static final ValueSupplierFactory INSTANCE = new ValueSupplierFactory();
 
@@ -17,6 +18,7 @@ public class ValueSupplierFactory {
         medicDtoValueSupplier = new MedicDtoValueSupplier();
         patientDtoValueSupplier = new PatientDtoValueSupplier();
         therapyDtoValueSupplier = new TherapyDtoValueSupplier();
+        credentialsDtoValueSupplier = new CredentialsDtoValueSupplier();
     }
 
     public static ValueSupplierFactory getInstance() {
@@ -41,5 +43,9 @@ public class ValueSupplierFactory {
 
     public DtoValueSupplier<TherapyDTO> getTherapyDtoValueSupplier() {
         return therapyDtoValueSupplier;
+    }
+
+    public DtoValueSupplier<CredentialsDTO> getCredentialsValueSupplier() {
+        return credentialsDtoValueSupplier;
     }
 }

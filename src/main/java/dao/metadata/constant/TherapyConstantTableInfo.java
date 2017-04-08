@@ -16,6 +16,18 @@ public class TherapyConstantTableInfo extends AbstractTableInfo implements Thera
     private String patientIdColumn;
     private String performerIdColumn;
 
+    static class ColumnNames {
+        final static String TABLE_NAME = "therapies";
+        final static String ID_COLUMN = "id";
+        final static String TITLE_COLUMN = "title";
+        final static String TYPE_COLUMN = "type";
+        final static String DESCRIPTION_COLUMN = "description";
+        final static String APPOINTMENT_DATE_COLUMN = "appointment_date";
+        final static String COMPLETE_DATE_COLUMN = "complete_date";
+        final static String PATIENT_ID_COLUMN = "patient_id";
+        final static String PERFORMER_ID_COLUMN = "performer_id";
+    }
+
     TherapyConstantTableInfo() {}
 
     @Override

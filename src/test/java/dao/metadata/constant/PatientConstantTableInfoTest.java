@@ -124,7 +124,8 @@ public class PatientConstantTableInfoTest {
                         tableProperties.getProperty("doctor_id"),
                         tableProperties.getProperty("complaints"),
                         tableProperties.getProperty("diagnosis"),
-                        tableProperties.getProperty("state")
+                        tableProperties.getProperty("state"),
+                        tableProperties.getProperty("credentials_id")
                 },
                 tableInfo.getNonGeneratingColumns().toArray());
     }

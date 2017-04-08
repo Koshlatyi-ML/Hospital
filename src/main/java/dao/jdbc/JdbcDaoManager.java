@@ -13,6 +13,7 @@ public class JdbcDaoManager extends DaoManager {
     private MedicJdbcDAO medicDao;
     private PatientJdbcDAO patientDao;
     private TherapyJdbcDAO therapyDao;
+    private CredentialsDAO credentialsDAO;
     private ConnectionManager connectionManager;
 
     private JdbcDaoManager() {
@@ -27,6 +28,8 @@ public class JdbcDaoManager extends DaoManager {
         patientDao = new PatientJdbcDAO(queryExecutorFactory.getPatientQueryExecutor(),
                 connectionManager);
         therapyDao = new TherapyJdbcDAO(queryExecutorFactory.getTherapyQueryExecutor(),
+                connectionManager);
+        credentialsDAO = new CredentialsJdbcDAO(queryExecutorFactory.getCredentialsQueryExecutor(),
                 connectionManager);
     }
 
@@ -53,6 +56,11 @@ public class JdbcDaoManager extends DaoManager {
     @Override
     public TherapyDAO getTherapyDao() {
         return therapyDao;
+    }
+
+    @Override
+    public CredentialsDAO getCredentialsDao() {
+        return credentialsDAO;
     }
 
     @Override

@@ -6,6 +6,10 @@ import dao.connection.ConnectionManager;
 import dao.jdbc.query.MedicQueryExecutor;
 import domain.dto.MedicDTO;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Optional;
+
 public class MedicJdbcDAO extends StuffJdbcDAO<MedicDTO> implements MedicDAO {
     private MedicQueryExecutor queryExecutor;
 
@@ -21,22 +25,13 @@ public class MedicJdbcDAO extends StuffJdbcDAO<MedicDTO> implements MedicDAO {
         return queryExecutor;
     }
 
-    public static void main(String[] args) {
-        DaoManager daoManager = DaoManager.getInstance();
-//        DaoFactory daoFactory = daoManager.getDaoFactory();
-//        MedicDAO medicDAO = daoFactory.getMedicDao();
-        MedicDTO dto = new MedicDTO.Builder()
-                .setName("Hugh")
-                .setSurname("Laurie")
-                .setDepartmentId(94)
-                .build();
-//        medicDAO.create(dto);
-
-        dto.setName("Liza");
-        dto.setSurname("Edelstein");
-//        medicDAO.update(dto);
-
-//        medicDAO.delete(dto);
-
+    @Override
+    public Optional<MedicDTO> findByCredentialsId(long id) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByCredentialsId(connection, id);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
+        }
     }
 }

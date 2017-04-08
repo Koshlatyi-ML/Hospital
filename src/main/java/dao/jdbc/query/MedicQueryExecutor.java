@@ -1,19 +1,17 @@
 package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
-import dao.jdbc.query.retrieve.DtoRetrieverFactory;
 import dao.jdbc.query.supply.StuffDtoValueSupplier;
-import dao.jdbc.query.supply.ValueSupplierFactory;
 import dao.metadata.ColumnNameStyle;
 import dao.metadata.MedicTableInfo;
 import dao.metadata.StuffTableInfo;
-import dao.metadata.TableInfoFactory;
 import domain.dto.MedicDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class MedicQueryExecutor extends StuffQueryExecutor<MedicDTO> {
     private StuffTableInfo stuffTableInfo;
@@ -30,7 +28,8 @@ public class MedicQueryExecutor extends StuffQueryExecutor<MedicDTO> {
         selectingColumns = Arrays.asList(stuffTableInfo.getIdColumn(ColumnNameStyle.FULL),
                 stuffTableInfo.getNameColumn(ColumnNameStyle.FULL),
                 stuffTableInfo.getSurnameColumn(ColumnNameStyle.FULL),
-                stuffTableInfo.getDepartmentIdColumn(ColumnNameStyle.FULL));
+                stuffTableInfo.getDepartmentIdColumn(ColumnNameStyle.FULL),
+                medicTableInfo.getCredentialsIdColumn(ColumnNameStyle.FULL));
     }
 
     void setMedicTableInfo(MedicTableInfo medicTableInfo) {
@@ -87,6 +86,13 @@ public class MedicQueryExecutor extends StuffQueryExecutor<MedicDTO> {
                 stuffTableInfo.getDepartmentIdColumn(ColumnNameStyle.FULL));
     }
 
+    private String getFindByCredentialsIdQuery() {
+        return String.format("SELECT %s FROM %s WHERE %s=?",
+                Queries.formatAliasedColumns(selectingColumns),
+                getStuffInnerJoin(),
+                medicTableInfo.getCredentialsIdColumn(ColumnNameStyle.FULL));
+    }
+
     String getInsertQuery() {
         return String.format("INSERT INTO %s %s VALUES %s",
                 medicTableInfo.getTableName(),
@@ -126,8 +132,14 @@ public class MedicQueryExecutor extends StuffQueryExecutor<MedicDTO> {
 
     @Override
     public void queryDelete(Connection connection, long id) throws SQLException {
-        super.queryDelete(connection, id);
         queryDeleteStuff(connection, id);
+    }
+
+    public Optional<MedicDTO> queryFindByCredentialsId(Connection connection, long id)
+            throws SQLException {
+
+        return AppUserStatementExecutor.queryFindByCredentialsId(
+                connection, id, getFindByCredentialsIdQuery(), dtoRetriever);
     }
 
     @Override
