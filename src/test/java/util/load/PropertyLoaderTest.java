@@ -6,28 +6,26 @@ import java.util.Properties;
 import static org.junit.Assert.*;
 
 public class PropertyLoaderTest {
-    private PropertyLoader propertyLoader;
     private String examplePropertyName;
 
     public PropertyLoaderTest() {
-        propertyLoader = PropertyLoader.getInstance();
         examplePropertyName = "util/example.properties";
     }
 
     @Test(expected = NullPointerException.class)
     public void getPropertiesNullResource() throws Exception {
-        propertyLoader.getProperties(null);
+        PropertyLoader.getProperties(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void getPropertiesNonExistentResource() throws Exception {
-        propertyLoader.getProperties("nonexistent.properties");
+        PropertyLoader.getProperties("nonexistent.properties");
     }
 
 
     @Test
     public void getProperties() throws Exception {
-        Properties properties = propertyLoader.getProperties(examplePropertyName);
+        Properties properties = PropertyLoader.getProperties(examplePropertyName);
 
         assertEquals(properties.getProperty("1"), "property1");
         assertEquals(properties.getProperty("2"), "property2");

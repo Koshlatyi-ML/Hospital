@@ -2,47 +2,28 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.DtoValueSupplier;
-import dao.metadata.*;
 import domain.Patient;
 import domain.dto.PatientDTO;
+import util.load.PropertyLoader;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
-public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
-    private PatientTableInfo tableInfo;
-    private StuffTableInfo stuffTableInfo;
-    private DoctorTableInfo doctorTableInfo;
-    private List<String> selectingColumns;
+@QueryResource("dao/query/patients.properties")
+public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
+
+    private Properties queries;
     private DtoValueSupplier<PatientDTO> dtoValueSupplier;
     private DtoRetriever<PatientDTO> dtoRetriever;
 
     PatientQueryExecutor() {
-    }
-
-    void setTableInfo(PatientTableInfo tableInfo) {
-        this.tableInfo = tableInfo;
-        selectingColumns = Arrays.asList(tableInfo.getIdColumn(ColumnNameStyle.FULL),
-                tableInfo.getNameColumn(ColumnNameStyle.FULL),
-                tableInfo.getSurnameColumn(ColumnNameStyle.FULL),
-                tableInfo.getDoctorIdColumn(ColumnNameStyle.FULL),
-                tableInfo.getComplaintsColumn(ColumnNameStyle.FULL),
-                tableInfo.getDiagnosisColumn(ColumnNameStyle.FULL),
-                tableInfo.getStateColumn(ColumnNameStyle.FULL),
-                tableInfo.getCredentialsIdColumn(ColumnNameStyle.FULL));
-    }
-
-    void setStuffTableInfo(StuffTableInfo stuffTableInfo) {
-        this.stuffTableInfo = stuffTableInfo;
-    }
-
-    void setDoctorTableInfo(DoctorTableInfo doctorTableInfo) {
-        this.doctorTableInfo = doctorTableInfo;
+        queries = PropertyLoader.getProperties(this.getClass()
+                .getDeclaredAnnotation(QueryResource.class).value());
     }
 
     void setDtoValueSupplier(DtoValueSupplier<PatientDTO> dtoValueSupplier) {
@@ -53,58 +34,30 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
         this.dtoRetriever = dtoRetriever;
     }
 
-    private String getFindByDepartmentIdQuery() {
-        return String.format("SELECT %s FROM %s " +
-                        "INNER JOIN %s ON %s=%s " +
-                        "INNER JOIN %s ON %s=%s " +
-                        "WHERE %s=?",
-                Queries.formatAliasedColumns(selectingColumns),
-                tableInfo.getTableName(),
-                doctorTableInfo.getTableName(),
-                tableInfo.getDoctorIdColumn(ColumnNameStyle.FULL),
-                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
-                stuffTableInfo.getTableName(),
-                doctorTableInfo.getIdColumn(ColumnNameStyle.FULL),
-                stuffTableInfo.getIdColumn(ColumnNameStyle.FULL),
-                stuffTableInfo.getDepartmentIdColumn(ColumnNameStyle.FULL));
+    public List<PatientDTO> queryFindByFullName(Connection connection, String fullName)
+            throws SQLException {
+        return CommonQueriesExecutor.findByFullName(connection, fullName,
+                queries.getProperty("findByDepartment"), dtoRetriever);
     }
 
-    private String getFindByDoctorIdQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s=?",
-                Queries.formatAliasedColumns(selectingColumns),
-                tableInfo.getTableName(),
-                tableInfo.getDoctorIdColumn(ColumnNameStyle.FULL));
-    }
+    public Optional<PatientDTO> queryFindByCredentialsId(Connection connection, long id)
+            throws SQLException {
 
-    private String getFindByStateQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s=?",
-                Queries.formatAliasedColumns(selectingColumns),
-                tableInfo.getTableName(),
-                tableInfo.getStateColumn(ColumnNameStyle.FULL));
-    }
-
-    private String getFindByCredentialsIdQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s=?",
-                Queries.formatAliasedColumns(selectingColumns),
-                tableInfo.getTableName(),
-                tableInfo.getCredentialsIdColumn(ColumnNameStyle.FULL));
+        return CommonQueriesExecutor.findByCredentialsId(
+                connection, id, queries.getProperty("findByCredentialsId"), dtoRetriever);
     }
 
     public List<PatientDTO> queryFindByDepartmentId(Connection connection, long id)
             throws SQLException {
-
-        try (PreparedStatement statement =
-                     connection.prepareStatement(getFindByDepartmentIdQuery())) {
-
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            return dtoRetriever.retrieveDtoList(resultSet);
-        }
+        return CommonQueriesExecutor.findByDepartmentId(connection, id,
+                queries.getProperty("findByDepartmentId"), dtoRetriever);
     }
 
-    public List<PatientDTO> queryFindByDoctorId(Connection connection, long id) throws SQLException {
-        try (PreparedStatement statement
-                     = connection.prepareStatement(getFindByDoctorIdQuery())) {
+    public List<PatientDTO> queryFindByDoctorId(Connection connection, long id)
+            throws SQLException {
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(queries.getProperty("findByDoctorId"))) {
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -116,24 +69,12 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
             throws SQLException {
 
         try (PreparedStatement statement =
-                     connection.prepareStatement(getFindByStateQuery())) {
+                     connection.prepareStatement(queries.getProperty("findByState"))) {
 
             statement.setString(1, state.toString());
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDtoList(resultSet);
         }
-    }
-
-    public Optional<PatientDTO> queryFindByCredentialsId(Connection connection, long id)
-            throws SQLException {
-
-        return AppUserStatementExecutor.queryFindByCredentialsId(
-                connection, id, getFindByCredentialsIdQuery(), dtoRetriever);
-    }
-
-    @Override
-    protected PatientTableInfo getTableInfo() {
-        return tableInfo;
     }
 
     @Override
@@ -147,7 +88,7 @@ public class PatientQueryExecutor extends PersonQueryExecutor<PatientDTO> {
     }
 
     @Override
-    protected List<String> getSelectingColumns() {
-        return selectingColumns;
+    protected Properties getQueries() {
+        return queries;
     }
 }

@@ -20,19 +20,9 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findCurrentByDoctorIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findCurrentByPerformerIdAndType(long id, TherapyDTO.Type type) {
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindCurrentByDoctorIdAndType(connection, id, type);
-        } catch (SQLException e) {
-            connectionManager.tryRollback();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<TherapyDTO> findCurrentByMedicIdAndType(long id, TherapyDTO.Type type) {
-        try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindCurrentByMedicIdAndType(connection, id, type);
+            return queryExecutor.queryFindCurrentByPerformerIdAndType(connection, id, type);
         } catch (SQLException e) {
             connectionManager.tryRollback();
             throw new RuntimeException(e);
@@ -50,19 +40,9 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFinishedByDoctorIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findFinishedByPerformerIdAndType(long id, TherapyDTO.Type type) {
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindFinishedByDoctorIdAndType(connection, id, type);
-        } catch (SQLException e) {
-            connectionManager.tryRollback();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<TherapyDTO> findFinishedByMedicIdAndType(long id, TherapyDTO.Type type) {
-        try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindFinishedByMedicIdAndType(connection, id, type);
+            return queryExecutor.queryFindFinishedByPerformerIdAndType(connection, id, type);
         } catch (SQLException e) {
             connectionManager.tryRollback();
             throw new RuntimeException(e);
@@ -80,19 +60,9 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFutureByDoctorIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findFutureByPerformerIdAndType(long id, TherapyDTO.Type type) {
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindFutureByDoctorIdAndType(connection, id, type);
-        } catch (SQLException e) {
-            connectionManager.tryRollback();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<TherapyDTO> findFutureByMedicIdAndType(long id, TherapyDTO.Type type) {
-        try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindFutureByMedicIdAndType(connection, id, type);
+            return queryExecutor.queryFindFutureByPerformerIdAndType(connection, id, type);
         } catch (SQLException e) {
             connectionManager.tryRollback();
             throw new RuntimeException(e);
@@ -110,19 +80,9 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findByDoctorIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findByPerformerIdAndType(long id, TherapyDTO.Type type) {
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByDoctorIdAndType(connection, id, type);
-        } catch (SQLException e) {
-            connectionManager.tryRollback();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<TherapyDTO> findByMedicIdAndType(long id, TherapyDTO.Type type) {
-        try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByMedicIdAndType(connection, id, type);
+            return queryExecutor.queryFindByPerformerIdAndType(connection, id, type);
         } catch (SQLException e) {
             connectionManager.tryRollback();
             throw new RuntimeException(e);

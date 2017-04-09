@@ -1,11 +1,8 @@
 package dao.jdbc;
 
-import dao.DaoManager;
-import dao.MedicDAO;
 import dao.PatientDAO;
 import dao.connection.ConnectionManager;
 import dao.jdbc.query.PatientQueryExecutor;
-import dao.jdbc.query.PersonQueryExecutor;
 import domain.Patient;
 import domain.dto.PatientDTO;
 
@@ -14,13 +11,24 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements PatientDAO {
+public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDAO {
     private PatientQueryExecutor queryExecutor;
 
     PatientJdbcDAO(PatientQueryExecutor queryExecutor,
                    ConnectionManager connectionManager) {
+
         this.queryExecutor = queryExecutor;
         this.connectionManager = connectionManager;
+    }
+
+    @Override
+    public List<PatientDTO> findByFullName(String fullName) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return getQueryExecutor().queryFindByFullName(connection, fullName);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -64,7 +72,7 @@ public class PatientJdbcDAO extends PersonJdbcDAO<PatientDTO> implements Patient
     }
 
     @Override
-    protected PersonQueryExecutor<PatientDTO> getQueryExecutor() {
+    protected PatientQueryExecutor getQueryExecutor() {
         return queryExecutor;
     }
 }

@@ -1,6 +1,5 @@
 package dao.jdbc;
 
-import dao.StuffDAO;
 import dao.jdbc.query.StuffQueryExecutor;
 import domain.dto.AbstractStuffDTO;
 
@@ -8,11 +7,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdbcDAO<E>
-        implements StuffDAO<E> {
+public abstract class StuffJdbcDAO<T extends AbstractStuffDTO> extends CrudJdbcDAO<T> {
 
     @Override
-    public void create(E dto) {
+    public void create(T dto) {
         connectionManager.beginTransaction();
         try (Connection connection = connectionManager.getConnection()) {
             getQueryExecutor().queryInsert(connection, dto);
@@ -24,7 +22,7 @@ public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdb
     }
 
     @Override
-    public void update(E dto) {
+    public void update(T dto) {
         connectionManager.beginTransaction();
         try (Connection connection = connectionManager.getConnection()) {
             getQueryExecutor().queryUpdate(connection, dto);
@@ -36,7 +34,7 @@ public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdb
     }
 
     @Override
-    public void delete(E dto) {
+    public void delete(T dto) {
         try (Connection connection = connectionManager.getConnection()) {
             getQueryExecutor().queryDelete(connection, dto);
         } catch (SQLException e) {
@@ -45,8 +43,16 @@ public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdb
         }
     }
 
-    @Override
-    public List<E> findByDepartmentId(long id) {
+    public List<T> findByFullName(String fullName) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return getQueryExecutor().queryFindByFullName(connection, fullName);
+        } catch (SQLException e) {
+            connectionManager.tryRollback();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<T> findByDepartmentId(long id) {
         try (Connection connection = connectionManager.getConnection()) {
             return getQueryExecutor().queryFindByDepartmentId(connection, id);
         } catch (SQLException e) {
@@ -56,5 +62,5 @@ public abstract class StuffJdbcDAO<E extends AbstractStuffDTO> extends PersonJdb
     }
 
     @Override
-    protected abstract StuffQueryExecutor<E> getQueryExecutor();
+    protected abstract StuffQueryExecutor<T> getQueryExecutor();
 }

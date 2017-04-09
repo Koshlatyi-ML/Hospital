@@ -20,8 +20,7 @@ public class TestingConnectionFactory extends ConnectionFactory {
 
     private TestingConnectionFactory() {
         String CONNECTION_PROPERTIES_PATH = "dao/connection.properties";
-        connectionProperies = PropertyLoader.getInstance()
-                .getProperties(CONNECTION_PROPERTIES_PATH);
+        connectionProperies = PropertyLoader.getProperties(CONNECTION_PROPERTIES_PATH);
         dataSource = new PGConnectionPoolDataSource();
         dataSource.setUrl(connectionProperies.getProperty(URL_KEY));
         dataSource.setUser(connectionProperies.getProperty(USER_KEY));

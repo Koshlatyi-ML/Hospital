@@ -126,17 +126,10 @@ public class TherapyJdbcDAOTest {
     }
 
     @Test
-    public void findCurrentByDoctorIdAndType() throws Exception {
-        List<TherapyDTO> currentByDoctorIdAndType =
-                dao.findCurrentByDoctorIdAndType(55, TherapyDTO.Type.SURGERY_OPERATION);
-        assertEquals(1, currentByDoctorIdAndType.size());
-    }
-
-    @Test
-    public void findCurrentByMedicIdAndType() throws Exception {
-        List<TherapyDTO> currentByMedicIdAndType =
-                dao.findCurrentByMedicIdAndType(68, TherapyDTO.Type.PHYSIOTHERAPY);
-        assertEquals(1, currentByMedicIdAndType.size());
+    public void findCurrentByPerformerIdAndType() throws Exception {
+        List<TherapyDTO> currentByPerformerIdAndType =
+                dao.findCurrentByPerformerIdAndType(55, TherapyDTO.Type.SURGERY_OPERATION);
+        assertEquals(1, currentByPerformerIdAndType.size());
     }
 
     @Test
@@ -147,17 +140,10 @@ public class TherapyJdbcDAOTest {
     }
 
     @Test
-    public void findFinishedByDoctorIdAndType() throws Exception {
-        List<TherapyDTO> finishedByDoctorIdAndType =
-                dao.findFinishedByDoctorIdAndType(55, TherapyDTO.Type.SURGERY_OPERATION);
-        assertEquals(1, finishedByDoctorIdAndType.size());
-    }
-
-    @Test
-    public void findFinishedByMedicIdAndType() throws Exception {
-        List<TherapyDTO> finishedByMedicIdAndType =
-                dao.findFinishedByMedicIdAndType(68, TherapyDTO.Type.PHARMACOTHERAPY);
-        assertEquals(1, finishedByMedicIdAndType.size());
+    public void findFinishedByPerformerIdAndType() throws Exception {
+        List<TherapyDTO> finishedByPerformerIdAndType =
+                dao.findFinishedByPerformerIdAndType(55, TherapyDTO.Type.SURGERY_OPERATION);
+        assertEquals(1, finishedByPerformerIdAndType.size());
     }
 
     @Test
@@ -168,6 +154,13 @@ public class TherapyJdbcDAOTest {
     }
 
     @Test
+    public void findFutureByPerformerIdAndType() throws Exception {
+        List<TherapyDTO> futureByPerformerIdAndType =
+                dao.findFutureByPerformerIdAndType(57, TherapyDTO.Type.SURGERY_OPERATION);
+        assertEquals(1, futureByPerformerIdAndType.size());
+    }
+
+    @Test
     public void findFutureByPatientIdAndType() throws Exception {
         List<TherapyDTO> futureByPatientIdAndType =
                 dao.findFutureByPatientIdAndType(6, TherapyDTO.Type.SURGERY_OPERATION);
@@ -175,25 +168,10 @@ public class TherapyJdbcDAOTest {
     }
 
     @Test
-    public void findFutureByDoctorIdAndType() throws Exception {
-        List<TherapyDTO> futureByDoctorIdAndType =
-                dao.findFutureByDoctorIdAndType(57, TherapyDTO.Type.SURGERY_OPERATION);
-        assertEquals(1, futureByDoctorIdAndType.size());
-    }
-
-    @Test
-    public void findFutureByMedicIdAndType() throws Exception {
+    public void findByPerformerIdAndType() throws Exception {
         List<TherapyDTO> futureByMedicIdAndType =
-                dao.findFutureByMedicIdAndType(69, TherapyDTO.Type.PHYSIOTHERAPY);
-        assertEquals(1, futureByMedicIdAndType.size());
-    }
-
-
-    @Test
-    public void findCurrentByDoctorIdAndTypeNonTransactionalCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findCurrentByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionMock).close();
+                dao.findByPerformerIdAndType(69, TherapyDTO.Type.PHYSIOTHERAPY);
+        assertEquals(2, futureByMedicIdAndType.size());
     }
 
     @Test
@@ -204,58 +182,27 @@ public class TherapyJdbcDAOTest {
     }
 
     @Test
-    public void findByDoctorIdAndType() throws Exception {
-        List<TherapyDTO> futureByDoctorIdAndType =
-                dao.findByDoctorIdAndType(55, TherapyDTO.Type.SURGERY_OPERATION);
-        assertEquals(2, futureByDoctorIdAndType.size());
-    }
-
-    @Test
-    public void findByMedicIdAndType() throws Exception {
-        List<TherapyDTO> futureByMedicIdAndType =
-                dao.findByMedicIdAndType(69, TherapyDTO.Type.PHYSIOTHERAPY);
-        assertEquals(2, futureByMedicIdAndType.size());
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findCurrentByDoctorIdAndTypeNonTransactionalSqlExceptionCloseConnection()
-            throws Exception {
+    public void findCurrentByPerformerIdAndTypeNonTransactionalCloseConnection() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(false);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findCurrentByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findCurrentByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionMock).close();
     }
 
     @Test(expected = RuntimeException.class)
-    public void findCurrentByDoctorIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
+    public void findCurrentByPerformerIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findCurrentByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findCurrentByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionManagerMock).tryRollback();
     }
 
-    @Test
-    public void findCurrentByMedicIdAndTypeNonTransactionalCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findCurrentByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionMock).close();
-    }
-
     @Test(expected = RuntimeException.class)
-    public void findCurrentByMedicIdAndTypeNonTransactionalSqlExceptionCloseConnection()
+    public void findCurrentByPerformerIdAndTypeNonTransactionalSqlExceptionCloseConnection()
             throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(false);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findCurrentByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findCurrentByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionMock).close();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findCurrentByMedicIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findCurrentByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionManagerMock).tryRollback();
     }
 
     @Test
@@ -283,51 +230,26 @@ public class TherapyJdbcDAOTest {
     }
 
     @Test
-    public void findFinishedByDoctorIdAndTypeNonTransactionalCloseConnection() throws Exception {
+    public void findFinishedByPerformerIdAndTypeNonTransactionalCloseConnection() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findFinishedByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findFinishedByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionMock).close();
     }
 
     @Test(expected = RuntimeException.class)
-    public void findFinishedByDoctorIdAndTypeNonTransactionalSqlExceptionCloseConnection()
+    public void findFinishedByPerformerIdAndTypeNonTransactionalSqlExceptionCloseConnection()
             throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(false);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findFinishedByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findFinishedByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionMock).close();
     }
 
     @Test(expected = RuntimeException.class)
-    public void findFinishedByDoctorIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
+    public void findFinishedByPerformerIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findFinishedByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionManagerMock).tryRollback();
-    }
-
-    @Test
-    public void findFinishedByMedicIdAndTypeNonTransactionalCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findFinishedByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionMock).close();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findFinishedByMedicIdAndTypeNonTransactionalSqlExceptionCloseConnection()
-            throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findFinishedByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionMock).close();
-    }
-
-
-    @Test(expected = RuntimeException.class)
-    public void findFinishedByMedicIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findFinishedByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findFinishedByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionManagerMock).tryRollback();
     }
 
@@ -357,51 +279,27 @@ public class TherapyJdbcDAOTest {
     }
 
     @Test
-    public void findFutureByDoctorIdAndTypeNonTransactionalCloseConnection() throws Exception {
+    public void findFutureByPerformerIdAndTypeNonTransactionalCloseConnection() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findFutureByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findFutureByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionMock).close();
     }
 
     @Test(expected = RuntimeException.class)
-    public void findFutureByDoctorIdAndTypeNonTransactionalSqlExceptionCloseConnection()
+    public void findFutureByPerformerIdAndTypeNonTransactionalSqlExceptionCloseConnection()
             throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(false);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findFutureByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findFutureByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionMock).close();
     }
 
 
     @Test(expected = RuntimeException.class)
-    public void findFutureByDoctorIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
+    public void findFutureByPerformerIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findFutureByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-    }
-
-    @Test
-    public void findFutureByMedicIdAndTypeNonTransactionalCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findFutureByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionMock).close();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findFutureByMedicIdAndTypeNonTransactionalSqlExceptionCloseConnection()
-            throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findFutureByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionMock).close();
-    }
-
-
-    @Test(expected = RuntimeException.class)
-    public void findFutureByMedicIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findFutureByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findFutureByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
     }
 
     @Test
@@ -428,51 +326,27 @@ public class TherapyJdbcDAOTest {
     }
 
     @Test
-    public void findByDoctorIdAndTypeNonTransactionalCloseConnection() throws Exception {
+    public void findByPerformerIdAndTypeNonTransactionalCloseConnection() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionMock).close();
     }
 
     @Test(expected = RuntimeException.class)
-    public void findByDoctorIdAndTypeNonTransactionalSqlExceptionCloseConnection()
+    public void findByPerformerIdAndTypeNonTransactionalSqlExceptionCloseConnection()
             throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(false);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
         verify(connectionMock).close();
     }
 
 
     @Test(expected = RuntimeException.class)
-    public void findByDoctorIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
+    public void findByPerformerIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
         when(connectionManagerMock.isTransactional()).thenReturn(true);
         when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByDoctorIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-    }
-
-    @Test
-    public void findByMedicIdAndTypeNonTransactionalCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionMock).close();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findByMedicIdAndTypeNonTransactionalSqlExceptionCloseConnection()
-            throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
-        verify(connectionMock).close();
-    }
-
-
-    @Test(expected = RuntimeException.class)
-    public void findByMedicIdAndTypeTransactionalSqlExceptionRollback() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByMedicIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
+        jdbcDao.findByPerformerIdAndType(100L, TherapyDTO.Type.SURGERY_OPERATION);
     }
 
     @Test

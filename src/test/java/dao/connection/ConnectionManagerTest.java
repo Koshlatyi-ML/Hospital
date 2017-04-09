@@ -32,6 +32,51 @@ public class ConnectionManagerTest {
     }
 
     @Test
+    public void innerIsolationHigherLevelInnerIsolationHigh() throws Exception {
+        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
+        connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
+        connectionManager.beginTransaction(Connection.TRANSACTION_REPEATABLE_READ);
+        assertEquals(Connection.TRANSACTION_REPEATABLE_READ,
+                connectionManager.getConnection().getTransactionIsolation());
+        connectionManager.finishTransaction();
+        connectionManager.finishTransaction();
+    }
+
+    @Test
+    public void innerIsolationHigherLevelOuterIsolationLow() throws Exception {
+        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
+        connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
+        connectionManager.beginTransaction(Connection.TRANSACTION_REPEATABLE_READ);
+        connectionManager.finishTransaction();
+        assertEquals(Connection.TRANSACTION_READ_COMMITTED,
+                connectionManager.getConnection().getTransactionIsolation());
+        connectionManager.finishTransaction();
+    }
+
+
+    @Test
+    public void innerIsolationLowerLevelInnerIsolationHigh() throws Exception {
+        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
+        connectionManager.beginTransaction(Connection.TRANSACTION_REPEATABLE_READ);
+        connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
+        assertEquals(Connection.TRANSACTION_REPEATABLE_READ,
+                connectionManager.getConnection().getTransactionIsolation());
+        connectionManager.finishTransaction();
+        connectionManager.finishTransaction();
+    }
+
+    @Test
+    public void innerIsolationLowerLevelOuterIsolationHigh() throws Exception {
+        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
+        connectionManager.beginTransaction(Connection.TRANSACTION_REPEATABLE_READ);
+        connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
+        connectionManager.finishTransaction();
+        assertEquals(Connection.TRANSACTION_REPEATABLE_READ,
+                connectionManager.getConnection().getTransactionIsolation());
+        connectionManager.finishTransaction();
+    }
+
+    @Test
     public void getConnectionNotNull() throws Exception {
         ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         assertNotNull(connectionManager.getConnection());

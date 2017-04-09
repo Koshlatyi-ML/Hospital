@@ -1,38 +1,27 @@
 package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
-import dao.jdbc.query.retrieve.DtoRetrieverFactory;
 import dao.jdbc.query.supply.DtoValueSupplier;
-import dao.jdbc.query.supply.ValueSupplierFactory;
-import dao.metadata.ColumnNameStyle;
-import dao.metadata.DepartmentTableInfo;
-import dao.metadata.TableInfoFactory;
-import domain.Department;
 import domain.dto.DepartmentDTO;
+import util.load.PropertyLoader;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
+@QueryResource("dao/query/departments.properties")
 public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
-    private DepartmentTableInfo tableInfo;
+
+    private Properties queries;
     private DtoValueSupplier<DepartmentDTO> dtoValueSupplier;
     private DtoRetriever<DepartmentDTO> dtoRetriever;
 
-    private List<String> selectingColumns;
-
     DepartmentQueryExecutor() {
-    }
-
-    void setTableInfo(DepartmentTableInfo tableInfo) {
-        this.tableInfo = tableInfo;
-        selectingColumns = Arrays.asList(
-                tableInfo.getIdColumn(ColumnNameStyle.FULL),
-                tableInfo.getNameColumn(ColumnNameStyle.FULL));
+        queries = PropertyLoader.getProperties(this.getClass()
+                .getDeclaredAnnotation(QueryResource.class).value());
     }
 
     void setDtoValueSupplier(DtoValueSupplier<DepartmentDTO> dtoValueSupplier) {
@@ -43,17 +32,11 @@ public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
         this.dtoRetriever = dtoRetriever;
     }
 
-    private String getFindByNameQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s=?",
-                Queries.formatAliasedColumns(selectingColumns),
-                tableInfo.getTableName(),
-                tableInfo.getNameColumn(ColumnNameStyle.FULL));
-    }
-
     public Optional<DepartmentDTO> queryFindByName(Connection connection, String name)
             throws SQLException {
 
-        try (PreparedStatement statement = connection.prepareStatement(getFindByNameQuery())) {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(queries.getProperty("findByName"))) {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDTO(resultSet);
@@ -73,12 +56,7 @@ public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
     }
 
     @Override
-    protected DepartmentTableInfo getTableInfo() {
-        return tableInfo;
-    }
-
-    @Override
-    protected List<String> getSelectingColumns() {
-        return selectingColumns;
+    protected Properties getQueries() {
+        return queries;
     }
 }

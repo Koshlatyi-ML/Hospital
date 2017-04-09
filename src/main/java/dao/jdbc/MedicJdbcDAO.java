@@ -1,6 +1,5 @@
 package dao.jdbc;
 
-import dao.DaoManager;
 import dao.MedicDAO;
 import dao.connection.ConnectionManager;
 import dao.jdbc.query.MedicQueryExecutor;

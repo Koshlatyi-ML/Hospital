@@ -1,39 +1,22 @@
 package dao.jdbc.query.retrieve;
 
-import dao.metadata.ColumnNameStyle;
-import dao.metadata.TableInfoFactory;
-import dao.metadata.TherapyTableInfo;
 import domain.dto.TherapyDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TherapyDtoRetriever extends AbstractDtoRetriever<TherapyDTO> {
-    private TherapyTableInfo tableInfo;
-
-    TherapyDtoRetriever(TherapyTableInfo tableInfo) {
-        this.tableInfo = tableInfo;
-    }
-
     @Override
     protected TherapyDTO retrieve(ResultSet resultSet) throws SQLException {
         return new TherapyDTO.Builder()
-                .setId(resultSet
-                        .getLong(tableInfo.getIdColumn(ColumnNameStyle.FULL)))
-                .setTitle(resultSet
-                        .getString(tableInfo.getTitleColumn(ColumnNameStyle.FULL)))
-                .setDescription(resultSet
-                        .getString(tableInfo.getDescriptionColumn(ColumnNameStyle.FULL)))
-                .setType(TherapyDTO.Type.valueOf(
-                        resultSet.getString(tableInfo.getTypeColumn(ColumnNameStyle.FULL))))
-                .setAppointmentDateTime(resultSet
-                        .getTimestamp(tableInfo.getAppointmentDateColumn(ColumnNameStyle.FULL)))
-                .setCompleteDateTime(resultSet
-                        .getTimestamp(tableInfo.getCompleteDateColumn(ColumnNameStyle.FULL)))
-                .setPatientId(resultSet
-                        .getLong(tableInfo.getPatientIdColumn(ColumnNameStyle.FULL)))
-                .setPerformerId(resultSet
-                        .getLong(tableInfo.getPerformerIdColumn(ColumnNameStyle.FULL)))
+                .setId(resultSet.getLong(1))
+                .setTitle(resultSet.getString(2))
+                .setType(TherapyDTO.Type.valueOf(resultSet.getString(3)))
+                .setDescription(resultSet.getString(4))
+                .setAppointmentDateTime(resultSet.getTimestamp(5))
+                .setCompleteDateTime(resultSet.getTimestamp(6))
+                .setPatientId(resultSet.getLong(7))
+                .setPerformerId(resultSet.getLong(8))
                 .build();
     }
 }

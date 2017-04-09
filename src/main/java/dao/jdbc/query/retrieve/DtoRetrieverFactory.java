@@ -1,6 +1,5 @@
 package dao.jdbc.query.retrieve;
 
-import dao.metadata.TableInfoFactory;
 import domain.dto.*;
 
 public class DtoRetrieverFactory {
@@ -14,21 +13,12 @@ public class DtoRetrieverFactory {
     private static final DtoRetrieverFactory INSTANCE = new DtoRetrieverFactory();
 
     private DtoRetrieverFactory() {
-        TableInfoFactory tableInfoFactory = TableInfoFactory.getInstance();
-        departmentDtoRetriever =
-                new DepartmentDtoRetriever(tableInfoFactory.getDepartmentTableInfo());
-        doctorDtoRetriever =
-                new DoctorDtoRetriever(tableInfoFactory.getStuffTableInfo(),
-                        tableInfoFactory.getDoctorTableInfo());
-        medicDtoRetriever =
-                new MedicDtoRetriever(tableInfoFactory.getStuffTableInfo(),
-                        tableInfoFactory.getMedicTableInfo());
-        patientDtoRetriever =
-                new PatientDtoRetriever(tableInfoFactory.getPatientTableInfo());
-        therapyDtoRetriever =
-                new TherapyDtoRetriever(tableInfoFactory.getTherapyTableInfo());
-        credentialsDtoRetriever =
-                new CredentialsDtoRetriever(tableInfoFactory.getCredentialsTableInfo());
+        departmentDtoRetriever = new DepartmentDtoRetriever();
+        doctorDtoRetriever = new DoctorDtoRetriever();
+        medicDtoRetriever = new MedicDtoRetriever();
+        patientDtoRetriever = new PatientDtoRetriever();
+        therapyDtoRetriever = new TherapyDtoRetriever();
+        credentialsDtoRetriever = new CredentialsDtoRetriever();
     }
 
     public static DtoRetrieverFactory getInstance() {

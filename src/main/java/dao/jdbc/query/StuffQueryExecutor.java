@@ -1,41 +1,22 @@
 package dao.jdbc.query;
 
 import dao.jdbc.query.supply.StuffDtoValueSupplier;
-import dao.metadata.ColumnNameStyle;
-import dao.metadata.StuffTableInfo;
 import domain.dto.AbstractStuffDTO;
+import util.load.PropertyLoader;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Properties;
 
+@QueryResource("dao/query/stuff.properties")
+public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends QueryExecutor<T> {
 
-public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends PersonQueryExecutor<T> {
-
-     private String getInsertStuffQuery() {
-        return String.format("INSERT INTO %s %s VALUES %s",
-                getTableInfo().getTableName(),
-                Queries.formatInsertColumnNames(getTableInfo().getNonGeneratingColumns()),
-                Queries.formatInsertPlaceholders(getTableInfo().getNonGeneratingColumns().size()));
-    }
-
-    private String getUpdateStuffQuery() {
-        return String.format("UPDATE %s SET %s WHERE %s=?",
-                getTableInfo().getTableName(),
-                Queries.formatUpdateColumnPlaceholders(getTableInfo().getNonGeneratingColumns()),
-                getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
-    }
-
-    private String getDeleteStuffQuery() {
-        return String.format("DELETE FROM %s WHERE %s=?",
-                getTableInfo().getTableName(),
-                getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
-    }
-
-    abstract String getFindByDepartmentIdQuery();
-
+    private Properties stuffQueries =
+            PropertyLoader.getProperties(StuffQueryExecutor.class
+                    .getDeclaredAnnotation(QueryResource.class).value());
     void queryInsertStuff(Connection connection, T dto) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getInsertStuffQuery(),
+                     connection.prepareStatement(stuffQueries.getProperty("insert"),
                              Statement.RETURN_GENERATED_KEYS)) {
             getDtoValueSupplier().supplyStuffValues(statement, dto);
             statement.execute();
@@ -49,36 +30,31 @@ public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends Per
 
     void queryUpdateStuff(Connection connection, T dto) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getUpdateStuffQuery())) {
+                     connection.prepareStatement(stuffQueries.getProperty("update"))) {
             int index = getDtoValueSupplier().supplyStuffValues(statement, dto);
             statement.setLong(++index, dto.getId());
             statement.execute();
         }
     }
 
-    void queryDeleteStuff(Connection connection, T dto) throws SQLException {
-        queryDelete(connection, dto.getId());
-    }
-
     void queryDeleteStuff(Connection connection, long id) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getDeleteStuffQuery())) {
+                     connection.prepareStatement(stuffQueries.getProperty("delete"))) {
             statement.setLong(1, id);
             statement.execute();
         }
     }
 
-    public List<T> queryFindByDepartmentId(Connection connection, long id) throws SQLException {
-        try (PreparedStatement statement =
-                     connection.prepareStatement(getFindByDepartmentIdQuery())) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            return getDtoRetriever().retrieveDtoList(resultSet);
-        }
+    public List<T> queryFindByFullName(Connection connection, String fullName) throws SQLException {
+        return CommonQueriesExecutor.findByFullName(connection, fullName,
+                getQueries().getProperty("findByFullName"), getDtoRetriever());
     }
 
-    @Override
-    protected abstract StuffTableInfo getTableInfo();
+
+    public List<T> queryFindByDepartmentId(Connection connection, long id) throws SQLException {
+        return CommonQueriesExecutor.findByDepartmentId(connection, id,
+                getQueries().getProperty("findByFullName"), getDtoRetriever());
+    }
 
     @Override
     protected abstract StuffDtoValueSupplier<T> getDtoValueSupplier();

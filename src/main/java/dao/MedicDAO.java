@@ -2,4 +2,11 @@ package dao;
 
 import domain.dto.MedicDTO;
 
-public interface MedicDAO extends StuffDAO<MedicDTO>, ApplicationUserDAO<MedicDTO> {}
+import java.util.List;
+import java.util.Optional;
+
+public interface MedicDAO {
+    List<MedicDTO> findByFullName(String fullName);
+    List<MedicDTO> findByDepartmentId(long id);
+    Optional<MedicDTO> findByCredentialsId(long id);
+}

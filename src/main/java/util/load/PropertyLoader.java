@@ -9,18 +9,19 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PropertyLoader {
-    private static final PropertyLoader INSTANCE = new PropertyLoader();
+//    private static final PropertyLoader INSTANCE = new PropertyLoader();
 
     private PropertyLoader() {
 
     }
 
-    public static PropertyLoader getInstance() {
-        return INSTANCE;
-    }
+//    public static PropertyLoader getInstance() {
+//        return INSTANCE;
+//    }
 
-    public Properties getProperties(String resourceName) {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
+    public static Properties getProperties(String resourceName) {
+        InputStream inputStream = PropertyLoader.class.
+                getClassLoader().getResourceAsStream(resourceName);
         Properties properties = new Properties();
         try {
             properties.load(inputStream);

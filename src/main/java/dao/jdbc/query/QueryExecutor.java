@@ -2,52 +2,19 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.DtoValueSupplier;
-import dao.metadata.ColumnNameStyle;
-import dao.metadata.PlainTableInfo;
 import domain.dto.AbstractDTO;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
 public abstract class QueryExecutor<T extends AbstractDTO> {
-    String getFindAllQuery() {
-        return String.format("SELECT %s FROM %s",
-                Queries.formatAliasedColumns(getSelectingColumns()),
-                getTableInfo().getTableName());
-    }
-
-    String getFindByIdQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s=?",
-                Queries.formatAliasedColumns(getSelectingColumns()),
-                getTableInfo().getTableName(),
-                getTableInfo().getIdColumn(ColumnNameStyle.FULL));
-    }
-
-
-    String getInsertQuery() {
-        return String.format("INSERT INTO %s %s VALUES %s",
-                getTableInfo().getTableName(),
-                Queries.formatInsertColumnNames(getTableInfo().getNonGeneratingColumns()),
-                Queries.formatInsertPlaceholders(getTableInfo().getNonGeneratingColumns().size()));
-    }
-
-    String getUpdateQuery() {
-        return String.format("UPDATE %s SET %s WHERE %s=?",
-                getTableInfo().getTableName(),
-                Queries.formatUpdateColumnPlaceholders(getTableInfo().getNonGeneratingColumns()),
-                getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
-    }
-
-    String getDeleteQuery() {
-        return String.format("DELETE FROM %s WHERE %s=?",
-                getTableInfo().getTableName(),
-                getTableInfo().getIdColumn(ColumnNameStyle.SHORT));
-    }
 
     public List<T> queryFindAll(Connection connection) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getFindAllQuery())) {
+                     connection.prepareStatement(getQueries().getProperty("findAll"))) {
+
             ResultSet resultSet = statement.executeQuery();
             return getDtoRetriever().retrieveDtoList(resultSet);
         }
@@ -55,7 +22,8 @@ public abstract class QueryExecutor<T extends AbstractDTO> {
 
     public Optional<T> queryFindById(Connection connection, long id) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getFindByIdQuery())) {
+                     connection.prepareStatement(getQueries().getProperty("findById"))) {
+
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             return getDtoRetriever().retrieveDTO(resultSet);
@@ -64,8 +32,9 @@ public abstract class QueryExecutor<T extends AbstractDTO> {
 
     public void queryInsert(Connection connection, T dto) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getInsertQuery(),
+                     connection.prepareStatement(getQueries().getProperty("insert"),
                              Statement.RETURN_GENERATED_KEYS)) {
+
             getDtoValueSupplier().supplyValues(statement, dto);
             statement.execute();
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -77,7 +46,8 @@ public abstract class QueryExecutor<T extends AbstractDTO> {
 
     public void queryUpdate(Connection connection, T dto) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getUpdateQuery())) {
+                     connection.prepareStatement(getQueries().getProperty("update"))) {
+
             int index = getDtoValueSupplier().supplyValues(statement, dto);
             statement.setLong(++index, dto.getId());
             statement.execute();
@@ -90,7 +60,7 @@ public abstract class QueryExecutor<T extends AbstractDTO> {
 
     public void queryDelete(Connection connection, long id) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(getDeleteQuery())) {
+                     connection.prepareStatement(getQueries().getProperty("delete"))) {
             statement.setLong(1, id);
             statement.execute();
         }
@@ -100,7 +70,5 @@ public abstract class QueryExecutor<T extends AbstractDTO> {
 
     protected abstract DtoValueSupplier<T> getDtoValueSupplier();
 
-    protected abstract PlainTableInfo getTableInfo();
-
-    protected abstract List<String> getSelectingColumns();
+    protected abstract Properties getQueries();
 }

@@ -2,20 +2,24 @@ package dao.connection;
 
 import dao.connection.exception.IllegalTransactionStateException;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.Optional;
 
 public class ConnectionManager {
     private ConnectionFactory connectionFactory;
     private ThreadLocal<Connection> connectionThreadLocal;
     private ThreadLocal<Integer> nestedTransactionsThreadLocal;
+    private ThreadLocal<LinkedList<Integer>> isolationLevelStackThreadLocal;
 
     ConnectionManager(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
         this.connectionThreadLocal = new ThreadLocal<>();
         this.nestedTransactionsThreadLocal = ThreadLocal.withInitial(() -> 0);
+        this.isolationLevelStackThreadLocal = ThreadLocal.withInitial(LinkedList::new);
     }
 
     public Connection getConnection() {
@@ -27,8 +31,19 @@ public class ConnectionManager {
         return (Connection) Proxy.newProxyInstance(
                 getClass().getClassLoader(),
                 new Class[]{Connection.class, AutoCloseable.class},
-                (proxy, method, args) -> {
+                (Object proxy, Method method, Object[] args) -> {
                     if (method.getName().equals("close") && isTransactional()) {
+                        return null;
+                    }
+
+                    if (method.getName().equals("setAutoCommit")) {
+                        return null;
+                    }
+
+                    if (method.getName().equals("setTransactionIsolation")
+                            && ((Integer) args[0])
+                            .compareTo(isolationLevelStackThreadLocal.get().peek()) < 0) {
+
                         return null;
                     }
 
@@ -55,6 +70,7 @@ public class ConnectionManager {
             throw new RuntimeException(e);
         }
 
+        isolationLevelStackThreadLocal.get().push(isolationLevel);
         nestedTransactionsThreadLocal.set(nestedTransactionsThreadLocal.get() + 1);
 
         if (!isTransactional()) {
@@ -68,12 +84,21 @@ public class ConnectionManager {
         }
 
         if (nestedTransactionsThreadLocal.get() > 1) {
+            isolationLevelStackThreadLocal.get().pop();
+            Integer outerIsolationLevel = isolationLevelStackThreadLocal.get().peek();
+            try {
+                connectionThreadLocal.get().setTransactionIsolation(outerIsolationLevel);
+            } catch (SQLException e) {
+                tryRollback();
+                throw new RuntimeException(e);
+            }
             nestedTransactionsThreadLocal.set(nestedTransactionsThreadLocal.get() - 1);
             return;
         }
 
         try (Connection connection = connectionThreadLocal.get()) {
             connectionThreadLocal.set(null);
+            isolationLevelStackThreadLocal.get().clear();
             nestedTransactionsThreadLocal.set(0);
             try {
                 connection.commit();
@@ -89,6 +114,7 @@ public class ConnectionManager {
         if (isTransactional()) {
             try (Connection connection = connectionThreadLocal.get()) {
                 connectionThreadLocal.set(null);
+                isolationLevelStackThreadLocal.get().clear();
                 nestedTransactionsThreadLocal.set(0);
                 connection.rollback();
             } catch (SQLException e) {
