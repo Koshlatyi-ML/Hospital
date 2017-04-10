@@ -1,6 +1,7 @@
-package dao.connection;
+package dao.jdbc;
 
-import dao.connection.exception.IllegalTransactionStateException;
+import dao.connection.ConnectionProvider;
+import dao.exception.IllegalTransactionStateException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -10,13 +11,14 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 public class ConnectionManager {
-    private ConnectionFactory connectionFactory;
+
+    private ConnectionProvider connectionProvider;
     private ThreadLocal<Connection> connectionThreadLocal;
     private ThreadLocal<Integer> nestedTransactionsThreadLocal;
     private ThreadLocal<LinkedList<Integer>> isolationLevelStackThreadLocal;
 
-    ConnectionManager(ConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
+    ConnectionManager(ConnectionProvider connectionProvider) {
+        this.connectionProvider = connectionProvider;
         this.connectionThreadLocal = new ThreadLocal<>();
         this.nestedTransactionsThreadLocal = ThreadLocal.withInitial(() -> 0);
         this.isolationLevelStackThreadLocal = ThreadLocal.withInitial(LinkedList::new);
@@ -24,7 +26,7 @@ public class ConnectionManager {
 
     public Connection getConnection() {
         return Optional.ofNullable(connectionThreadLocal.get())
-                .orElse(connectionFactory.getConnection());
+                .orElse(connectionProvider.getConnection());
     }
 
     private Connection transactionalProxyConnection(Connection connection) {
@@ -32,17 +34,16 @@ public class ConnectionManager {
                 getClass().getClassLoader(),
                 new Class[]{Connection.class, AutoCloseable.class},
                 (Object proxy, Method method, Object[] args) -> {
-                    if (method.getName().equals("close") && isTransactional()) {
+                    if ("close".equals(method.getName()) && isTransactional()) {
                         return null;
                     }
 
-                    if (method.getName().equals("setAutoCommit")) {
+                    if ("setAutoCommit".equals(method.getName())) {
                         return null;
                     }
 
-                    if (method.getName().equals("setTransactionIsolation")
-                            && ((Integer) args[0])
-                            .compareTo(isolationLevelStackThreadLocal.get().peek()) < 0) {
+                    if ("setTransactionIsolation".equals(method.getName())
+                            && ((Integer) args[0]).compareTo(isolationLevelStackThreadLocal.get().peek()) < 0) {
 
                         return null;
                     }
@@ -100,11 +101,7 @@ public class ConnectionManager {
             connectionThreadLocal.set(null);
             isolationLevelStackThreadLocal.get().clear();
             nestedTransactionsThreadLocal.set(0);
-            try {
-                connection.commit();
-            } catch (SQLException onCommit) {
-                connection.rollback();
-            }
+            tryCommit(connection);
         } catch (SQLException onRollbackOrClose) {
             throw new RuntimeException(onRollbackOrClose);
         }
@@ -123,7 +120,16 @@ public class ConnectionManager {
         }
     }
 
-    public boolean isTransactional() {
+    private void tryCommit(Connection connection) throws SQLException {
+        try {
+            connection.commit();
+        } catch (SQLException onCommit) {
+            connection.rollback();
+            throw new RuntimeException(onCommit);
+        }
+    }
+
+    private boolean isTransactional() {
         return connectionThreadLocal.get() != null;
     }
 }

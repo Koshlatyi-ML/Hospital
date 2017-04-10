@@ -1,10 +1,8 @@
 package dao.jdbc;
 
-import dao.connection.ConnectionManager;
-import dao.connection.TestingConnectionFactory;
+import dao.connection.TestConnectionProvider;
 import dao.jdbc.query.MedicQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
-import domain.dto.DoctorDTO;
 import domain.dto.MedicDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,32 +21,29 @@ public class MedicJdbcDAOTest {
     private MedicJdbcDAO jdbcDao;
     private MedicJdbcDAO dao;
     @Mock
-    private ConnectionManager connectionManagerMock;
+    private ConnectionManager connectionManager;
     @Mock
     private MedicQueryExecutor queryExecutorMock;
     @Mock
     private Connection connectionMock;
-    @Mock
-    private ConnectionManager realConnManag;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        jdbcDao = new MedicJdbcDAO(queryExecutorMock, connectionManagerMock);
-        when(connectionManagerMock.getConnection()).thenReturn(connectionMock);
-        jdbcDao.connectionManager = connectionManagerMock;
 
-        when(realConnManag.getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection());
+        TestConnectionProvider connectionProvider = TestConnectionProvider.getInstance();
+        when(connectionManager.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection());
+
+        jdbcDao = new MedicJdbcDAO(queryExecutorMock, connectionManager);
 
         MedicQueryExecutor queryExecutor =
                 QueryExecutorFactory.getInstance().getMedicQueryExecutor();
 
-        dao = new MedicJdbcDAO(queryExecutor, realConnManag);
+        dao = new MedicJdbcDAO(queryExecutor, connectionManager);
     }
 
     @Test

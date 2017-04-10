@@ -1,4 +1,4 @@
-package dao.connection.exception;
+package dao.exception;
 
 public class IllegalTransactionStateException extends IllegalStateException {
     public IllegalTransactionStateException() {

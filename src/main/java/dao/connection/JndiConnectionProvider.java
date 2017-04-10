@@ -1,17 +1,17 @@
-package dao.connection.jdbc;
+package dao.connection;
 
-import dao.connection.ConnectionFactory;
-import util.load.init.Jndi;
+import util.init.Jndi;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class JdbcConnectionFactory extends ConnectionFactory {
+public class JndiConnectionProvider extends ConnectionProvider {
     @Jndi("java:comp/env/jdbc/postgres")
     private DataSource dataSource;
 
-    private JdbcConnectionFactory() {    }
+    private JndiConnectionProvider() {
+    }
 
     @Override
     public Connection getConnection() {

@@ -1,9 +1,7 @@
 package dao.jdbc;
 
 import dao.CredentialsDAO;
-import dao.connection.ConnectionManager;
 import dao.jdbc.query.CredentialsQueryExecutor;
-import dao.jdbc.query.DepartmentQueryExecutor;
 import dao.jdbc.query.QueryExecutor;
 import domain.dto.CredentialsDTO;
 

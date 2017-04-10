@@ -12,6 +12,8 @@ public class QueryExecutorFactory {
     private TherapyQueryExecutor therapyQueryExecutor;
     private CredentialsQueryExecutor credentialsQueryExecutor;
 
+    private static final QueryExecutorFactory INSTANCE = new QueryExecutorFactory();
+
     private QueryExecutorFactory() {
         DtoRetrieverFactory dtoRetrieverFactory = DtoRetrieverFactory.getInstance();
         ValueSupplierFactory valueSupplierFactory = ValueSupplierFactory.getInstance();
@@ -41,7 +43,6 @@ public class QueryExecutorFactory {
         credentialsQueryExecutor.setValueSupplier(valueSupplierFactory.getCredentialsValueSupplier());
     }
 
-    private static final QueryExecutorFactory INSTANCE = new QueryExecutorFactory();
 
     public static QueryExecutorFactory getInstance() {
         return INSTANCE;

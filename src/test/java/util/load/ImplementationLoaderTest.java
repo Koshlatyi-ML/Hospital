@@ -1,11 +1,9 @@
 package util.load;
 
 import org.junit.Test;
-import org.mockito.internal.matchers.Null;
-import util.load.init.Initializer;
+import util.init.Initializer;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;

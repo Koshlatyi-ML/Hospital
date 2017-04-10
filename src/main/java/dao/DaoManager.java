@@ -2,11 +2,7 @@ package dao;
 
 import dao.jdbc.JdbcDaoManager;
 import util.load.Implementation;
-import util.load.ImplementationLoader;
 import util.load.ImplementationLoaderFactory;
-
-import java.sql.Connection;
-import java.sql.Statement;
 
 @Implementation(JdbcDaoManager.class)
 public abstract class DaoManager {

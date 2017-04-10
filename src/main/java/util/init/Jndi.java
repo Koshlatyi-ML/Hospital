@@ -1,4 +1,4 @@
-package util.load.init;
+package util.init;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

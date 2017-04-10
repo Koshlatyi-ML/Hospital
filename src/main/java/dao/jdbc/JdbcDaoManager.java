@@ -1,8 +1,7 @@
 package dao.jdbc;
 
 import dao.*;
-import dao.connection.ConnectionManager;
-import dao.connection.ConnectionManagerFactory;
+import dao.connection.ConnectionProvider;
 import dao.jdbc.query.QueryExecutorFactory;
 
 import java.sql.Connection;
@@ -17,7 +16,7 @@ public class JdbcDaoManager extends DaoManager {
     private ConnectionManager connectionManager;
 
     private JdbcDaoManager() {
-        connectionManager = ConnectionManagerFactory.getInstance().createConnectionManager();
+        connectionManager = new ConnectionManager(ConnectionProvider.getInstance());
         QueryExecutorFactory queryExecutorFactory = QueryExecutorFactory.getInstance();
         departmentDao = new DepartmentJdbcDAO(queryExecutorFactory.getDepartmentQueryExecutor(),
                 connectionManager);

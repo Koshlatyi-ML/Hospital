@@ -1,39 +1,47 @@
-package dao.connection;
+package dao.jdbc;
 
-import dao.connection.exception.IllegalTransactionStateException;
+import dao.connection.ConnectionProvider;
+import dao.connection.JndiConnectionProvider;
+import dao.connection.TestConnectionProvider;
+import dao.exception.IllegalTransactionStateException;
+import dao.jdbc.ConnectionManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+
+import static org.mockito.Mockito.mock;
+
 public class ConnectionManagerTest {
 
+    private ConnectionManager connectionManager;
     @Mock
-    private ConnectionFactory mockConnectionFactory;
+    private ConnectionProvider connectionProvider;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        TestingConnectionFactory connectionFactory = TestingConnectionFactory.getInstance();
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(connectionFactory.getConnection())
-                .thenReturn(connectionFactory.getConnection())
-                .thenReturn(connectionFactory.getConnection())
-                .thenReturn(connectionFactory.getConnection());
+        connectionManager = new ConnectionManager(connectionProvider);
+        TestConnectionProvider connectionProvider = TestConnectionProvider.getInstance();
+        when(connectionManager.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection());
     }
 
     @Test
     public void innerIsolationHigherLevelInnerIsolationHigh() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
         connectionManager.beginTransaction(Connection.TRANSACTION_REPEATABLE_READ);
         assertEquals(Connection.TRANSACTION_REPEATABLE_READ,
@@ -44,7 +52,6 @@ public class ConnectionManagerTest {
 
     @Test
     public void innerIsolationHigherLevelOuterIsolationLow() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
         connectionManager.beginTransaction(Connection.TRANSACTION_REPEATABLE_READ);
         connectionManager.finishTransaction();
@@ -56,7 +63,6 @@ public class ConnectionManagerTest {
 
     @Test
     public void innerIsolationLowerLevelInnerIsolationHigh() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction(Connection.TRANSACTION_REPEATABLE_READ);
         connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
         assertEquals(Connection.TRANSACTION_REPEATABLE_READ,
@@ -67,7 +73,6 @@ public class ConnectionManagerTest {
 
     @Test
     public void innerIsolationLowerLevelOuterIsolationHigh() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction(Connection.TRANSACTION_REPEATABLE_READ);
         connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
         connectionManager.finishTransaction();
@@ -78,13 +83,12 @@ public class ConnectionManagerTest {
 
     @Test
     public void getConnectionNotNull() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         assertNotNull(connectionManager.getConnection());
     }
 
     @Test
     public void beginTransactionNoParameters() throws Exception {
-        ConnectionManager connectionManagerSpy = spy(new ConnectionManager(mockConnectionFactory));
+        ConnectionManager connectionManagerSpy = spy(connectionManager);
         connectionManagerSpy.beginTransaction();
 
         verify(connectionManagerSpy).beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
@@ -92,7 +96,6 @@ public class ConnectionManagerTest {
 
     @Test
     public void beginTransactionScopedConnection() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
 
         assertSame(connectionManager.getConnection(), connectionManager.getConnection());
@@ -100,7 +103,6 @@ public class ConnectionManagerTest {
 
     @Test
     public void beginTransactionSetAutoCommitFalse() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
 
         assertFalse(connectionManager.getConnection().getAutoCommit());
@@ -108,26 +110,17 @@ public class ConnectionManagerTest {
 
     @Test
     public void beginTransactionSetTransactionIsolationLevel() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         int isolationLevel = Connection.TRANSACTION_READ_COMMITTED;
         connectionManager.beginTransaction(isolationLevel);
 
         assertEquals(isolationLevel, connectionManager.getConnection().getTransactionIsolation());
     }
 
-
     @Test
     public void beginTransactionSetAutoCommitException() throws Exception {
         Connection throwerMock = mock(Connection.class);
         Mockito.doThrow(SQLException.class).when(throwerMock).setAutoCommit(false);
 
-
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(throwerMock)
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
-
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         try {
             connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
         } catch (RuntimeException e) {
@@ -142,12 +135,6 @@ public class ConnectionManagerTest {
         Mockito.doThrow(SQLException.class).when(throwerMock)
                 .setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(throwerMock)
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
-
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         try {
             connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
         } catch (RuntimeException e) {
@@ -161,12 +148,6 @@ public class ConnectionManagerTest {
         Mockito.doThrow(SQLException.class).when(throwerMock).setAutoCommit(false);
         Mockito.doThrow(SQLException.class).when(throwerMock).close();
 
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(throwerMock)
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
-
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         try {
             connectionManager.beginTransaction(Connection.TRANSACTION_READ_COMMITTED);
         } catch (RuntimeException e) {
@@ -176,7 +157,6 @@ public class ConnectionManagerTest {
 
     @Test
     public void finishNestedTransactionScopedConnections() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         connectionManager.beginTransaction();
         connectionManager.finishTransaction();
@@ -186,7 +166,6 @@ public class ConnectionManagerTest {
 
     @Test
     public void finishWithNestedTransactionNotScopedConnections() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         connectionManager.beginTransaction();
         connectionManager.finishTransaction();
@@ -198,7 +177,6 @@ public class ConnectionManagerTest {
 
     @Test
     public void finishTransactionNotScopedConnections() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         connectionManager.finishTransaction();
 
@@ -208,12 +186,9 @@ public class ConnectionManagerTest {
     @Test
     public void finishTransactionCommit() throws Exception {
         Connection mock = mock(Connection.class);
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(mock)
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
 
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
+        when(connectionManager.getConnection()).thenReturn(mock);
+
         connectionManager.beginTransaction();
         connectionManager.finishTransaction();
 
@@ -225,12 +200,6 @@ public class ConnectionManagerTest {
         Connection throwerMock = mock(Connection.class);
         Mockito.doThrow(SQLException.class).when(throwerMock).commit();
 
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(throwerMock)
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
-
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         try {
             connectionManager.finishTransaction();
@@ -244,12 +213,6 @@ public class ConnectionManagerTest {
         Connection throwerMock = mock(Connection.class);
         Mockito.doThrow(SQLException.class).when(throwerMock).close();
 
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(throwerMock)
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
-
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         try {
             connectionManager.finishTransaction();
@@ -263,12 +226,6 @@ public class ConnectionManagerTest {
         Connection throwerMock = mock(Connection.class);
         Mockito.doThrow(SQLException.class).when(throwerMock).rollback(null);
 
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(throwerMock)
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
-
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         try {
             connectionManager.finishTransaction();
@@ -280,13 +237,8 @@ public class ConnectionManagerTest {
     @Test
     public void rollbackTransaction() throws Exception {
         Connection observedMock = mock(Connection.class);
+        when(connectionManager.getConnection()).thenReturn(observedMock);
 
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(observedMock)
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
-
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         connectionManager.tryRollback();
 
@@ -295,12 +247,6 @@ public class ConnectionManagerTest {
 
     @Test
     public void rollbackTransactionNotScopedConnection() throws Exception {
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
-
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         try {
             connectionManager.tryRollback();
@@ -314,12 +260,6 @@ public class ConnectionManagerTest {
         Connection throwerMock = mock(Connection.class);
         Mockito.doThrow(SQLException.class).when(throwerMock).rollback();
 
-        when(mockConnectionFactory.getConnection())
-                .thenReturn(throwerMock)
-                .thenReturn(mock(Connection.class))
-                .thenReturn(mock(Connection.class));
-
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         try {
             connectionManager.tryRollback();
@@ -330,37 +270,33 @@ public class ConnectionManagerTest {
 
     @Test
     public void isTransactionFalseNotOpened() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
-        assertFalse(connectionManager.isTransactional());
+        assertTrue(connectionManager.getConnection().getAutoCommit());
     }
 
     @Test
     public void isTransactionalFalseRollbacked() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         connectionManager.tryRollback();
-        assertFalse(connectionManager.isTransactional());
+        assertTrue(connectionManager.getConnection().getAutoCommit());
     }
 
     @Test
     public void isTransactionalFalseFinished() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
         connectionManager.finishTransaction();
-        assertFalse(connectionManager.isTransactional());
+        assertTrue(connectionManager.getConnection().getAutoCommit());
     }
 
     @Test
     public void isTransactionalFalseTrue() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.beginTransaction();
-        assertTrue(connectionManager.isTransactional());
+        assertFalse(connectionManager.getConnection().getAutoCommit());
     }
 
     @Test(expected = IllegalTransactionStateException.class)
     public void IllegalTransactionalFinishWithoutBegin() throws Exception {
-        ConnectionManager connectionManager = new ConnectionManager(mockConnectionFactory);
         connectionManager.finishTransaction();
-        assertTrue(connectionManager.isTransactional());
+        assertTrue(connectionManager.getConnection().getAutoCommit());
     }
+
 }

@@ -5,6 +5,9 @@ import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
 public class ReflectionUtils {
+
+    private ReflectionUtils() {}
+
     public static <T extends Annotation> boolean hasDeclaredAnnotation(Field field,
                                                                        Class<T> annotation) {
 

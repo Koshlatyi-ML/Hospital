@@ -1,12 +1,9 @@
 package util.load;
 
-import util.load.init.Initializer;
-import util.load.init.JndiInitializer;
-import util.load.init.JndiInitializerFactory;
+import util.init.Initializer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
 import java.util.List;
 
 public class ImplementationLoader {

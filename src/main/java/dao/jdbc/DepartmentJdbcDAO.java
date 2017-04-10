@@ -1,7 +1,6 @@
 package dao.jdbc;
 
 import dao.DepartmentDAO;
-import dao.connection.ConnectionManager;
 import dao.jdbc.query.DepartmentQueryExecutor;
 import dao.jdbc.query.QueryExecutor;
 import domain.dto.DepartmentDTO;

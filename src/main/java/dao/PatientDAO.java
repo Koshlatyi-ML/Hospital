@@ -1,7 +1,6 @@
 package dao;
 
 import domain.Patient;
-import domain.dto.MedicDTO;
 import domain.dto.PatientDTO;
 
 import java.util.List;

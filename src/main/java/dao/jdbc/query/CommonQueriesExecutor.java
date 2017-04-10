@@ -3,7 +3,6 @@ package dao.jdbc.query;
 import dao.jdbc.query.retrieve.DtoRetriever;
 import domain.dto.AbstractDTO;
 import domain.dto.AbstractPersonDTO;
-import domain.dto.AbstractStuffDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

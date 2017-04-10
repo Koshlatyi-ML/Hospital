@@ -1,4 +1,4 @@
-package util.load.init;
+package util.init;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +9,6 @@ import javax.naming.Context;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.isNull;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class JndiInitializerTest {

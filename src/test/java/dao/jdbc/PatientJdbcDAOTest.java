@@ -1,11 +1,9 @@
 package dao.jdbc;
 
-import dao.connection.ConnectionManager;
-import dao.connection.TestingConnectionFactory;
+import dao.connection.TestConnectionProvider;
 import dao.jdbc.query.PatientQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import domain.Patient;
-import domain.dto.MedicDTO;
 import domain.dto.PatientDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,45 +11,40 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PatientJdbcDAOTest {
     private PatientJdbcDAO jdbcDao;
     private PatientJdbcDAO dao;
     @Mock
-    private ConnectionManager connectionManagerMock;
+    private ConnectionManager connectionManager;
     @Mock
     private PatientQueryExecutor queryExecutorMock;
     @Mock
     private Connection connectionMock;
-    @Mock
-    private ConnectionManager realConnManag;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        jdbcDao = new PatientJdbcDAO(queryExecutorMock, connectionManagerMock);
-        when(connectionManagerMock.getConnection()).thenReturn(connectionMock);
-        jdbcDao.connectionManager = connectionManagerMock;
 
-        when(realConnManag.getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection());
+        TestConnectionProvider connectionProvider = TestConnectionProvider.getInstance();
+        when(connectionManager.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection());
+
+        jdbcDao = new PatientJdbcDAO(queryExecutorMock, connectionManager);
 
         PatientQueryExecutor queryExecutor =
                 QueryExecutorFactory.getInstance().getPatientQueryExecutor();
 
-        dao = new PatientJdbcDAO(queryExecutor, realConnManag);
+        dao = new PatientJdbcDAO(queryExecutor, connectionManager);
     }
 
     @Test
@@ -70,7 +63,6 @@ public class PatientJdbcDAOTest {
                 .setCredentialsId(18)
                 .build();
         assertEquals(desired, tested);
-        Thread.sleep(25);
     }
 
     @Test
@@ -176,75 +168,5 @@ public class PatientJdbcDAOTest {
     public void findByState() throws Exception {
         List<PatientDTO> daoByState = dao.findByState(Patient.State.DISCHARGED);
         assertEquals(1, daoByState.size());
-    }
-
-    @Test
-    public void findByDepartmentIdNonTransactionalCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findByDepartmentId(100L);
-        verify(connectionMock).close();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findByDepartmentIdNonTransactionalSqlExceptionCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByDepartmentId(100L);
-        verify(connectionMock).close();
-    }
-
-
-    @Test(expected = RuntimeException.class)
-    public void findByDepartmentIdTransactionalSqlExceptionRollback() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByDepartmentId(100L);
-        verify(connectionManagerMock).tryRollback();
-    }
-
-    @Test
-    public void findByDoctorIdNonTransactionalCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findByDoctorId(100L);
-        verify(connectionMock).close();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findByDoctorIdNonTransactionalSqlExceptionCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByDoctorId(100L);
-        verify(connectionMock).close();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findByDoctorIdTransactionalSqlExceptionRollback() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByDoctorId(100L);
-        verify(connectionManagerMock).tryRollback();
-    }
-
-    @Test
-    public void findByStateIdNonTransactionalCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        jdbcDao.findByState(Patient.State.ADDMITTED);
-        verify(connectionMock).close();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findByStateNonTransactionalSqlExceptionCloseConnection() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(false);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByState(Patient.State.ADDMITTED);
-        verify(connectionMock).close();
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void findByStateTransactionalSqlExceptionRollback() throws Exception {
-        when(connectionManagerMock.isTransactional()).thenReturn(true);
-        when(jdbcDao.getQueryExecutor()).thenThrow(SQLException.class);
-        jdbcDao.findByState(Patient.State.ADDMITTED);
-        verify(connectionManagerMock).tryRollback();
     }
 }

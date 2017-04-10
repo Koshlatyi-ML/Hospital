@@ -1,18 +1,14 @@
 package dao.jdbc;
 
-import dao.connection.ConnectionManager;
-import dao.connection.TestingConnectionFactory;
+import dao.connection.TestConnectionProvider;
 import dao.jdbc.query.CredentialsQueryExecutor;
-import dao.jdbc.query.MedicQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
 import domain.dto.CredentialsDTO;
-import domain.dto.MedicDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,32 +20,27 @@ public class CredentialsJdbcDAOTest {
     private CredentialsJdbcDAO jdbcDao;
     private CredentialsJdbcDAO dao;
     @Mock
-    private ConnectionManager connectionManagerMock;
+    private ConnectionManager connectionManager;
     @Mock
     private CredentialsQueryExecutor queryExecutorMock;
-    @Mock
-    private Connection connectionMock;
-    @Mock
-    private ConnectionManager realConnManag;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        jdbcDao = new CredentialsJdbcDAO(queryExecutorMock, connectionManagerMock);
-        when(connectionManagerMock.getConnection()).thenReturn(connectionMock);
-        jdbcDao.connectionManager = connectionManagerMock;
 
-        when(realConnManag.getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection())
-                .thenReturn(TestingConnectionFactory.getInstance().getConnection());
+        TestConnectionProvider connectionProvider = TestConnectionProvider.getInstance();
+        when(connectionManager.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection())
+                .thenReturn(connectionProvider.getConnection());
+
+        jdbcDao = new CredentialsJdbcDAO(queryExecutorMock, connectionManager);
 
         CredentialsQueryExecutor queryExecutor =
                 QueryExecutorFactory.getInstance().getCredentialsQueryExecutor();
 
-        dao = new CredentialsJdbcDAO(queryExecutor, realConnManag);
+        dao = new CredentialsJdbcDAO(queryExecutor, connectionManager);
     }
 
     @Test

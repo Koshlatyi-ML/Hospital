@@ -1,7 +1,6 @@
 package dao.jdbc;
 
 import dao.TherapyDAO;
-import dao.connection.ConnectionManager;
 import dao.jdbc.query.QueryExecutor;
 import dao.jdbc.query.TherapyQueryExecutor;
 import domain.dto.TherapyDTO;

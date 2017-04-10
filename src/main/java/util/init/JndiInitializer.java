@@ -1,9 +1,8 @@
-package util.load.init;
+package util.init;
 
 import util.ReflectionUtils;
 
 import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.util.Arrays;
 
