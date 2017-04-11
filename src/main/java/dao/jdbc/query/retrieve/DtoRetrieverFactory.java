@@ -1,6 +1,6 @@
 package dao.jdbc.query.retrieve;
 
-import domain.dto.*;
+import domain.*;
 
 public class DtoRetrieverFactory {
     private DepartmentDtoRetriever departmentDtoRetriever;

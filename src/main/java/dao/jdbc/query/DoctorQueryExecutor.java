@@ -2,8 +2,10 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.StuffDtoValueSupplier;
-import domain.dto.DoctorDTO;
-import util.load.PropertyLoader;
+import domain.DoctorDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import util.PropertyLoader;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +15,8 @@ import java.util.Optional;
 import java.util.Properties;
 
 @QueryResource("dao/query/doctors.properties")
-public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
+public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO>
+        implements CredentialsHolderQueryExecutor<DoctorDTO> {
 
     private Properties queries;
     private StuffDtoValueSupplier<DoctorDTO> valueSupplier;
@@ -65,6 +68,7 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
         }
     }
 
+    @Override
     public Optional<DoctorDTO> queryFindByCredentialsId(Connection connection, long id)
             throws SQLException {
 

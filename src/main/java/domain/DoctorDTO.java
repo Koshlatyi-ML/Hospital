@@ -1,8 +1,9 @@
-package domain.dto;
+package domain;
 
 import java.util.Objects;
 
 public class DoctorDTO extends AbstractStuffDTO {
+
     private long credentialsId;
 
     private DoctorDTO() {}

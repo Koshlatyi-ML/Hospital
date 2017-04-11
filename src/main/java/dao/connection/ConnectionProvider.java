@@ -9,6 +9,7 @@ import java.sql.Connection;
 public abstract class ConnectionProvider {
 
     private static class SingletonHolder {
+        private SingletonHolder() {}
         private static final ConnectionProvider INSTANCE =
                 ImplementationLoaderFactory.getInstance()
                         .createImplementationLoader()

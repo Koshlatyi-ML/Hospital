@@ -4,7 +4,7 @@ import dao.DepartmentDAO;
 import dao.connection.TestConnectionProvider;
 import dao.jdbc.query.DepartmentQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
-import domain.dto.DepartmentDTO;
+import domain.DepartmentDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

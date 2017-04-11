@@ -12,10 +12,8 @@ public class ImplementationLoaderFactory {
     }
 
     private ImplementationLoaderFactory() {
-        implementationLoader =
-                new ImplementationLoader(
-                        Collections.singletonList(
-                                JndiInitializerFactory.getInstance().createJndiInitializer()));
+        implementationLoader = new ImplementationLoader(Collections.singletonList(
+                JndiInitializerFactory.getInstance().getJndiInitializer()));
     }
 
     public static ImplementationLoaderFactory getInstance() {

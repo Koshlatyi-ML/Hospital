@@ -1,8 +1,9 @@
-package domain.dto;
+package domain;
 
 import util.AbstractBuilder;
 
 public abstract class AbstractDTO {
+
     private long id;
 
     public long getId() {

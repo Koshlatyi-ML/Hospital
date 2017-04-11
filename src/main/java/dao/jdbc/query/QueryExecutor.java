@@ -2,7 +2,7 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.DtoValueSupplier;
-import domain.dto.AbstractDTO;
+import domain.AbstractDTO;
 
 import java.sql.*;
 import java.util.List;

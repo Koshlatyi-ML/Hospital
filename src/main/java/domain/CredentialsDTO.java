@@ -1,11 +1,17 @@
-package domain.dto;
+package domain;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
 public class CredentialsDTO extends AbstractDTO {
+
     private String login;
     private String password;
     private long role;
+    private static final Logger LOG = LogManager.getLogger(CredentialsDTO.class);
 
     private CredentialsDTO() {
     }
@@ -15,6 +21,10 @@ public class CredentialsDTO extends AbstractDTO {
     }
 
     public void setLogin(String login) {
+        if (login == null) {
+            LOG.log(Level.ERROR, "Login attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
         this.login = login;
     }
 
@@ -23,6 +33,10 @@ public class CredentialsDTO extends AbstractDTO {
     }
 
     public void setPassword(String password) {
+        if (password == null) {
+            LOG.log(Level.ERROR, "Password attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
         this.password = password;
     }
 
@@ -32,6 +46,7 @@ public class CredentialsDTO extends AbstractDTO {
 
     public void setRole(long role) {
         if (role < 0 || role > 3) {
+            LOG.log(Level.ERROR, "Role attempted to set an illegal value");
             throw new IllegalArgumentException();
         }
 

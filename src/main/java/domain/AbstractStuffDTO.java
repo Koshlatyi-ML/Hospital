@@ -1,6 +1,7 @@
-package domain.dto;
+package domain;
 
 public abstract class AbstractStuffDTO extends AbstractPersonDTO {
+
     private long departmentId;
 
     public long getDepartmentId() {

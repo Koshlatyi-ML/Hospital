@@ -1,14 +1,20 @@
 package dao.jdbc;
 
 import dao.DoctorDAO;
+import dao.exception.DaoException;
 import dao.jdbc.query.DoctorQueryExecutor;
-import domain.dto.DoctorDTO;
+import domain.DoctorDTO;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.Optional;
 
 public class DoctorJdbcDAO extends StuffJdbcDAO<DoctorDTO> implements DoctorDAO {
+
     private DoctorQueryExecutor queryExecutor;
+    private static final Logger LOG = LogManager.getLogger(DoctorJdbcDAO.class);
 
     DoctorJdbcDAO(DoctorQueryExecutor queryExecutor,
                   ConnectionManager connectionManager) {
@@ -22,19 +28,15 @@ public class DoctorJdbcDAO extends StuffJdbcDAO<DoctorDTO> implements DoctorDAO 
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindByPatientId(connection, id);
         } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByPatientId", e);
             connectionManager.tryRollback();
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
     @Override
     public Optional<DoctorDTO> findByCredentialsId(long id) {
-        try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByCredentialsId(connection, id);
-        } catch (SQLException e) {
-            connectionManager.tryRollback();
-            throw new RuntimeException(e);
-        }
+        return JdbcDaoCommons.findByCredentialsId(connectionManager, queryExecutor, id);
     }
 
     @Override

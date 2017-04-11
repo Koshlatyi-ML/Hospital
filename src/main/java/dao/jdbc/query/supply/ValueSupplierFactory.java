@@ -1,6 +1,6 @@
 package dao.jdbc.query.supply;
 
-import domain.dto.*;
+import domain.*;
 
 public class ValueSupplierFactory {
     private DepartmentDtoValueSupplier departmentDtoValueSupplier;

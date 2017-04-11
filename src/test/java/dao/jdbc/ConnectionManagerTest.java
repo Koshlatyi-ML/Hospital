@@ -5,6 +5,7 @@ import dao.connection.JndiConnectionProvider;
 import dao.connection.TestConnectionProvider;
 import dao.exception.IllegalTransactionStateException;
 import dao.jdbc.ConnectionManager;
+import org.apache.logging.log4j.Level;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

@@ -1,7 +1,10 @@
-package domain.dto;
+package domain;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class PatientDTO extends AbstractPersonDTO {
 
@@ -10,6 +13,7 @@ public class PatientDTO extends AbstractPersonDTO {
     private String diagnosis;
     private String state;
     private long credentialsId;
+    private static final Logger LOG = LogManager.getLogger(PatientDTO.class);
 
 
     private PatientDTO() {
@@ -18,7 +22,7 @@ public class PatientDTO extends AbstractPersonDTO {
     public enum State {
         APPLYIED,
         ADDMITTED,
-        DISCHARGED //maybe redundant
+        DISCHARGED
     }
 
     public long getDoctorId() {
@@ -34,8 +38,11 @@ public class PatientDTO extends AbstractPersonDTO {
     }
 
     public void setComplaints(String complaints) {
-        this.complaints = Optional.ofNullable(complaints)
-                .orElseThrow(IllegalArgumentException::new);
+        if (complaints == null) {
+            LOG.log(Level.ERROR, "Complaints attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
+        this.complaints = complaints;
     }
 
     public String getDiagnosis() {
@@ -51,9 +58,17 @@ public class PatientDTO extends AbstractPersonDTO {
     }
 
     public void setState(State state) {
-        this.state = Optional.ofNullable(state)
-                .orElseThrow(IllegalArgumentException::new)
-                .toString();
+        if (state == null) {
+            LOG.log(Level.ERROR, "State attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
+
+        if (state == State.DISCHARGED && diagnosis == null) {
+            LOG.log(Level.ERROR, "State attempted to set discharged in inappropriate patient state");
+            throw new IllegalStateException();
+        }
+
+        this.state = state.toString();
     }
 
     public long getCredentialsId() {

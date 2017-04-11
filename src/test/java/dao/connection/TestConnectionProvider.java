@@ -1,7 +1,7 @@
 package dao.connection;
 
 import org.postgresql.ds.PGConnectionPoolDataSource;
-import util.load.PropertyLoader;
+import util.PropertyLoader;
 
 import java.sql.Connection;
 import java.sql.SQLException;

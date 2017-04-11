@@ -3,7 +3,7 @@ package dao.jdbc;
 import dao.connection.TestConnectionProvider;
 import dao.jdbc.query.DoctorQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
-import domain.dto.DoctorDTO;
+import domain.DoctorDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

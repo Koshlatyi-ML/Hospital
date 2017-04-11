@@ -1,6 +1,6 @@
 package dao.jdbc.query.supply;
 
-import domain.dto.AbstractStuffDTO;
+import domain.AbstractStuffDTO;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

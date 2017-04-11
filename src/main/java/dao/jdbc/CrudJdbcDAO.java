@@ -1,8 +1,12 @@
 package dao.jdbc;
 
 import dao.CrudDAO;
+import dao.exception.DaoException;
 import dao.jdbc.query.QueryExecutor;
-import domain.dto.AbstractDTO;
+import domain.AbstractDTO;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,15 +14,18 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
+
     ConnectionManager connectionManager;
+    private static final Logger LOG = LogManager.getLogger(CrudJdbcDAO.class);
 
     @Override
     public Optional<T> find(long id) {
         try (Connection connection = connectionManager.getConnection()) {
             return getQueryExecutor().queryFindById(connection, id);
         } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findById", e);
             connectionManager.tryRollback();
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -27,8 +34,9 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
         try (Connection connection = connectionManager.getConnection()) {
             return getQueryExecutor().queryFindAll(connection);
         } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findAll", e);
             connectionManager.tryRollback();
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -37,7 +45,9 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
         try (Connection connection = connectionManager.getConnection()) {
             getQueryExecutor().queryInsert(connection, dto);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            LOG.log(Level.ERROR, "Can't query insert", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
         }
     }
 
@@ -46,8 +56,9 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
         try (Connection connection = connectionManager.getConnection()) {
             getQueryExecutor().queryUpdate(connection, dto);
         } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query update", e);
             connectionManager.tryRollback();
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
@@ -61,8 +72,9 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
         try (Connection connection = connectionManager.getConnection()) {
             getQueryExecutor().queryDelete(connection, id);
         } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query delete", e);
             connectionManager.tryRollback();
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 

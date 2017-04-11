@@ -1,6 +1,6 @@
 package dao;
 
-import domain.dto.CredentialsDTO;
+import domain.CredentialsDTO;
 
 import java.util.Optional;
 

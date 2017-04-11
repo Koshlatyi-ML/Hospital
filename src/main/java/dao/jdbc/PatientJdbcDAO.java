@@ -1,9 +1,12 @@
 package dao.jdbc;
 
 import dao.PatientDAO;
+import dao.exception.DaoException;
 import dao.jdbc.query.PatientQueryExecutor;
-import domain.Patient;
-import domain.dto.PatientDTO;
+import domain.PatientDTO;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -11,7 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDAO {
+
     private PatientQueryExecutor queryExecutor;
+    private static final Logger LOG = LogManager.getLogger(PatientJdbcDAO.class);
 
     PatientJdbcDAO(PatientQueryExecutor queryExecutor,
                    ConnectionManager connectionManager) {
@@ -22,22 +27,17 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
 
     @Override
     public List<PatientDTO> findByFullName(String fullName) {
-        try (Connection connection = connectionManager.getConnection()) {
-            return getQueryExecutor().queryFindByFullName(connection, fullName);
-        } catch (SQLException e) {
-            connectionManager.tryRollback();
-            throw new RuntimeException(e);
-        }
+        return JdbcDaoCommons.findByFullName(connectionManager, queryExecutor, fullName);
     }
 
     @Override
     public List<PatientDTO> findByDepartmentId(long id) {
-        try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByDepartmentId(connection, id);
-        } catch (SQLException e) {
-            connectionManager.tryRollback();
-            throw new RuntimeException(e);
-        }
+        return JdbcDaoCommons.findByDepartmentId(connectionManager, queryExecutor, id);
+    }
+
+    @Override
+    public Optional<PatientDTO> findByCredentialsId(long id) {
+        return JdbcDaoCommons.findByCredentialsId(connectionManager, queryExecutor, id);
     }
 
     @Override
@@ -45,28 +45,20 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindByDoctorId(connection, id);
         } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByDoctorId", e);
             connectionManager.tryRollback();
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public List<PatientDTO> findByState(Patient.State state) {
+    public List<PatientDTO> findByState(PatientDTO.State state) {
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindByState(connection, state);
         } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByState", e);
             connectionManager.tryRollback();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public Optional<PatientDTO> findByCredentialsId(long id) {
-        try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByCredentialsId(connection, id);
-        } catch (SQLException e) {
-            connectionManager.tryRollback();
-            throw new RuntimeException(e);
+            throw new DaoException(e);
         }
     }
 

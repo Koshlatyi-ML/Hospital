@@ -1,18 +1,23 @@
-package domain.dto;
+package domain;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.util.Objects;
-import java.util.Optional;
 
 public class TherapyDTO extends AbstractDTO {
+
     private String title;
     private String type;
     private String description;
     private Timestamp appointmentDateTime;
-    private Timestamp completeDateTime;
+    private Timestamp completionDateTime;
     private long patientId;
     private long performerId;
-    private boolean isCompleted;
+    private static final Logger LOG = LogManager.getLogger(TherapyDTO.class);
+
 
     public enum Type {
         PHARMACOTHERAPY,
@@ -25,8 +30,11 @@ public class TherapyDTO extends AbstractDTO {
     }
 
     public void setTitle(String title) {
-        this.title = Optional.ofNullable(title)
-                .orElseThrow(IllegalArgumentException::new);
+        if (title == null) {
+            LOG.log(Level.ERROR, "Title attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
+        this.title = title;
     }
 
     public String getType() {
@@ -34,9 +42,12 @@ public class TherapyDTO extends AbstractDTO {
     }
 
     public void setType(Type type) {
-        this.type = Optional.ofNullable(type)
-                .orElseThrow(IllegalArgumentException::new)
-                .toString();
+        if (type == null) {
+            LOG.log(Level.ERROR, "Type attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
+
+        this.type = type.toString();
     }
 
     public String getDescription() {
@@ -44,8 +55,11 @@ public class TherapyDTO extends AbstractDTO {
     }
 
     public void setDescription(String description) {
-        this.description = Optional.ofNullable(description)
-                .orElseThrow(IllegalArgumentException::new);
+        if (description == null) {
+            LOG.log(Level.ERROR, "Description attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
+        this.description = description;
     }
 
     public Timestamp getAppointmentDateTime() {
@@ -53,21 +67,24 @@ public class TherapyDTO extends AbstractDTO {
     }
 
     public void setAppointmentDateTime(Timestamp appointmentDateTime) {
-        this.appointmentDateTime = Optional.ofNullable(appointmentDateTime)
-                .orElseThrow(IllegalArgumentException::new);
+        if (appointmentDateTime == null) {
+            LOG.log(Level.ERROR, "Appointment datetime attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
+        this.appointmentDateTime = appointmentDateTime;
     }
 
-    public Timestamp getCompleteDateTime() {
-        return completeDateTime;
+    public Timestamp getCompletionDateTime() {
+        return completionDateTime;
     }
 
-    public void setCompleteDateTime(Timestamp completeDateTime) {
-        if (isCompleted) {
+    public void setCompletionDateTime(Timestamp completionDateTime) {
+        if (this.completionDateTime != null) {
+            LOG.log(Level.ERROR, "Completion datetime attempted to reset a value");
             throw new IllegalStateException();
         }
 
-        this.completeDateTime = completeDateTime;
-        isCompleted = true;
+        this.completionDateTime = completionDateTime;
     }
 
     public long getPatientId() {
@@ -114,7 +131,7 @@ public class TherapyDTO extends AbstractDTO {
         }
 
         public Builder setCompleteDateTime(Timestamp time) {
-            instance.setCompleteDateTime(time);
+            instance.setCompletionDateTime(time);
             return getSelf();
         }
 
@@ -146,13 +163,13 @@ public class TherapyDTO extends AbstractDTO {
                 && Objects.equals(getType(), that.getType())
                 && Objects.equals(getDescription(), that.getDescription())
                 && Objects.equals(getAppointmentDateTime(), that.getAppointmentDateTime())
-                && Objects.equals(getCompleteDateTime(), that.getCompleteDateTime());
+                && Objects.equals(getCompletionDateTime(), that.getCompletionDateTime());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getTitle(), getType(), getDescription(),
-                getAppointmentDateTime(), getCompleteDateTime(), getPatientId(),
+                getAppointmentDateTime(), getCompletionDateTime(), getPatientId(),
                 getPerformerId());
     }
 }

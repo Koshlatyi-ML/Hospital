@@ -3,13 +3,12 @@ package dao.jdbc;
 import dao.connection.TestConnectionProvider;
 import dao.jdbc.query.QueryExecutorFactory;
 import dao.jdbc.query.TherapyQueryExecutor;
-import domain.dto.TherapyDTO;
+import domain.TherapyDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Connection;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;

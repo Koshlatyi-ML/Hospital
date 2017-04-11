@@ -2,9 +2,8 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.DtoValueSupplier;
-import domain.Patient;
-import domain.dto.PatientDTO;
-import util.load.PropertyLoader;
+import domain.PatientDTO;
+import util.PropertyLoader;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +14,10 @@ import java.util.Optional;
 import java.util.Properties;
 
 @QueryResource("dao/query/patients.properties")
-public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
+public class PatientQueryExecutor extends QueryExecutor<PatientDTO>
+        implements PersonQueryExecutor<PatientDTO>,
+        DepartmentMemberQueryExecutor<PatientDTO>,
+        CredentialsHolderQueryExecutor<PatientDTO> {
 
     private Properties queries;
     private DtoValueSupplier<PatientDTO> dtoValueSupplier;
@@ -34,12 +36,14 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
         this.dtoRetriever = dtoRetriever;
     }
 
+    @Override
     public List<PatientDTO> queryFindByFullName(Connection connection, String fullName)
             throws SQLException {
         return CommonQueriesExecutor.findByFullName(connection, fullName,
                 queries.getProperty("findByDepartment"), dtoRetriever);
     }
 
+    @Override
     public Optional<PatientDTO> queryFindByCredentialsId(Connection connection, long id)
             throws SQLException {
 
@@ -47,8 +51,10 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
                 connection, id, queries.getProperty("findByCredentialsId"), dtoRetriever);
     }
 
+    @Override
     public List<PatientDTO> queryFindByDepartmentId(Connection connection, long id)
             throws SQLException {
+
         return CommonQueriesExecutor.findByDepartmentId(connection, id,
                 queries.getProperty("findByDepartmentId"), dtoRetriever);
     }
@@ -65,7 +71,7 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
         }
     }
 
-    public List<PatientDTO> queryFindByState(Connection connection, Patient.State state)
+    public List<PatientDTO> queryFindByState(Connection connection, PatientDTO.State state)
             throws SQLException {
 
         try (PreparedStatement statement =

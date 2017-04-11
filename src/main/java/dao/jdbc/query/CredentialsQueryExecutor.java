@@ -2,8 +2,8 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.DtoValueSupplier;
-import domain.dto.CredentialsDTO;
-import util.load.PropertyLoader;
+import domain.CredentialsDTO;
+import util.PropertyLoader;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,8 +42,6 @@ public class CredentialsQueryExecutor extends QueryExecutor<CredentialsDTO> {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDTO(resultSet);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 

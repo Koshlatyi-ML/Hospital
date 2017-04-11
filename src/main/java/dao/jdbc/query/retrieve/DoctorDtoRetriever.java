@@ -1,6 +1,6 @@
 package dao.jdbc.query.retrieve;
 
-import domain.dto.DoctorDTO;
+import domain.DoctorDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

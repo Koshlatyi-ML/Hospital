@@ -3,8 +3,7 @@ package dao.jdbc;
 import dao.connection.TestConnectionProvider;
 import dao.jdbc.query.PatientQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
-import domain.Patient;
-import domain.dto.PatientDTO;
+import domain.PatientDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -49,18 +48,18 @@ public class PatientJdbcDAOTest {
 
     @Test
     public void find() throws Exception {
-        long id = 7;
+        long id = 8;
         PatientDTO tested = dao.find(id).orElseThrow(Exception::new);
 
         PatientDTO desired = new PatientDTO.Builder()
                 .setId(id)
-                .setName("PatientName2")
-                .setSurname("PatientSurname2")
-                .setDoctorId(54)
-                .setCompliants("Complaints2")
-                .setDiagnosis(null)
-                .setState(PatientDTO.State.ADDMITTED)
-                .setCredentialsId(18)
+                .setName("PatientName3")
+                .setSurname("PatientSurname3")
+                .setDoctorId(0)
+                .setCompliants("Complaints3")
+                .setDiagnosis("Diagnosis3")
+                .setState(PatientDTO.State.DISCHARGED)
+                .setCredentialsId(19)
                 .build();
         assertEquals(desired, tested);
     }
@@ -166,7 +165,7 @@ public class PatientJdbcDAOTest {
 
     @Test
     public void findByState() throws Exception {
-        List<PatientDTO> daoByState = dao.findByState(Patient.State.DISCHARGED);
+        List<PatientDTO> daoByState = dao.findByState(PatientDTO.State.DISCHARGED);
         assertEquals(1, daoByState.size());
     }
 }

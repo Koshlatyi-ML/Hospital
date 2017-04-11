@@ -1,6 +1,8 @@
 package util.load;
 
 import org.junit.Test;
+import util.PropertyLoader;
+
 import java.util.Properties;
 
 import static org.junit.Assert.*;

@@ -2,8 +2,8 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.DtoValueSupplier;
-import domain.dto.TherapyDTO;
-import util.load.PropertyLoader;
+import domain.TherapyDTO;
+import util.PropertyLoader;
 
 import java.sql.*;
 import java.util.List;

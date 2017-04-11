@@ -1,6 +1,6 @@
 package dao;
 
-import domain.dto.AbstractDTO;
+import domain.AbstractDTO;
 
 import java.util.List;
 import java.util.Optional;

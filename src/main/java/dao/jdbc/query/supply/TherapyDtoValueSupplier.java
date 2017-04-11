@@ -1,6 +1,6 @@
 package dao.jdbc.query.supply;
 
-import domain.dto.TherapyDTO;
+import domain.TherapyDTO;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ public class TherapyDtoValueSupplier implements DtoValueSupplier<TherapyDTO> {
         statement.setString(2, dto.getType());
         statement.setString(3, dto.getDescription());
         statement.setTimestamp(4, dto.getAppointmentDateTime());
-        statement.setTimestamp(5, dto.getCompleteDateTime());
+        statement.setTimestamp(5, dto.getCompletionDateTime());
         statement.setLong(6, dto.getPatientId());
         statement.setLong(7, dto.getPerformerId());
         return 7;

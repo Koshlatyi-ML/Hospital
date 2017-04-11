@@ -2,13 +2,12 @@ package dao.jdbc;
 
 import dao.MedicDAO;
 import dao.jdbc.query.MedicQueryExecutor;
-import domain.dto.MedicDTO;
+import domain.MedicDTO;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Optional;
 
 public class MedicJdbcDAO extends StuffJdbcDAO<MedicDTO> implements MedicDAO {
+
     private MedicQueryExecutor queryExecutor;
 
     MedicJdbcDAO(MedicQueryExecutor queryExecutor,
@@ -25,11 +24,6 @@ public class MedicJdbcDAO extends StuffJdbcDAO<MedicDTO> implements MedicDAO {
 
     @Override
     public Optional<MedicDTO> findByCredentialsId(long id) {
-        try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByCredentialsId(connection, id);
-        } catch (SQLException e) {
-            connectionManager.tryRollback();
-            throw new RuntimeException(e);
-        }
+        return JdbcDaoCommons.findByCredentialsId(connectionManager, queryExecutor, id);
     }
 }

@@ -1,18 +1,25 @@
-package domain.dto;
+package domain;
 
-import java.util.Optional;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class AbstractPersonDTO extends AbstractDTO {
+
     private String name;
     private String surname;
+    private static final Logger LOG = LogManager.getLogger(AbstractPersonDTO.class);
 
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = Optional.ofNullable(name)
-                .orElseThrow(IllegalArgumentException::new);
+        if (name == null) {
+            LOG.log(Level.ERROR, "Name attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
+        this.name = name;
     }
 
     public String getSurname() {
@@ -20,8 +27,11 @@ public abstract class AbstractPersonDTO extends AbstractDTO {
     }
 
     public void setSurname(String surname) {
-        this.surname = Optional.ofNullable(surname)
-                .orElseThrow(IllegalArgumentException::new);
+        if (surname == null) {
+            LOG.log(Level.ERROR, "Surname attempted to set a null value");
+            throw new IllegalArgumentException();
+        }
+        this.surname = surname;
     }
 
     public abstract static class Builder<T extends AbstractPersonDTO, B extends Builder>

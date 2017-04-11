@@ -2,8 +2,8 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.DtoValueSupplier;
-import domain.dto.DepartmentDTO;
-import util.load.PropertyLoader;
+import domain.DepartmentDTO;
+import util.PropertyLoader;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,11 +37,10 @@ public class DepartmentQueryExecutor extends QueryExecutor<DepartmentDTO> {
 
         try (PreparedStatement statement =
                      connection.prepareStatement(queries.getProperty("findByName"))) {
+
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDTO(resultSet);
-        } catch(SQLException e){
-            throw new RuntimeException(e);
         }
     }
 

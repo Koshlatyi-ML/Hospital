@@ -1,6 +1,6 @@
 package dao.jdbc.query.retrieve;
 
-import domain.dto.AbstractDTO;
+import domain.AbstractDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

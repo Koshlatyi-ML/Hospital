@@ -1,6 +1,6 @@
 package dao;
 
-import domain.dto.TherapyDTO;
+import domain.TherapyDTO;
 
 import java.util.List;
 

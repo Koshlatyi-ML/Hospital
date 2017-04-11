@@ -7,6 +7,7 @@ import dao.jdbc.query.QueryExecutorFactory;
 import java.sql.Connection;
 
 public class JdbcDaoManager extends DaoManager {
+
     private DepartmentJdbcDAO departmentDao;
     private DoctorJdbcDAO doctorDao;
     private MedicJdbcDAO medicDao;
