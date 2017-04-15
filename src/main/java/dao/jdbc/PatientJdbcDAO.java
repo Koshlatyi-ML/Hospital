@@ -69,6 +69,17 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
     }
 
     @Override
+    public List<PatientDTO> findByDoctorIdAndState(long doctorId, PatientDTO.State state) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByDoctorIdAndState(connection, doctorId, state);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByDoctorIdAndState", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     protected PatientQueryExecutor getQueryExecutor() {
         return queryExecutor;
     }

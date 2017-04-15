@@ -51,7 +51,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindFinishedByPerformerIdAndType(connection, id, type);
         } catch (SQLException e) {
-            LOG.log(Level.ERROR, "findFinishedByPerformerIdAndType", e);
+            LOG.log(Level.ERROR, "Can't query findFinishedByPerformerIdAndType", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }
@@ -62,7 +62,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindFinishedByPatientIdAndType(connection, id, type);
         } catch (SQLException e) {
-            LOG.log(Level.ERROR, "findFinishedByPatientIdAndType", e);
+            LOG.log(Level.ERROR, "Can't query findFinishedByPatientIdAndType", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }
@@ -73,7 +73,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindFutureByPerformerIdAndType(connection, id, type);
         } catch (SQLException e) {
-            LOG.log(Level.ERROR, "findFutureByPerformerIdAndType", e);
+            LOG.log(Level.ERROR, "Can't query findFutureByPerformerIdAndType", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }
@@ -84,7 +84,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindFutureByPatientIdAndType(connection, id, type);
         } catch (SQLException e) {
-            LOG.log(Level.ERROR, "findFutureByPatientIdAndType", e);
+            LOG.log(Level.ERROR, "Can't query findFutureByPatientIdAndType", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }
@@ -95,7 +95,7 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindByPerformerIdAndType(connection, id, type);
         } catch (SQLException e) {
-            LOG.log(Level.ERROR, "findByPerformerIdAndType", e);
+            LOG.log(Level.ERROR, "Can't query findByPerformerIdAndType", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }
@@ -106,7 +106,29 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindByPatientIdAndType(connection, id, type);
         } catch (SQLException e) {
-            LOG.log(Level.ERROR, "findByPatientIdAndType", e);
+            LOG.log(Level.ERROR, "Can't query findByPatientIdAndType", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<TherapyDTO> findFinishedByPatientId(long id) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindFinishedByPatientId(connection, id);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findFinishedByPatientId", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<TherapyDTO> findNotFinishedByPatientId(long id) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindNotFinishedByPatientId(connection, id);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findNotFinishedByPatientId", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }

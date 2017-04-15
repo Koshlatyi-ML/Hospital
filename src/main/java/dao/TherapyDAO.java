@@ -14,6 +14,10 @@ public interface TherapyDAO extends CrudDAO<TherapyDTO> {
     List<TherapyDTO> findFutureByPerformerIdAndType(long id, TherapyDTO.Type type);
     List<TherapyDTO> findFutureByPatientIdAndType(long id, TherapyDTO.Type type);
 
+    List<TherapyDTO> findFinishedByPatientId(long id);
+    List<TherapyDTO> findNotFinishedByPatientId(long id);
+
     List<TherapyDTO> findByPerformerIdAndType(long id, TherapyDTO.Type type);
     List<TherapyDTO> findByPatientIdAndType(long id, TherapyDTO.Type type);
+
 }

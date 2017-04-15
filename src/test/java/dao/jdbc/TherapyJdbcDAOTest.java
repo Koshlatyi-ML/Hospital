@@ -164,4 +164,18 @@ public class TherapyJdbcDAOTest {
                 dao.findByPatientIdAndType(6, TherapyDTO.Type.SURGERY_OPERATION);
         assertEquals(3, futureByPatientIdAndType.size());
     }
+
+    @Test
+    public void findFinishedByPatientId() throws Exception {
+        List<TherapyDTO> futureByPatientIdAndType =
+                dao.findFinishedByPatientId(6);
+        assertEquals(1, futureByPatientIdAndType.size());
+    }
+
+    @Test
+    public void findNotFinishedByPatientId() throws Exception {
+        List<TherapyDTO> futureByPatientIdAndType =
+                dao.findNotFinishedByPatientId(6);
+        assertEquals(3, futureByPatientIdAndType.size());
+    }
 }
