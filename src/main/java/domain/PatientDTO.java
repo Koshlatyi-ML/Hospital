@@ -22,8 +22,8 @@ public class PatientDTO extends AbstractPersonDTO {
 
     public enum State {
         REGISTERED,
-        APPLYIED,
-        ADDMITTED,
+        APPLIED,
+        TREATED,
         DISCHARGED
     }
 

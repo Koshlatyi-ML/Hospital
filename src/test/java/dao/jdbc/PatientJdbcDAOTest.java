@@ -3,7 +3,6 @@ package dao.jdbc;
 import dao.connection.TestConnectionProvider;
 import dao.jdbc.query.PatientQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
-import domain.MedicDTO;
 import domain.PatientDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +78,7 @@ public class PatientJdbcDAOTest {
                 .setDoctorId(56)
                 .setCompliants("ccc")
                 .setDiagnosis(null)
-                .setState(PatientDTO.State.APPLYIED)
+                .setState(PatientDTO.State.APPLIED)
                 .setCredentialsId(21)
                 .build();
 
@@ -98,7 +97,7 @@ public class PatientJdbcDAOTest {
                 .setDoctorId(56)
                 .setCompliants("ccc")
                 .setDiagnosis(null)
-                .setState(PatientDTO.State.APPLYIED)
+                .setState(PatientDTO.State.APPLIED)
                 .setCredentialsId(21)
                 .build();
 
@@ -117,7 +116,7 @@ public class PatientJdbcDAOTest {
                 .setDoctorId(56)
                 .setCompliants("ccc")
                 .setDiagnosis(null)
-                .setState(PatientDTO.State.APPLYIED)
+                .setState(PatientDTO.State.APPLIED)
                 .setCredentialsId(21)
                 .build();
         dao.create(tested);
@@ -146,7 +145,7 @@ public class PatientJdbcDAOTest {
                 .setDoctorId(54)
                 .setCompliants("Complaints2")
                 .setDiagnosis(null)
-                .setState(PatientDTO.State.ADDMITTED)
+                .setState(PatientDTO.State.TREATED)
                 .setCredentialsId(18)
                 .build();
 
@@ -164,7 +163,7 @@ public class PatientJdbcDAOTest {
                 .setDoctorId(54)
                 .setCompliants("Complaints2")
                 .setDiagnosis(null)
-                .setState(PatientDTO.State.ADDMITTED)
+                .setState(PatientDTO.State.TREATED)
                 .setCredentialsId(18)
                 .build();
 
@@ -186,6 +185,13 @@ public class PatientJdbcDAOTest {
     @Test
     public void findByState() throws Exception {
         List<PatientDTO> daoByState = dao.findByState(PatientDTO.State.DISCHARGED);
+        assertEquals(1, daoByState.size());
+    }
+
+    @Test
+    public void findByDoctorIdAndState() throws Exception {
+        List<PatientDTO> daoByState =
+                dao.findByDoctorIdAndState(54, PatientDTO.State.APPLIED);
         assertEquals(1, daoByState.size());
     }
 }

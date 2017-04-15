@@ -97,6 +97,30 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
                 queries.getProperty("findFutureByPerformerIdAndType"));
     }
 
+    public List<TherapyDTO> queryFindFinishedByPatientId(
+            Connection connection, long id) throws SQLException {
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                queries.getProperty("findFinishedByPatientId"))) {
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return dtoRetriever.retrieveDtoList(resultSet);
+        }
+    }
+
+    public List<TherapyDTO> queryFindNotFinishedByPatientId(
+            Connection connection, long id) throws SQLException {
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                queries.getProperty("findNotFinishedByPatientId"))) {
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return dtoRetriever.retrieveDtoList(resultSet);
+        }
+    }
+
     @Override
     protected Properties getQueries() {
         return queries;
@@ -111,4 +135,5 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
     protected DtoValueSupplier<TherapyDTO> getDtoValueSupplier() {
         return dtoValueSupplier;
     }
+
 }

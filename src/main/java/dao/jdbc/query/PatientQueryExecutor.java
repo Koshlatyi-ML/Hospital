@@ -93,6 +93,20 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO>
         }
     }
 
+    public List<PatientDTO> queryFindByDoctorIdAndState(
+            Connection connection, long doctorId, PatientDTO.State state)
+            throws SQLException {
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                queries.getProperty("findByDoctorIdAndState"))) {
+
+            statement.setLong(1, doctorId);
+            statement.setString(2, state.toString());
+            ResultSet resultSet = statement.executeQuery();
+            return dtoRetriever.retrieveDtoList(resultSet);
+        }
+    }
+
     @Override
     protected DtoRetriever<PatientDTO> getDtoRetriever() {
         return dtoRetriever;
@@ -107,4 +121,5 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO>
     protected Properties getQueries() {
         return queries;
     }
+
 }

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 
 public class TherapyDTO extends AbstractDTO {
@@ -71,6 +72,13 @@ public class TherapyDTO extends AbstractDTO {
             LOG.log(Level.ERROR, "Appointment datetime attempted to set a null value");
             throw new IllegalArgumentException();
         }
+
+        if (appointmentDateTime.before(Timestamp.from(Instant.now().minusSeconds(60)))) {
+            LOG.log(Level.ERROR, "Appointment datetime attempted to set a value " +
+                    "from the past");
+            throw new IllegalArgumentException();
+        }
+
         this.appointmentDateTime = appointmentDateTime;
     }
 
