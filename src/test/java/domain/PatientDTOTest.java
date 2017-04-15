@@ -69,13 +69,6 @@ public class PatientDTOTest {
         assertEquals(complaints, dto.getComplaints());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void setComplaintsNullBuilder() throws Exception {
-        new PatientDTO.Builder()
-                .setCompliants(null)
-                .build();
-    }
-
     @Test
     public void setDiagnosisBuilder() throws Exception {
         String diagnosis = "test diagnosis";

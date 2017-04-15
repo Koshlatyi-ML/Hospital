@@ -10,7 +10,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,9 +54,9 @@ public class TherapyJdbcDAOTest {
                 .setType(TherapyDTO.Type.SURGERY_OPERATION)
                 .setDescription("Description1")
                 .setAppointmentDateTime(
-                        Timestamp.valueOf(LocalDateTime.of(2016, 10, 19, 10, 23, 54)))
+                        Timestamp.valueOf(LocalDateTime.of(2017, 4, 15, 16, 55, 0)))
                 .setCompleteDateTime(
-                        Timestamp.valueOf(LocalDateTime.of(2016, 10, 19, 10, 33, 54)))
+                        Timestamp.valueOf(LocalDateTime.of(2017, 4, 16, 16, 0, 0)))
                 .setPatientId(6)
                 .setPerformerId(55)
                 .build();
@@ -68,14 +71,16 @@ public class TherapyJdbcDAOTest {
 
     @Test
     public void create() throws Exception {
+        Timestamp appTimestamp = Timestamp.from(Instant.now());
+        Timestamp complTimestamp = Timestamp.from((Instant.now().plus(1, ChronoUnit.DAYS)));
+
+
         TherapyDTO dto = new TherapyDTO.Builder()
                 .setTitle("sdfsf")
                 .setType(TherapyDTO.Type.SURGERY_OPERATION)
                 .setDescription("sdsgsg")
-                .setAppointmentDateTime(
-                        Timestamp.valueOf(LocalDateTime.of(2016, 10, 19, 10, 23, 54)))
-                .setCompleteDateTime(
-                        Timestamp.valueOf(LocalDateTime.of(2016, 10, 19, 10, 33, 54)))
+                .setAppointmentDateTime(appTimestamp)
+                .setCompleteDateTime(complTimestamp)
                 .setPatientId(6)
                 .setPerformerId(55)
                 .build();
@@ -89,14 +94,15 @@ public class TherapyJdbcDAOTest {
 
     @Test
     public void delete() throws Exception {
+        Timestamp appTimestamp = Timestamp.from(Instant.now());
+        Timestamp complTimestamp = Timestamp.from((Instant.now().plus(1, ChronoUnit.DAYS)));
+
         TherapyDTO dto = new TherapyDTO.Builder()
                 .setTitle("sdfsf")
                 .setType(TherapyDTO.Type.SURGERY_OPERATION)
                 .setDescription("sdsgsg")
-                .setAppointmentDateTime(
-                        Timestamp.valueOf(LocalDateTime.of(2016, 10, 19, 10, 23, 54)))
-                .setCompleteDateTime(
-                        Timestamp.valueOf(LocalDateTime.of(2016, 10, 19, 10, 33, 54)))
+                .setAppointmentDateTime(appTimestamp)
+                .setCompleteDateTime(complTimestamp)
                 .setPatientId(6)
                 .setPerformerId(55)
                 .build();

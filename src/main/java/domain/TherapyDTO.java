@@ -73,12 +73,6 @@ public class TherapyDTO extends AbstractDTO {
             throw new IllegalArgumentException();
         }
 
-        if (appointmentDateTime.before(Timestamp.from(Instant.now().minusSeconds(60)))) {
-            LOG.log(Level.ERROR, "Appointment datetime attempted to set a value " +
-                    "from the past");
-            throw new IllegalArgumentException();
-        }
-
         this.appointmentDateTime = appointmentDateTime;
     }
 
