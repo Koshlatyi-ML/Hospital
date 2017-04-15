@@ -69,6 +69,14 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO>
     }
 
     @Override
+    public Optional<DoctorDTO> queryFindByLoginAndPassword(
+            Connection connection, String login, String password) throws SQLException {
+
+        return CommonQueriesExecutor.findByLoginAndPassword(connection, login, password,
+                queries.getProperty("findByLoginAndPassword"), dtoRetriever);
+    }
+
+    @Override
     public Optional<DoctorDTO> queryFindByCredentialsId(Connection connection, long id)
             throws SQLException {
 

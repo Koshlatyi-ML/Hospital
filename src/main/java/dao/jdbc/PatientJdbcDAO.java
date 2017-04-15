@@ -36,6 +36,12 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
     }
 
     @Override
+    public Optional<PatientDTO> findByLoginAndPassword(String login, String password) {
+        return JdbcDaoCommons.findByLoginAndPassword(connectionManager, queryExecutor,
+                login, password);
+    }
+
+    @Override
     public Optional<PatientDTO> findByCredentialsId(long id) {
         return JdbcDaoCommons.findByCredentialsId(connectionManager, queryExecutor, id);
     }

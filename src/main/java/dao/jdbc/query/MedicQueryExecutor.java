@@ -2,6 +2,7 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.StuffDtoValueSupplier;
+import domain.DoctorDTO;
 import domain.MedicDTO;
 import util.PropertyLoader;
 
@@ -51,6 +52,15 @@ public class MedicQueryExecutor extends StuffQueryExecutor<MedicDTO>
     @Override
     public void queryDelete(Connection connection, long id) throws SQLException {
         queryDeleteStuff(connection, id);
+    }
+
+    @Override
+    public Optional<MedicDTO> queryFindByLoginAndPassword(
+            Connection connection, String login, String password) throws SQLException {
+
+        return CommonQueriesExecutor.findByLoginAndPassword(connection, login, password,
+                queries.getProperty("findByLoginAndPassword"), dtoRetriever);
+
     }
 
     @Override

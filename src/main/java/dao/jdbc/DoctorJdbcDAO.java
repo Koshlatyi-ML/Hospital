@@ -35,6 +35,12 @@ public class DoctorJdbcDAO extends StuffJdbcDAO<DoctorDTO> implements DoctorDAO 
     }
 
     @Override
+    public Optional<DoctorDTO> findByLoginAndPassword(String login, String password) {
+        return JdbcDaoCommons.findByLoginAndPassword(connectionManager, queryExecutor,
+                login, password);
+    }
+
+    @Override
     public Optional<DoctorDTO> findByCredentialsId(long id) {
         return JdbcDaoCommons.findByCredentialsId(connectionManager, queryExecutor, id);
     }

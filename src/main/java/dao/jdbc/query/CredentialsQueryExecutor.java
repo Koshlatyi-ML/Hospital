@@ -32,19 +32,6 @@ public class CredentialsQueryExecutor extends QueryExecutor<CredentialsDTO> {
         this.dtoRetriever = dtoRetriever;
     }
 
-    public Optional<CredentialsDTO> queryFindByLoginAndPassword(
-            Connection connection, String login, String password) throws SQLException {
-
-        try (PreparedStatement statement = connection
-                .prepareStatement(queries.getProperty("findByLoginAndPassword"))) {
-
-            statement.setString(1, login);
-            statement.setString(2, password);
-            ResultSet resultSet = statement.executeQuery();
-            return dtoRetriever.retrieveDTO(resultSet);
-        }
-    }
-
     @Override
     protected DtoRetriever<CredentialsDTO> getDtoRetriever() {
         return dtoRetriever;

@@ -111,18 +111,4 @@ public class CredentialsJdbcDAOTest {
 
         dao.delete(tested.getId());
     }
-
-    @Test
-    public void findByLoginAndPassword() throws Exception {
-        CredentialsDTO tested = dao.findByLoginAndPassword("Nikolay", "password")
-                .orElseThrow(Exception::new);
-
-        CredentialsDTO desired = new CredentialsDTO.Builder()
-                .setId(7)
-                .setLogin("Nikolay")
-                .setPassword("password")
-                .setRole(1)
-                .build();
-        assertEquals(desired, tested);
-    }
 }

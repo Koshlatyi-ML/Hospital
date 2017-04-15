@@ -10,5 +10,6 @@ public interface PatientDAO extends CrudDAO<PatientDTO> {
     List<PatientDTO> findByDepartmentId(long id);
     List<PatientDTO> findByDoctorId(long id);
     List<PatientDTO> findByState(PatientDTO.State state);
+    Optional<PatientDTO> findByLoginAndPassword(String login, String password);
     Optional<PatientDTO> findByCredentialsId(long id);
 }

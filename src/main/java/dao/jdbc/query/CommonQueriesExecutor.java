@@ -16,6 +16,18 @@ class CommonQueriesExecutor {
     private CommonQueriesExecutor() {
     }
 
+    static <T extends AbstractDTO> Optional<T> findByLoginAndPassword(
+            Connection connection, String login, String password,
+            String sqlQuery, DtoRetriever<T> dtoRetriever)
+            throws SQLException {
+
+        try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+            statement.setString(1, login);
+            statement.setString(2, password);
+            return dtoRetriever.retrieveDTO(statement.executeQuery());
+        }
+    }
+
     static <T extends AbstractDTO> Optional<T> findByCredentialsId(
             Connection connection, long id, String sqlQuery, DtoRetriever<T> dtoRetriever)
             throws SQLException {

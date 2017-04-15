@@ -135,6 +135,22 @@ public class DoctorJdbcDAOTest {
     }
 
     @Test
+    public void findByLoginAndPassword() throws Exception {
+        DoctorDTO tested = dao.findByLoginAndPassword("aaa", "wadw")
+                .orElseThrow(Exception::new);
+
+        DoctorDTO desired = new DoctorDTO.Builder()
+                .setId(55)
+                .setName("DoctorName2")
+                .setSurname("DoctorSurname2")
+                .setDepartmentId(96)
+                .setCredentialsId(2)
+                .build();
+
+        assertEquals(desired, tested);
+    }
+
+    @Test
     public void findByCredentialsId() throws Exception {
         DoctorDTO tested = dao.findByCredentialsId(2).orElseThrow(Exception::new);
 

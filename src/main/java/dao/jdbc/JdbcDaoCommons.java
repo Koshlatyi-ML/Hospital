@@ -20,6 +20,20 @@ class JdbcDaoCommons {
 
     private JdbcDaoCommons() {}
 
+    static <T extends AbstractPersonDTO> Optional<T> findByLoginAndPassword(
+            ConnectionManager connectionManager,
+            CredentialsHolderQueryExecutor<T> queryExecutor,
+            String login, String password) {
+
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByLoginAndPassword(connection, login, password);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByLoginAndPassword", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
     static <T extends AbstractPersonDTO> Optional<T> findByCredentialsId(
             ConnectionManager connectionManager,
             CredentialsHolderQueryExecutor<T> queryExecutor,

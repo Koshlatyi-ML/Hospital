@@ -2,6 +2,7 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.retrieve.DtoRetriever;
 import dao.jdbc.query.supply.DtoValueSupplier;
+import domain.DoctorDTO;
 import domain.PatientDTO;
 import util.PropertyLoader;
 
@@ -41,6 +42,15 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO>
             throws SQLException {
         return CommonQueriesExecutor.findByFullName(connection, fullName,
                 queries.getProperty("findByDepartment"), dtoRetriever);
+    }
+
+    @Override
+    public Optional<PatientDTO> queryFindByLoginAndPassword(
+            Connection connection, String login, String password) throws SQLException {
+
+        return CommonQueriesExecutor.findByLoginAndPassword(connection, login, password,
+                queries.getProperty("findByLoginAndPassword"), dtoRetriever);
+
     }
 
     @Override

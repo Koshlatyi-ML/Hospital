@@ -3,6 +3,7 @@ package dao.jdbc;
 import dao.connection.TestConnectionProvider;
 import dao.jdbc.query.MedicQueryExecutor;
 import dao.jdbc.query.QueryExecutorFactory;
+import domain.DoctorDTO;
 import domain.MedicDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -117,6 +118,22 @@ public class MedicJdbcDAOTest {
         assertEquals(tested, updated);
 
         dao.delete(tested.getId());
+    }
+
+    @Test
+    public void findByLoginAndPassword() throws Exception {
+        MedicDTO tested = dao.findByLoginAndPassword("tyuio", "vbn")
+                .orElseThrow(Exception::new);
+
+        MedicDTO desired = new MedicDTO.Builder()
+                .setId(tested.getId())
+                .setName("MedicName1")
+                .setSurname("MedicSurname1")
+                .setDepartmentId(95)
+                .setCredentialsId(9)
+                .build();
+
+        assertEquals(desired, tested);
     }
 
     @Test

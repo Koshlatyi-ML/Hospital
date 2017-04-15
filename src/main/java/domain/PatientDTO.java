@@ -17,9 +17,11 @@ public class PatientDTO extends AbstractPersonDTO {
 
 
     private PatientDTO() {
+        state = State.REGISTERED.toString();
     }
 
     public enum State {
+        REGISTERED,
         APPLYIED,
         ADDMITTED,
         DISCHARGED
@@ -38,10 +40,11 @@ public class PatientDTO extends AbstractPersonDTO {
     }
 
     public void setComplaints(String complaints) {
-        if (complaints == null) {
-            LOG.log(Level.ERROR, "Complaints attempted to set a null value");
-            throw new IllegalArgumentException();
+        if (!state.equals(State.REGISTERED.toString()) && complaints == null) {
+            throw new IllegalArgumentException("Complaints attempted to set " +
+                    "a null value in inappropriate patient state");
         }
+
         this.complaints = complaints;
     }
 

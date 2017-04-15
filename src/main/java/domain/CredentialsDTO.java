@@ -13,6 +13,10 @@ public class CredentialsDTO extends AbstractDTO {
     private long role;
     private static final Logger LOG = LogManager.getLogger(CredentialsDTO.class);
 
+    public static final long DOCTOR_ROLE = 1;
+    public static final long MEDIC_ROLE = 2;
+    public static final long PATIENT_ROLE = 3;
+
     private CredentialsDTO() {
     }
 
