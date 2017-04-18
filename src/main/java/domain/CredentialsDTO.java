@@ -10,12 +10,7 @@ public class CredentialsDTO extends AbstractDTO {
 
     private String login;
     private String password;
-    private long role;
     private static final Logger LOG = LogManager.getLogger(CredentialsDTO.class);
-
-    public static final long DOCTOR_ROLE = 1;
-    public static final long MEDIC_ROLE = 2;
-    public static final long PATIENT_ROLE = 3;
 
     private CredentialsDTO() {
     }
@@ -44,19 +39,6 @@ public class CredentialsDTO extends AbstractDTO {
         this.password = password;
     }
 
-    public long getRole() {
-        return role;
-    }
-
-    public void setRole(long role) {
-        if (role < 0 || role > 3) {
-            LOG.log(Level.ERROR, "Role attempted to set an illegal value");
-            throw new IllegalArgumentException();
-        }
-
-        this.role = role;
-    }
-
     public static class Builder extends AbstractDTO.Builder<CredentialsDTO, Builder> {
 
         public Builder() {
@@ -73,11 +55,6 @@ public class CredentialsDTO extends AbstractDTO {
             return getSelf();
         }
 
-        public Builder setRole(long role) {
-            instance.setRole(role);
-            return getSelf();
-        }
-
         @Override
         protected Builder getSelf() {
             return this;
@@ -90,13 +67,12 @@ public class CredentialsDTO extends AbstractDTO {
         if (!(o instanceof CredentialsDTO)) return false;
         CredentialsDTO that = (CredentialsDTO) o;
         return getId() == that.getId() &&
-                getRole() == that.getRole() &&
                 Objects.equals(getLogin(), that.getLogin()) &&
                 Objects.equals(getPassword(), that.getPassword());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLogin(), getPassword(), getRole());
+        return Objects.hash(getId(), getLogin(), getPassword());
     }
 }

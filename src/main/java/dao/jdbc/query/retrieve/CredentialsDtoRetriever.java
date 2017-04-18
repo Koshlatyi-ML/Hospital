@@ -12,7 +12,6 @@ public class CredentialsDtoRetriever extends AbstractDtoRetriever<CredentialsDTO
                 .setId(resultSet.getLong(1))
                 .setLogin(resultSet.getString(2))
                 .setPassword(resultSet.getString(3))
-                .setRole(resultSet.getLong(4))
                 .build();
     }
 }

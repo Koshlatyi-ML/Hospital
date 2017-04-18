@@ -10,7 +10,6 @@ public class CredentialsDtoValueSupplier implements DtoValueSupplier<Credentials
     public int supplyValues(PreparedStatement statement, CredentialsDTO dto) throws SQLException {
         statement.setString(1, dto.getLogin());
         statement.setString(2, dto.getPassword());
-        statement.setLong(3, dto.getRole());
-        return 3;
+        return 2;
     }
 }

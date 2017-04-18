@@ -34,7 +34,6 @@ public class PatientService extends AbstractCrudService<PatientDTO>
         CredentialsDTO credentialsDTO = new CredentialsDTO.Builder()
                 .setLogin(registrationDTO.getLogin())
                 .setPassword(registrationDTO.getPassword())
-                .setRole(CredentialsDTO.PATIENT_ROLE)
                 .build();
         PatientDTO patientDTO = new PatientDTO.Builder().build();
 
