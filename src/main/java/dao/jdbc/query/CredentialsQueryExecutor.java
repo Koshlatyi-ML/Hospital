@@ -32,6 +32,17 @@ public class CredentialsQueryExecutor extends QueryExecutor<CredentialsDTO> {
         this.dtoRetriever = dtoRetriever;
     }
 
+    public boolean queryHasLogin(Connection connection, String login) throws SQLException {
+        try(PreparedStatement statement =
+                    connection.prepareStatement(queries.getProperty("findLoginInFindAll"))) {
+
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getBoolean(1);
+        }
+    }
+
     @Override
     protected DtoRetriever<CredentialsDTO> getDtoRetriever() {
         return dtoRetriever;

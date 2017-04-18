@@ -6,6 +6,7 @@ import dao.DaoManager;
 import dao.PatientDAO;
 import domain.CredentialsDTO;
 import domain.PatientDTO;
+import service.dto.AbstractRegistrationDTO;
 import service.dto.PatientRegistrationDTO;
 
 import java.util.List;
@@ -23,11 +24,10 @@ public class PatientService extends AbstractCrudService<PatientDTO>
     @Override
     public Optional<PatientDTO> login(String login, String password) {
         return daoManager.getPatientDao().findByLoginAndPassword(login, password);
-
     }
 
     @Override
-    public void register(PatientRegistrationDTO registrationDTO) {
+    public PatientDTO register(PatientRegistrationDTO registrationDTO) {
         PatientDAO patientDAO = daoManager.getPatientDao();
         CredentialsDAO credentialsDAO = daoManager.getCredentialsDao();
 
@@ -35,7 +35,10 @@ public class PatientService extends AbstractCrudService<PatientDTO>
                 .setLogin(registrationDTO.getLogin())
                 .setPassword(registrationDTO.getPassword())
                 .build();
-        PatientDTO patientDTO = new PatientDTO.Builder().build();
+        PatientDTO patientDTO = new PatientDTO.Builder()
+                .setName(registrationDTO.getName())
+                .setSurname(registrationDTO.getSurname())
+                .build();
 
         daoManager.beginTransaction();
 
@@ -44,6 +47,7 @@ public class PatientService extends AbstractCrudService<PatientDTO>
         patientDAO.create(patientDTO);
 
         daoManager.finishTransaction();
+        return patientDTO;
     }
 
     public List<PatientDTO> getAppliedPatientsOfDoctor(long doctorId) {

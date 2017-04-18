@@ -32,7 +32,7 @@ public class RoleSecurityFilter implements Filter {
             return;
         }
 
-        request.getRequestDispatcher(WebResources.webResources.get("error"))
+        request.getRequestDispatcher(WebResources.webResources.get("pageNotFound"))
                 .forward(servletRequest, servletResponse);
     }
 

@@ -24,7 +24,7 @@ public class DoctorService extends AbstractCrudService<DoctorDTO>
     }
 
     @Override
-    public void register(StuffRegistrationDTO registrationDTO) {
+    public DoctorDTO register(StuffRegistrationDTO registrationDTO) {
         DoctorDAO doctorDao = daoManager.getDoctorDao();
         CredentialsDAO credentialsDAO = daoManager.getCredentialsDao();
 
@@ -45,6 +45,7 @@ public class DoctorService extends AbstractCrudService<DoctorDTO>
         doctorDao.create(doctorDTO);
 
         daoManager.finishTransaction();
+        return doctorDTO;
     }
 
     public List<DoctorDTO> getByDepartmentId(long id) {

@@ -12,7 +12,7 @@ public class Validations {
         return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,20}$");
     }
 
-    public static void main(String[] args) {
-
+    public static boolean isValidName(String name) {
+        return name.matches("^[a-zA-Z\\p{InCYRILLIC} ,.'-]{1,64}$");
     }
 }

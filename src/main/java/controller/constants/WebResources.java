@@ -5,14 +5,15 @@ import java.util.Map;
 
 public class WebResources {
     public static final Map<String, String> webResources = new HashMap<String, String>() {{
+        put("pageNotFound", "/jsp/PageNotFound.jsp");
         put("error", "/jsp/error.jsp");
         put("login", "/jsp/login.jsp");
         put("registration", "/jsp/registration.jsp");
-        put("doctor.registration", "/jsp/doctor/registration.jsp");
-        put("doctor.main", "/jsp/doctor/main.jsp");
-        put("medic.registration", "/jsp/medic/registration.jsp");
-        put("medic.main", "/jsp/medic/main.jsp");
-        put("patient.registration", "/jsp/patient/registration.jsp");
+        put("registration.doctor", "/jsp/doctor/registration.jsp");
+        put("registration.medic", "/jsp/medic/registration.jsp");
+        put("registration.patient", "/jsp/patient/registration.jsp");
+        put("doctor.main", "/jsp/stuff/doctor/main.jsp");
+        put("medic.main", "/jsp/stuff/medic/main.jsp");
         put("patient.main", "/jsp/patient/main.jsp");
     }};
 }

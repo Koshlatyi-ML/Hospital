@@ -11,6 +11,11 @@
     <title>Registration</title>
 </head>
 <body>
+    <%@include file="/jsp/registrations/error-messages.jsp" %>
     <h1>PATIENT REGISTRATION</h1>
+    <form action="${pageContext.request.contextPath}/registration/patient" method="post">
+        <%@include file="/jsp/registrations/patient-form.jsp" %>
+        <input type="submit" value="Register">
+    </form>
 </body>
 </html>

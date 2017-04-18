@@ -17,12 +17,23 @@ public class CredentialsJdbcDAO extends CrudJdbcDAO<CredentialsDTO>
         implements CredentialsDAO {
 
     private CredentialsQueryExecutor queryExecutor;
+    private static final Logger LOG = LogManager.getLogger(CredentialsJdbcDAO.class);
 
     CredentialsJdbcDAO(CredentialsQueryExecutor queryExecutor,
                        ConnectionManager connectionManager) {
 
         this.queryExecutor = queryExecutor;
         this.connectionManager = connectionManager;
+    }
+
+    @Override
+    public boolean hasLogin(String login) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryHasLogin(connection, login);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query credentials already has login", e);
+            throw new DaoException(e);
+        }
     }
 
     @Override

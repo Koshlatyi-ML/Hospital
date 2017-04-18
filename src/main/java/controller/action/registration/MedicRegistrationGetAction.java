@@ -6,10 +6,12 @@ import controller.constants.WebResources;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class VisitRegistrationBeginAction implements Action {
+public class MedicRegistrationGetAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return WebResources.webResources.get("registration");
+        Registrations.prepareRegistrationGetAction(request);
+        StuffRegistrations.loadDepartmentsAttribute(request);
+        return WebResources.webResources.get("registration.medic");
     }
 }

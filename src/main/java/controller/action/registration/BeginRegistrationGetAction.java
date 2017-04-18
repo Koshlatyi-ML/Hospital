@@ -6,10 +6,10 @@ import controller.constants.WebResources;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class VisitDoctorRegistrationAction implements Action {
+public class BeginRegistrationGetAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return WebResources.webResources.get("doctor.registration");
+        return WebResources.webResources.get("registration");
     }
 }

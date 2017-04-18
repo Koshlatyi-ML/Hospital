@@ -1,13 +1,16 @@
 package controller.filter;
 
-import controller.action.ActionFactory;
 import controller.constants.WebResources;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class SecurityFilter implements Filter {
+public class ExceptionFilter implements Filter {
+
+    private static final Logger LOG = LogManager.getLogger(ExceptionFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -18,15 +21,13 @@ public class SecurityFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
 
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-
-        if (ActionFactory.getInstance().getAction(request).isPresent()) {
+        try {
             filterChain.doFilter(servletRequest, servletResponse);
-            return;
+        } catch (Throwable e) {
+            LOG.log(Level.ERROR, "Error during session", e);
+            servletRequest.getRequestDispatcher(WebResources.webResources.get("error"))
+                    .forward(servletRequest, servletResponse);
         }
-
-        request.getRequestDispatcher(WebResources.webResources.get("pageNotFound"))
-                .forward(servletRequest, servletResponse);
     }
 
     @Override

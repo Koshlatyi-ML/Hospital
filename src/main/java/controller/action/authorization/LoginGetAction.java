@@ -12,11 +12,11 @@ public class LoginGetAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        if (session.getAttribute("hasError") == null) {
+        if (session.getAttribute("failedLogin") == null) {
             Authorizations.removeLoginErrorAttributes(session);
         }
 
-        session.removeAttribute("hasError");
+        session.removeAttribute("failedLogin");
         return WebResources.webResources.get("login");
     }
 }

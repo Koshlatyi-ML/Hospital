@@ -9,6 +9,7 @@ public class ServiceFactory {
     private MedicService medicService;
     private PatientService patientService;
     private TherapyService therapyService;
+    private CredentialsService credentialsService;
 
     private static final ServiceFactory INSTANCE = new ServiceFactory();
 
@@ -19,6 +20,7 @@ public class ServiceFactory {
         medicService = new MedicService(daoManager);
         patientService = new PatientService(daoManager);
         therapyService = new TherapyService(daoManager);
+        credentialsService = new CredentialsService(daoManager);
     }
 
     public static ServiceFactory getInstance() {
@@ -43,5 +45,9 @@ public class ServiceFactory {
 
     public TherapyService getTherapyService() {
         return therapyService;
+    }
+
+    public CredentialsService getCredentialsService() {
+        return credentialsService;
     }
 }

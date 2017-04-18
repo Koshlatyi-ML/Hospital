@@ -14,17 +14,17 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Optional;
 
-public class ConnectionManager {
+class ConnectionManager {
 
     private ConnectionProvider connectionProvider;
     private ThreadLocal<Connection> connectionThreadLocal;
-    private ThreadLocal<LinkedList<Integer>> isolationLevelStackThreadLocal;
+    private ThreadLocal<Integer> nestingLevelThreadLocal;
     private static final Logger LOG = LogManager.getLogger(ConnectionManager.class);
 
     ConnectionManager(ConnectionProvider connectionProvider) {
         this.connectionProvider = connectionProvider;
         this.connectionThreadLocal = new ThreadLocal<>();
-        this.isolationLevelStackThreadLocal = ThreadLocal.withInitial(LinkedList::new);
+        this.nestingLevelThreadLocal = ThreadLocal.withInitial(() -> 0);
     }
 
     public Connection getConnection() {
@@ -45,9 +45,7 @@ public class ConnectionManager {
                         return null;
                     }
 
-                    if ("setTransactionIsolation".equals(method.getName())
-                            && ((Integer) args[0]).compareTo(getIsolationLevel()) < 0) {
-
+                    if ("setTransactionIsolation".equals(method.getName())) {
                         return null;
                     }
 
@@ -70,7 +68,7 @@ public class ConnectionManager {
             throw new DaoException(e);
         }
 
-        isolationLevelStackThreadLocal.get().push(isolationLevel);
+        nestingLevelThreadLocal.set(nestingLevelThreadLocal.get() + 1);
 
         if (!isTransactional()) {
             connectionThreadLocal.set(transactionalProxyConnection(connection));
@@ -83,13 +81,13 @@ public class ConnectionManager {
         }
 
         if (isNestedTransactional()) {
-            resetTransactionIsolation();
+            nestingLevelThreadLocal.set(nestingLevelThreadLocal.get() - 1);
             return;
         }
 
         try (Connection connection = connectionThreadLocal.get()) {
             connectionThreadLocal.set(null);
-            isolationLevelStackThreadLocal.get().clear();
+            nestingLevelThreadLocal.set(0);
             connection.commit();
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't commit the transaction", e);
@@ -102,7 +100,7 @@ public class ConnectionManager {
         if (isTransactional()) {
             try (Connection connection = connectionThreadLocal.get()) {
                 connectionThreadLocal.set(null);
-                isolationLevelStackThreadLocal.get().clear();
+                nestingLevelThreadLocal.set(0);
                 connection.rollback();
             } catch (SQLException e) {
                 LOG.log(Level.ERROR, "Can't rollback the transaction", e);
@@ -111,27 +109,11 @@ public class ConnectionManager {
         }
     }
 
-    private void resetTransactionIsolation() {
-        isolationLevelStackThreadLocal.get().pop();
-        Integer outerIsolationLevel = isolationLevelStackThreadLocal.get().peek();
-        try {
-            connectionThreadLocal.get().setTransactionIsolation(outerIsolationLevel);
-        } catch (SQLException e) {
-            LOG.log(Level.ERROR, "Can't reset the transaction isolation level", e);
-            tryRollback();
-            throw new DaoException(e);
-        }
-    }
-
     private boolean isTransactional() {
         return connectionThreadLocal.get() != null;
     }
 
     private boolean isNestedTransactional() {
-        return isolationLevelStackThreadLocal.get().size() > 1;
-    }
-
-    private int getIsolationLevel() {
-        return isolationLevelStackThreadLocal.get().peek();
+        return nestingLevelThreadLocal.get() > 1;
     }
 }

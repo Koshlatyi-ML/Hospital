@@ -9,6 +9,10 @@ public class WebPaths {
     public static final Map<String, String> webPaths = new HashMap<String, String>() {{
         put("login", "/login");
         put("logout", "/logout");
+        put("registration", "/medic");
+        put("registration.patient", "/registration/patient");
+        put("registration.doctor", "/registration/doctor");
+        put("registration.medic", "/registration/medic");
         put("patient.main", "/patient");
         put("doctor.main", "/doctor");
         put("medic.main", "/medic");

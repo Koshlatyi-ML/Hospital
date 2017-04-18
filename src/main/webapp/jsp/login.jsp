@@ -27,31 +27,18 @@
 </head>
 <body>
     <font color="red">
-        <c:out value="${sessionScope.wrongRoleMsg}"/>
         <c:out value="${sessionScope.invalidLoginMsg}"/>
         <c:out value="${sessionScope.invalidPasswordMsg}"/>
         <c:out value="${sessionScope.wrongCredentialsMsg}"/>
     </font>
 
-   <%-- <c:if test="${sessionScope.invalidLogin == 'yes'}" >
-        <p><font color="red">Invalid login</font></p>
-    </c:if>
-
-    <c:if test="${sessionScope.invalidPassword == 'yes'}" >
-        <p><font color="red">Invalid user - minimum 8 characters maximum 20 characters
-            at least 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number</font></p>
-    </c:if>
-
-    <c:if test="${sessionScope.wrongCredentials == 'yes'}" >
-        <p><font color="red">Wrong credentials</font></p>
-    </c:if>--%>
-
-
     <h1>LOGIN PAGE</h1>
     <form action="${pageContext.request.contextPath}/login" method="post">
-        Patient: <input name="role" type="radio" value="Patient"> <br>
-        Medic: <input name="role" type="radio" value="Medic"> <br>
-        Doctor: <input name="role" type="radio" value="Doctor"> <br>
+        Login as: <select size="1" name="role">
+                    <option value="Patient">Patient</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Medic">Medic</option>
+                  </select><br>
         <input name="login" type="text"/><br>
         <input name="password" type="password"/><br>
         <input type="submit" value="Log in">
@@ -60,11 +47,5 @@
     <form action="${pageContext.request.contextPath}/registration" method="get">
         <button type="submit" class="btn-link">Register</button>
     </form>
-    <p><%= request.getRequestURI()%> / <%=request.getMethod()%></p>
-    <p>hasError =  <%= session.getAttribute("hasError")%></p>
-    <p>logined =  <%= session.getAttribute("logined")%></p>
-    <p>login =  <%= session.getAttribute("login")%></p>
-    <p>user =  <%= session.getAttribute("user")%></p>
-    <p>role =  <%= session.getAttribute("role")%></p>
 </body>
 </html>
