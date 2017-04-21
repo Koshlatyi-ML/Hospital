@@ -12,7 +12,7 @@
     <title>Registration</title>
 </head>
 <body>
-    <%@include file="/jsp/registrations/error-messages.jsp"%>
+    <%--<%@include file="/jsp/registrations/error-messages.jsp"%>--%>
     <h1>DOCTOR REGISTRATION</h1>
     <form action="${pageContext.request.contextPath}/registration/doctor" method="post">
         <%@include file="/jsp/registrations/stuff-form.jsp"%>

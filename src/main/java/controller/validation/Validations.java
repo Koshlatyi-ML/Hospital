@@ -12,7 +12,11 @@ public class Validations {
         return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,20}$");
     }
 
-    public static boolean isValidName(String name) {
-        return name.matches("^[a-zA-Z\\p{InCYRILLIC} ,.'-]{1,64}$");
+    public static boolean isValidPersonName(String name) {
+        return name.matches("^[a-zA-Zа-яА-ЯёЁ ,.'-]{1,64}$");
+    }
+
+    public static boolean isValidDepartmentName(String name) {
+        return name.matches("^[a-zA-Zа-яА-ЯёЁ0-9 №-]{1,64}$");
     }
 }

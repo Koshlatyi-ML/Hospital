@@ -1,5 +1,7 @@
 package controller.action;
 
+import controller.action.admin.*;
+import controller.action.admin.department.*;
 import controller.action.authorization.LogOutAction;
 import controller.action.authorization.LoginGetAction;
 import controller.action.authorization.LoginPostAction;
@@ -24,13 +26,21 @@ public class ActionFactory {
         actionMap.put("GET/login", new LoginGetAction());
         actionMap.put("POST/login", new LoginPostAction());
         actionMap.put("POST/logout", new LogOutAction());
-        actionMap.put("GET/registration", new BeginRegistrationGetAction());
-        actionMap.put("GET/registration/doctor", new DoctorRegistrationGetAction());
-        actionMap.put("POST/registration/doctor", new DoctorRegistrationPostAction());
-        actionMap.put("GET/registration/medic", new MedicRegistrationGetAction());
-        actionMap.put("POST/registration/medic", new MedicRegistrationPostAction());
-        actionMap.put("GET/registration/patient", new PatientRegistrationGetAction());
-        actionMap.put("POST/registration/patient", new PatientRegistrationPostAction());
+        actionMap.put("GET/registration", new RegistrationGetAction());
+        actionMap.put("POST/registration", new RegistrationPostAction());
+//        actionMap.put("GET/registration/doctor", new DoctorRegistrationGetAction());
+//        actionMap.put("POST/registration/doctor", new DoctorRegistrationPostAction());
+//        actionMap.put("GET/registration/medic", new MedicRegistrationGetAction());
+//        actionMap.put("POST/registration/medic", new MedicRegistrationPostAction());
+//        actionMap.put("GET/registration/patient", new PatientRegistrationGetAction());
+//        actionMap.put("POST/registration/patient", new PatientRegistrationPostAction());
+        actionMap.put("GET/admin", new AdminMainpageGetAction());
+        actionMap.put("GET/admin/add-department", new AddDepartmentGetAction());
+        actionMap.put("POST/admin/add-department", new AddDepartmentPostAction());
+        actionMap.put("GET/admin/change-department", new ChangeDepartmentGetAction());
+        actionMap.put("POST/admin/change-department/delete", new DeleteDepartmentPostAction());
+        actionMap.put("GET/admin/change-department/rename", new RenameDepartmentGetAction());
+        actionMap.put("POST/admin/change-department/rename", new RenameDepartmentPostAction());
         actionMap.put("GET/doctor", new VisitDoctorMainpageAction());
         actionMap.put("GET/medic", new VisitMedicHomepageAction());
         actionMap.put("GET/patient", new VisitPatientMainpageAction());

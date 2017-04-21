@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class PatientRegistrationPostAction implements Action {
+public class RegistrationPostAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -19,7 +19,7 @@ public class PatientRegistrationPostAction implements Action {
 
         PatientRegistrationDTO dto = Registrations.fetchPatientRegistrationDTO(request);
         if (dto == null) {
-            Actions.redirectToPage(response, WebPaths.webPaths.get("registration.patient"));
+            Actions.redirectToPage(response, WebPaths.webPaths.get("registration"));
             return null;
         }
 

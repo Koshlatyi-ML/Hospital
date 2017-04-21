@@ -4,6 +4,8 @@ import dao.CrudDAO;
 import dao.DaoManager;
 import domain.DepartmentDTO;
 
+import java.util.Optional;
+
 public class DepartmentService extends AbstractCrudService<DepartmentDTO> {
 
     private DaoManager daoManager;
@@ -12,8 +14,12 @@ public class DepartmentService extends AbstractCrudService<DepartmentDTO> {
         this.daoManager = daoManager;
     }
 
+    public Optional<DepartmentDTO> getByName(String name) {
+        return daoManager.getDepartmentDao().findByName(name);
+    }
+
     @Override
     CrudDAO<DepartmentDTO> getDAO() {
-        return null;
+        return daoManager.getDepartmentDao();
     }
 }

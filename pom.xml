@@ -58,7 +58,7 @@
                     <configuration>
                         <update>true</update>
                         <server>TomcatServer</server>
-                        <path>/ </path>
+                        <path>/</path>
                         <url>http://localhost:8080/manager/text</url>
                     </configuration>
                 </plugin>

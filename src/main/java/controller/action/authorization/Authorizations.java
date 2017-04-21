@@ -1,13 +1,10 @@
 package controller.action.authorization;
 
-import controller.constants.WebMessages;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ResourceBundle;
 
 class Authorizations {
-
-    private Authorizations() {}
 
     static void removeLoginErrorAttributes(HttpSession session) {
         session.removeAttribute("invalidLoginMsg");
@@ -15,18 +12,18 @@ class Authorizations {
         session.removeAttribute("wrongCredentialsMsg");
     }
 
-    static void setInvalidLogin(HttpServletRequest request) {
-        request.getSession().setAttribute("invalidLoginMsg", WebMessages.INVALID_LOGIN);
+    static void setInvalidLogin(HttpServletRequest request, ResourceBundle bundle) {
+        request.getSession().setAttribute("invalidLoginMsg", bundle.getString("login.invalid"));
         setFailedAuthorization(request);
     }
 
-    static void setInvalidPassword(HttpServletRequest request) {
-        request.getSession().setAttribute("invalidPasswordMsg", WebMessages.INVALID_PASSWORD);
+    static void setInvalidPassword(HttpServletRequest request, ResourceBundle bundle) {
+        request.getSession().setAttribute("invalidPasswordMsg", bundle.getString("password.invalid"));
         setFailedAuthorization(request);
     }
 
-    static void setWrongCredentials(HttpServletRequest request) {
-        request.getSession().setAttribute("wrongCredentialsMsg", WebMessages.WRONG_CREDENTIALS);
+    static void setWrongCredentials(HttpServletRequest request, ResourceBundle bundle)  {
+        request.getSession().setAttribute("wrongCredentialsMsg", bundle.getString("credentials.wrong"));
         setFailedAuthorization(request);
     }
 

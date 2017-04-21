@@ -7,6 +7,8 @@ import service.dto.PatientRegistrationDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 class Registrations {
 
@@ -59,7 +61,7 @@ class Registrations {
     }
 
     private static boolean checkName(HttpServletRequest request, String name) {
-        if (!Validations.isValidName(name)) {
+        if (!Validations.isValidPersonName(name)) {
             Registrations.setInvalidName(request);
             return false;
         }
@@ -92,7 +94,10 @@ class Registrations {
     }
 
     private static void setInvalidLogin(HttpServletRequest request) {
-        request.getSession().setAttribute("invalidLoginMsg", WebMessages.INVALID_LOGIN);
+        Locale ruLocale = new Locale("ru_RU");
+        ResourceBundle bundle = ResourceBundle.getBundle("i18n/messages", ruLocale);
+        request.getSession().setAttribute("invalidLoginMsg",
+                bundle.getString("login.invalid") /*WebMessages.INVALID_LOGIN*/);
         setFailedRegistration(request);
     }
 

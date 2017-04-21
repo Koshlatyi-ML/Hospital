@@ -11,7 +11,6 @@
     <title>Medic main</title>
 </head>
 <body>
-    <jsp:include page="/jsp/header.jsp"/>
     <p>Medic's main page</p>
 </body>
 </html>

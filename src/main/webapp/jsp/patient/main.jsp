@@ -1,4 +1,4 @@
-<%--
+    <%--
   Created by IntelliJ IDEA.
   User: nickolay
   Date: 17.04.17
@@ -11,7 +11,6 @@
     <title>Patient</title>
 </head>
 <body>
-    <jsp:include page="/jsp/header.jsp"/>
     <p>Patient's main page</p>
 </body>
 </html>
