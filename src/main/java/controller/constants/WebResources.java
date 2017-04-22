@@ -11,9 +11,6 @@ public class WebResources {
         put("error", "/jsp/error.jsp");
         put("login", "/jsp/login.jsp");
         put("registration", "/jsp/registration.jsp");
-//        put("registration.doctor", "/jsp/doctor/registration.jsp");
-//        put("registration.medic", "/jsp/medic/registration.jsp");
-//        put("registration.patient", "/jsp/registration.jsp");
         put("doctor.main", "/jsp/doctor/main.jsp");
         put("medic.main", "/jsp/medic/main.jsp");
         put("patient.main", "/jsp/patient/main.jsp");
