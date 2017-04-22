@@ -3,7 +3,7 @@
 <head>
 </head>
 <body>
-<%@ include file="main.jsp" %>
+<%@ include file="../main.jsp" %>
 <fmt:setBundle basename="i18n/admin/department" var="departmentBundle"/>
 <form id="deparment-rename" class="form-horizontal"
       action="${pageContext.request.contextPath}/admin/change-department/rename" method="post">

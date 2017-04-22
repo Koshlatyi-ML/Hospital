@@ -21,6 +21,10 @@ public class WebActions {
                     add("POST/admin/change-department/delete");
                     add("GET/admin/change-department/rename");
                     add("POST/admin/change-department/rename");
+                    add("GET/admin/add-doctor");
+                    add("POST/admin/add-doctor");
+                    add("GET/admin/add-medic");
+                    add("POST/admin/add-medic");
                     addAll(publicActions);
                 }});
                 put("Doctor", new ArrayList<String>() {{

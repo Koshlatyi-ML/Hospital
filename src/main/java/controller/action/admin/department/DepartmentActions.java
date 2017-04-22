@@ -2,7 +2,7 @@ package controller.action.admin.department;
 
 import javax.servlet.http.HttpSession;
 
-public class DepartmentActions {
+class DepartmentActions {
 
     private DepartmentActions() {}
 

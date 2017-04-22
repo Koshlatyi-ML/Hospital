@@ -1,7 +1,9 @@
-package controller.action.registration;
+package controller.action.admin.doctor;
 
 import controller.action.Action;
 import controller.action.Actions;
+import controller.action.registration.Registrations;
+import controller.action.admin.StuffRegistrations;
 import controller.constants.WebPaths;
 import service.ServiceFactory;
 import service.dto.StuffRegistrationDTO;
@@ -10,24 +12,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class MedicRegistrationPostAction implements Action {
+public class AddDoctorPostAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Registrations.removeRegistrationErrorAttributes(session);
+        session.setAttribute("submittedAddDoctor", "yes");
 
         StuffRegistrationDTO dto = StuffRegistrations.fetchStuffRegistrationDTO(request);
         if (dto == null) {
-            Actions.redirectToPage(response, WebPaths.webPaths.get("registration.medic"));
+            Actions.redirectToPage(response, WebPaths.webPaths.get("admin.doctor.add"));
             return null;
         }
 
-        session.setAttribute("logined", "yes");
-        session.setAttribute("role", "Medic");
-        session.setAttribute("user", ServiceFactory.getInstance().getMedicService().register(dto));
-        Actions.redirectToPage(response, WebPaths.webPaths.get("medic.main"));
-
+        String successMsg = Actions.getFromBundle(request, "i18n/messages", "success");
+        session.setAttribute("successfulAddDoctor", successMsg);
+        ServiceFactory.getInstance().getDoctorService().register(dto);
+        Actions.redirectToPage(response, WebPaths.webPaths.get("admin.doctor.add"));
         return null;
     }
 }

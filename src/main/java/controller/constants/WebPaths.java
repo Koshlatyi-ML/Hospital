@@ -15,5 +15,7 @@ public class WebPaths {
         put("admin.department.add", "/admin/add-department");
         put("admin.department.change", "/admin/change-department");
         put("admin.department.change.rename", "/admin/change-department/rename");
+        put("admin.doctor.add", "/admin/add-doctor");
+        put("admin.medic.add", "/admin/add-medic");
     }};
 }

@@ -1,6 +1,7 @@
 package controller.action.registration;
 
 import controller.action.Action;
+import controller.action.admin.StuffRegistrations;
 import controller.constants.WebResources;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,8 @@ public class RegistrationGetAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        Registrations.prepareRegistrationGetAction(request);
+        StuffRegistrations.loadDepartmentsAttribute(request);
+        PatientRegistrations.prepareRegistrationGetAction(request);
         return WebResources.webResources.get("registration");
     }
 }

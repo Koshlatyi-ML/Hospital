@@ -3,7 +3,7 @@
 <head>
 </head>
 <body>
-<%@include file="main.jsp" %>
+<%@include file="../main.jsp" %>
 <fmt:setBundle basename="i18n/admin/department" var="departmentBundle"/>
 <div class="list-group">
     <c:forEach items="${sessionScope.departments}" var="department">

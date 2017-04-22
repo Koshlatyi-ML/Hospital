@@ -1,7 +1,6 @@
 package controller.filter;
 
 import controller.constants.WebActions;
-import controller.constants.WebPaths;
 import controller.constants.WebResources;
 
 import javax.servlet.*;

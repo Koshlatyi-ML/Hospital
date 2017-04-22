@@ -1,17 +1,18 @@
-package controller.action.registration;
+package controller.action.admin.doctor;
 
 import controller.action.Action;
+import controller.action.admin.StuffRegistrations;
 import controller.constants.WebResources;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class MedicRegistrationGetAction implements Action {
+public class AddDoctorGetAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        Registrations.prepareRegistrationGetAction(request);
+        DoctorRegistrations.prepareRegistrationGetAction(request);
         StuffRegistrations.loadDepartmentsAttribute(request);
-        return WebResources.webResources.get("registration.medic");
+        return WebResources.webResources.get("admin.doctor.add");
     }
 }

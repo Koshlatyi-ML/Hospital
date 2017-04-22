@@ -1,37 +1,27 @@
 package controller.action.registration;
 
-import controller.constants.WebMessages;
+import controller.action.Actions;
 import controller.validation.Validations;
 import service.ServiceFactory;
 import service.dto.PatientRegistrationDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-class Registrations {
+public class Registrations {
 
     private Registrations() {
     }
 
-    static void removeRegistrationErrorAttributes(HttpSession session) {
+    public static void removeRegistrationErrorAttributes(HttpSession session) {
         session.removeAttribute("invalidNameMsg");
         session.removeAttribute("invalidLoginMsg");
         session.removeAttribute("invalidPasswordMsg");
         session.removeAttribute("alreadyUsedLoginMsg");
     }
 
-    static void prepareRegistrationGetAction(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        if (session.getAttribute("failedRegistration") == null) {
-            Registrations.removeRegistrationErrorAttributes(session);
-        }
-
-        session.removeAttribute("failedRegistration");
-    }
-
-    static PatientRegistrationDTO fetchPatientRegistrationDTO(HttpServletRequest request) {
+    public static PatientRegistrationDTO fetchPatientRegistrationDTO(HttpServletRequest request) {
+        request.getSession().setAttribute("submittedAddDoctor", "yes");
         String name = request.getParameter("name");
         if (!checkName(request, name)) {
             return null;
@@ -89,29 +79,22 @@ class Registrations {
     }
 
     private static void setInvalidName(HttpServletRequest request) {
-        request.getSession().setAttribute("invalidNameMsg", WebMessages.INVALID_NAME);
-        setFailedRegistration(request);
+        String invalidNameMsg = Actions.getFromBundle(request, "i18n/messages", "name.invalid");
+        request.getSession().setAttribute("invalidNameMsg", invalidNameMsg);
     }
 
     private static void setInvalidLogin(HttpServletRequest request) {
-        Locale ruLocale = new Locale("ru_RU");
-        ResourceBundle bundle = ResourceBundle.getBundle("i18n/messages", ruLocale);
-        request.getSession().setAttribute("invalidLoginMsg",
-                bundle.getString("login.invalid") /*WebMessages.INVALID_LOGIN*/);
-        setFailedRegistration(request);
+        String invalidLoginMsg = Actions.getFromBundle(request, "i18n/messages", "login.invalid");
+        request.getSession().setAttribute("invalidLoginMsg", invalidLoginMsg);
     }
 
     private static void setUsedLogin(HttpServletRequest request) {
-        request.getSession().setAttribute("alreadyUsedLoginMsg", WebMessages.USED_LOGIN);
-        setFailedRegistration(request);
+        String usedLoginMsg = Actions.getFromBundle(request, "i18n/messages", "login.used");
+        request.getSession().setAttribute("alreadyUsedLoginMsg", usedLoginMsg);
     }
 
     private static void setInvalidPassword(HttpServletRequest request) {
-        request.getSession().setAttribute("invalidPasswordMsg", WebMessages.INVALID_PASSWORD);
-        setFailedRegistration(request);
-    }
-
-    private static void setFailedRegistration(HttpServletRequest request) {
-        request.getSession().setAttribute("failedRegistration", "yes");
+        String invalidPwdMsg = Actions.getFromBundle(request, "i18n/messages", "password.invalid");
+        request.getSession().setAttribute("invalidPasswordMsg", invalidPwdMsg);
     }
 }

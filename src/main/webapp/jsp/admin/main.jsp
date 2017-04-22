@@ -42,7 +42,7 @@
     <div id="menu1" class="tab-pane fade">
         <ul class="nav nav-pills nav-stacked">
             <li class="active">
-                <a href="#">
+                <a href="${pageContext.request.contextPath}/admin/add-doctor">
                     <fmt:message key="add" bundle="${adminHeaderBundle}"/>
                 </a>
             </li>
@@ -56,7 +56,7 @@
     <div id="menu2" class="tab-pane fade">
         <ul class="nav nav-pills nav-stacked">
             <li class="active">
-                <a href="#">
+                <a href="${pageContext.request.contextPath}/admin/add-medic">
                     <fmt:message key="add" bundle="${adminHeaderBundle}"/>
                 </a>
             </li>

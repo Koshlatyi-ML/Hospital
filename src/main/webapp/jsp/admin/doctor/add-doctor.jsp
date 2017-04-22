@@ -1,20 +1,29 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: nickolay
-  Date: 18.04.17
-  Time: 15:10
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Registration</title>
 </head>
-<%@include file="header-login.jsp" %>
+<body>
+<%@include file="/jsp/admin/main.jsp" %>
 <fmt:setBundle basename="/i18n/admin/stuff" var="stuffBundle"/>
-<form id="deparment-add" class="form-horizontal" action="${pageContext.request.contextPath}/registration" method="post">
+<form id="deparment-add" class="form-horizontal" action="${pageContext.request.contextPath}/admin/add-doctor"
+      method="post">
     <div id="fail-Msg">
         <%@include file="/jsp/util/error-messages.jsp" %>
+    </div>
+    <div id="success-Msg">
+        <c:out value="${sessionScope.successfulAddDoctor}"/>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="div5">
+            <fmt:message key="selectDepartment" bundle="${stuffBundle}"/>
+        </label>
+        <div class="col-sm-8">
+            <select name="departmentId" id="div5">
+                <c:forEach items="${sessionScope.departments}" var="department">
+                    <option value="${department.id}">${department.name}</option>
+                </c:forEach>
+            </select>
+        </div>
     </div>
     <div class="form-group">
         <label class="control-label col-sm-2" for="div1">
@@ -55,7 +64,7 @@
     <div class="form-group">
         <div class="col-sm-offset-4 col-sm-8">
             <button id="add-btn" type="submit" class="btn btn-primary">
-                <fmt:message key="register" bundle="${stuffBundle}"/>
+                <fmt:message key="add" bundle="${stuffBundle}"/>
             </button>
         </div>
     </div>
