@@ -25,9 +25,12 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findCurrentByPerformerIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findCurrentByPerformerIdAndType(long id, TherapyDTO.Type type,
+                                                            int offset, int limit) {
+
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindCurrentByPerformerIdAndType(connection, id, type);
+            return queryExecutor
+                    .queryFindCurrentByPerformerIdAndType(connection, id, type, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findCurrentByPerformerIdAndType", e);
             connectionManager.tryRollback();
@@ -36,9 +39,12 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findCurrentByPatientIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findCurrentByPatientIdAndType(long id, TherapyDTO.Type type,
+                                                          int offset, int limit) {
+
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindCurrentByPatientIdAndType(connection, id, type);
+            return queryExecutor
+                    .queryFindCurrentByPatientIdAndType(connection, id, type, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findCurrentByPatientIdAndType", e);
             connectionManager.tryRollback();
@@ -47,9 +53,12 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFinishedByPerformerIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findFinishedByPerformerIdAndType(long id, TherapyDTO.Type type,
+                                                             int offset, int limit) {
+
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindFinishedByPerformerIdAndType(connection, id, type);
+            return queryExecutor
+                    .queryFindFinishedByPerformerIdAndType(connection, id, type, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findFinishedByPerformerIdAndType", e);
             connectionManager.tryRollback();
@@ -58,9 +67,12 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFinishedByPatientIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findFinishedByPatientIdAndType(long id, TherapyDTO.Type type,
+                                                           int offset, int limit) {
+
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindFinishedByPatientIdAndType(connection, id, type);
+            return queryExecutor
+                    .queryFindFinishedByPatientIdAndType(connection, id, type, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findFinishedByPatientIdAndType", e);
             connectionManager.tryRollback();
@@ -69,9 +81,12 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFutureByPerformerIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findFutureByPerformerIdAndType(long id, TherapyDTO.Type type,
+                                                           int offset, int limit) {
+
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindFutureByPerformerIdAndType(connection, id, type);
+            return queryExecutor
+                    .queryFindFutureByPerformerIdAndType(connection, id, type, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findFutureByPerformerIdAndType", e);
             connectionManager.tryRollback();
@@ -80,9 +95,12 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFutureByPatientIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findFutureByPatientIdAndType(long id, TherapyDTO.Type type,
+                                                         int offset, int limit) {
+
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindFutureByPatientIdAndType(connection, id, type);
+            return queryExecutor
+                    .queryFindFutureByPatientIdAndType(connection, id, type, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findFutureByPatientIdAndType", e);
             connectionManager.tryRollback();
@@ -91,9 +109,12 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findByPerformerIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findByPerformerIdAndType(long id, TherapyDTO.Type type,
+                                                     int offset, int limit) {
+
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByPerformerIdAndType(connection, id, type);
+            return queryExecutor
+                    .queryFindByPerformerIdAndType(connection, id, type, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findByPerformerIdAndType", e);
             connectionManager.tryRollback();
@@ -102,9 +123,12 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findByPatientIdAndType(long id, TherapyDTO.Type type) {
+    public List<TherapyDTO> findByPatientIdAndType(long id, TherapyDTO.Type type,
+                                                   int offset, int limit) {
+
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByPatientIdAndType(connection, id, type);
+            return queryExecutor
+                    .queryFindByPatientIdAndType(connection, id, type, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findByPatientIdAndType", e);
             connectionManager.tryRollback();
@@ -113,9 +137,9 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findFinishedByPatientId(long id) {
+    public List<TherapyDTO> findFinishedByPatientId(long id, int offset, int limit) {
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindFinishedByPatientId(connection, id);
+            return queryExecutor.queryFindFinishedByPatientId(connection, id, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findFinishedByPatientId", e);
             connectionManager.tryRollback();
@@ -124,9 +148,9 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
-    public List<TherapyDTO> findNotFinishedByPatientId(long id) {
+    public List<TherapyDTO> findNotFinishedByPatientId(long id, int offset, int limit) {
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindNotFinishedByPatientId(connection, id);
+            return queryExecutor.queryFindNotFinishedByPatientId(connection, id, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findNotFinishedByPatientId", e);
             connectionManager.tryRollback();

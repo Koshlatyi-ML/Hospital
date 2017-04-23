@@ -50,14 +50,14 @@ public class PatientService extends AbstractCrudService<PatientDTO>
         return patientDTO;
     }
 
-    public List<PatientDTO> getAppliedPatientsOfDoctor(long doctorId) {
+    public List<PatientDTO> getAppliedPatientsOfDoctor(long doctorId, int offset, int limit) {
         return daoManager.getPatientDao()
-                .findByDoctorIdAndState(doctorId, PatientDTO.State.APPLIED);
+                .findByDoctorIdAndState(doctorId, PatientDTO.State.APPLIED, offset, limit);
     }
 
-    public List<PatientDTO> getTreatedPatientsOfDoctor(long doctorId) {
+    public List<PatientDTO> getTreatedPatientsOfDoctor(long doctorId, int offset, int limit) {
         return daoManager.getPatientDao()
-                .findByDoctorIdAndState(doctorId, PatientDTO.State.TREATED);
+                .findByDoctorIdAndState(doctorId, PatientDTO.State.TREATED, offset, limit);
     }
 
     @Override

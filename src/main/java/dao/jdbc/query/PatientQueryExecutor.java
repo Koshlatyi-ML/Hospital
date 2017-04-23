@@ -15,10 +15,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 @QueryResource("dao/query/patients.properties")
-public class PatientQueryExecutor extends QueryExecutor<PatientDTO>
-        implements PersonQueryExecutor<PatientDTO>,
-        DepartmentMemberQueryExecutor<PatientDTO>,
-        CredentialsHolderQueryExecutor<PatientDTO> {
+public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
 
     private Properties queries;
     private DtoValueSupplier<PatientDTO> dtoValueSupplier;
@@ -37,71 +34,95 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO>
         this.dtoRetriever = dtoRetriever;
     }
 
-    @Override
-    public List<PatientDTO> queryFindByFullName(Connection connection, String fullName)
-            throws SQLException {
-        return CommonQueriesExecutor.findByFullName(connection, fullName,
-                queries.getProperty("findByDepartment"), dtoRetriever);
+    public List<PatientDTO> queryFindByFullName(Connection connection, String fullName,
+                                                int offset, int limit) throws SQLException {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(queries.getProperty("findByDepartment"))) {
+
+            statement.setString(1, "%" + fullName + "%");
+            statement.setInt(2, offset);
+            statement.setInt(3, limit);
+            ResultSet resultSet = statement.executeQuery();
+            return dtoRetriever.retrieveDtoList(resultSet);
+        }
     }
 
-    @Override
     public Optional<PatientDTO> queryFindByLoginAndPassword(
             Connection connection, String login, String password) throws SQLException {
 
-        return CommonQueriesExecutor.findByLoginAndPassword(connection, login, password,
-                queries.getProperty("findByLoginAndPassword"), dtoRetriever);
+        try (PreparedStatement statement =
+                     connection.prepareStatement(queries.getProperty("findByLoginAndPassword"))) {
 
+            statement.setString(1, login);
+            statement.setString(2, password);
+            return dtoRetriever.retrieveDTO(statement.executeQuery());
+        }
     }
 
-    @Override
     public Optional<PatientDTO> queryFindByCredentialsId(Connection connection, long id)
             throws SQLException {
 
-        return CommonQueriesExecutor.findByCredentialsId(
-                connection, id, queries.getProperty("findByCredentialsId"), dtoRetriever);
+        try (PreparedStatement statement =
+                     connection.prepareStatement(queries.getProperty("findByCredentialsId"))) {
+
+            statement.setLong(1, id);
+            return dtoRetriever.retrieveDTO(statement.executeQuery());
+        }
     }
 
-    @Override
-    public List<PatientDTO> queryFindByDepartmentId(Connection connection, long id)
-            throws SQLException {
+    public List<PatientDTO> queryFindByDepartmentId(Connection connection, long id,
+                                                    int offset, int limit) throws SQLException {
 
-        return CommonQueriesExecutor.findByDepartmentId(connection, id,
-                queries.getProperty("findByDepartmentId"), dtoRetriever);
+        try (PreparedStatement statement =
+                     connection.prepareStatement(queries.getProperty("findByDepartmentId"))) {
+
+            statement.setLong(1, id);
+            statement.setInt(2, offset);
+            statement.setInt(3, limit);
+            ResultSet resultSet = statement.executeQuery();
+            return dtoRetriever.retrieveDtoList(resultSet);
+        }
     }
 
-    public List<PatientDTO> queryFindByDoctorId(Connection connection, long id)
-            throws SQLException {
+    public List<PatientDTO> queryFindByDoctorId(Connection connection, long id,
+                                                int offset, int limit) throws SQLException {
 
         try (PreparedStatement statement =
                      connection.prepareStatement(queries.getProperty("findByDoctorId"))) {
 
             statement.setLong(1, id);
+            statement.setInt(2, offset);
+            statement.setInt(3, limit);
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDtoList(resultSet);
         }
     }
 
-    public List<PatientDTO> queryFindByState(Connection connection, PatientDTO.State state)
-            throws SQLException {
+    public List<PatientDTO> queryFindByState(Connection connection, PatientDTO.State state,
+                                             int offset, int limit) throws SQLException {
 
         try (PreparedStatement statement =
                      connection.prepareStatement(queries.getProperty("findByState"))) {
 
             statement.setString(1, state.toString());
+            statement.setInt(2, offset);
+            statement.setInt(3, limit);
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDtoList(resultSet);
         }
     }
 
-    public List<PatientDTO> queryFindByDoctorIdAndState(
-            Connection connection, long doctorId, PatientDTO.State state)
-            throws SQLException {
+    public List<PatientDTO> queryFindByDoctorIdAndState(Connection connection, long doctorId,
+                                                        PatientDTO.State state, int offset,
+                                                        int limit) throws SQLException {
 
         try (PreparedStatement statement = connection.prepareStatement(
                 queries.getProperty("findByDoctorIdAndState"))) {
 
             statement.setLong(1, doctorId);
             statement.setString(2, state.toString());
+            statement.setInt(3, offset);
+            statement.setInt(4, limit);
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDtoList(resultSet);
         }

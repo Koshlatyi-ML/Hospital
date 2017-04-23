@@ -47,8 +47,8 @@ public class MedicService extends AbstractCrudService<MedicDTO>
         return medicDTO;
     }
 
-    public List<MedicDTO> getByDepartmentId(long id) {
-        return daoManager.getMedicDao().findByDepartmentId(id);
+    public List<MedicDTO> getByDepartmentId(long id, int offset, int limit) {
+        return daoManager.getMedicDao().findByDepartmentId(id, offset, limit);
     }
 
     @Override

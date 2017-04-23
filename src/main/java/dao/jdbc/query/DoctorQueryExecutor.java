@@ -15,8 +15,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 @QueryResource("dao/query/doctors.properties")
-public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO>
-        implements CredentialsHolderQueryExecutor<DoctorDTO> {
+public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO> {
 
     private Properties queries;
     private StuffDtoValueSupplier<DoctorDTO> valueSupplier;
@@ -66,22 +65,6 @@ public class DoctorQueryExecutor extends StuffQueryExecutor<DoctorDTO>
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDTO(resultSet);
         }
-    }
-
-    @Override
-    public Optional<DoctorDTO> queryFindByLoginAndPassword(
-            Connection connection, String login, String password) throws SQLException {
-
-        return CommonQueriesExecutor.findByLoginAndPassword(connection, login, password,
-                queries.getProperty("findByLoginAndPassword"), dtoRetriever);
-    }
-
-    @Override
-    public Optional<DoctorDTO> queryFindByCredentialsId(Connection connection, long id)
-            throws SQLException {
-
-        return CommonQueriesExecutor.findByCredentialsId(
-                connection, id, queries.getProperty("findByCredentialsId"), dtoRetriever);
     }
 
     @Override

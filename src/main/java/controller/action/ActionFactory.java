@@ -11,7 +11,7 @@ import controller.action.authorization.LoginGetAction;
 import controller.action.authorization.LoginPostAction;
 import controller.action.doctor.VisitDoctorMainpageAction;
 import controller.action.medic.VisitMedicHomepageAction;
-import controller.action.patient.VisitPatientMainpageAction;
+import controller.action.patient.PatientMainpageGetAction;
 import controller.action.registration.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +45,7 @@ public class ActionFactory {
         actionMap.put("POST/admin/add-medic", new AddMedicPostAction());
         actionMap.put("GET/doctor", new VisitDoctorMainpageAction());
         actionMap.put("GET/medic", new VisitMedicHomepageAction());
-        actionMap.put("GET/patient", new VisitPatientMainpageAction());
+        actionMap.put("GET/patient", new PatientMainpageGetAction());
     }
 
     public static ActionFactory getInstance() {

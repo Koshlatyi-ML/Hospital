@@ -2,15 +2,16 @@ package dao.jdbc.query;
 
 import dao.jdbc.query.supply.StuffDtoValueSupplier;
 import domain.AbstractStuffDTO;
+import domain.MedicDTO;
 import util.PropertyLoader;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 @QueryResource("dao/query/stuff.properties")
-public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends QueryExecutor<T>
-        implements PersonQueryExecutor<T>, DepartmentMemberQueryExecutor<T> {
+public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends QueryExecutor<T> {
 
     private Properties stuffQueries =
             PropertyLoader.getProperties(StuffQueryExecutor.class
@@ -47,16 +48,51 @@ public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends Que
         }
     }
 
-    @Override
-    public List<T> queryFindByFullName(Connection connection, String fullName) throws SQLException {
-        return CommonQueriesExecutor.findByFullName(connection, fullName,
-                getQueries().getProperty("findByFullName"), getDtoRetriever());
+    public List<T> queryFindByFullName(Connection connection, String fullName,
+                                       int offset, int limit) throws SQLException {
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(getQueries().getProperty("findByFullName"))) {
+            statement.setString(1, "%" + fullName + "%");
+            statement.setInt(2, offset);
+            statement.setInt(3, limit);
+            ResultSet resultSet = statement.executeQuery();
+            return getDtoRetriever().retrieveDtoList(resultSet);
+        }
     }
 
-    @Override
-    public List<T> queryFindByDepartmentId(Connection connection, long id) throws SQLException {
-        return CommonQueriesExecutor.findByDepartmentId(connection, id,
-                getQueries().getProperty("findByFullName"), getDtoRetriever());
+    public List<T> queryFindByDepartmentId(Connection connection, long id,
+                                           int offset, int limit) throws SQLException {
+        try (PreparedStatement statement = connection
+                .prepareStatement(getQueries().getProperty("findByDepartmentId"))) {
+
+            statement.setLong(1, id);
+            statement.setInt(2, offset);
+            statement.setInt(3, limit);
+            ResultSet resultSet = statement.executeQuery();
+            return getDtoRetriever().retrieveDtoList(resultSet);
+        }
+    }
+
+    public Optional<T> queryFindByLoginAndPassword(Connection connection, String login,
+                                                          String password) throws SQLException {
+
+        try (PreparedStatement statement = connection
+                .prepareStatement(getQueries().getProperty("findByLoginAndPassword"))) {
+            statement.setString(1, login);
+            statement.setString(2, password);
+            return getDtoRetriever().retrieveDTO(statement.executeQuery());
+        }
+    }
+
+    public Optional<T> queryFindByCredentialsId(Connection connection, long id)
+            throws SQLException {
+
+        try (PreparedStatement statement = connection
+                .prepareStatement(getQueries().getProperty("findByCredentialsId"))) {
+            statement.setLong(1, id);
+            return getDtoRetriever().retrieveDTO(statement.executeQuery());
+        }
     }
 
     @Override

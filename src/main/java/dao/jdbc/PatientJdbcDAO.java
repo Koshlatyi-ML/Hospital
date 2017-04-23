@@ -26,30 +26,53 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
     }
 
     @Override
-    public List<PatientDTO> findByFullName(String fullName) {
-        return JdbcDaoCommons.findByFullName(connectionManager, queryExecutor, fullName);
+    public List<PatientDTO> findByFullName(String fullName, int offset, int limit) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByFullName(connection, fullName, offset, limit);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByFullName", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
     }
 
     @Override
-    public List<PatientDTO> findByDepartmentId(long id) {
-        return JdbcDaoCommons.findByDepartmentId(connectionManager, queryExecutor, id);
+    public List<PatientDTO> findByDepartmentId(long id, int offset, int limit) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByDepartmentId(connection, id, offset, limit);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByCredentials", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public Optional<PatientDTO> findByLoginAndPassword(String login, String password) {
-        return JdbcDaoCommons.findByLoginAndPassword(connectionManager, queryExecutor,
-                login, password);
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByLoginAndPassword(connection, login, password);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByLoginAndPassword", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public Optional<PatientDTO> findByCredentialsId(long id) {
-        return JdbcDaoCommons.findByCredentialsId(connectionManager, queryExecutor, id);
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByCredentialsId(connection, id);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByCredentials", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
     }
 
     @Override
-    public List<PatientDTO> findByDoctorId(long id) {
+    public List<PatientDTO> findByDoctorId(long id, int offset, int limit) {
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByDoctorId(connection, id);
+            return queryExecutor.queryFindByDoctorId(connection, id, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findByDoctorId", e);
             connectionManager.tryRollback();
@@ -58,9 +81,9 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
     }
 
     @Override
-    public List<PatientDTO> findByState(PatientDTO.State state) {
+    public List<PatientDTO> findByState(PatientDTO.State state, int offset, int limit) {
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByState(connection, state);
+            return queryExecutor.queryFindByState(connection, state, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findByState", e);
             connectionManager.tryRollback();
@@ -69,9 +92,12 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
     }
 
     @Override
-    public List<PatientDTO> findByDoctorIdAndState(long doctorId, PatientDTO.State state) {
+    public List<PatientDTO> findByDoctorIdAndState(long doctorId, PatientDTO.State state,
+                                                   int offset, int limit) {
+
         try (Connection connection = connectionManager.getConnection()) {
-            return queryExecutor.queryFindByDoctorIdAndState(connection, doctorId, state);
+            return queryExecutor
+                    .queryFindByDoctorIdAndState(connection, doctorId, state, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findByDoctorIdAndState", e);
             connectionManager.tryRollback();

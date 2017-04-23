@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 public class Actions {
 
     private static final Logger LOG = LogManager.getLogger(Actions.class);
+    public static final int PAGE_SIZE = 5;
 
     private Actions() {
     }

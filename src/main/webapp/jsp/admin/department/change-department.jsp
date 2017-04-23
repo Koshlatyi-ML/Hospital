@@ -1,4 +1,3 @@
-<%@ taglib prefix="mytag" uri="/WEB-INF/tld/taglib.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -6,11 +5,9 @@
 <body>
 <%@include file="../main.jsp" %>
 <fmt:setBundle basename="i18n/admin/department" var="departmentBundle"/>
-<c:set var="pageSize" value="2"/>
+<c:set var="pageSize" value="5"/>
 <div class="list-group">
-    <c:forEach items="${sessionScope.departments}" var="department"
-               begin="${(sessionScope.page - 1) * pageScope.pageSize}"
-               end="${sessionScope.page * pageScope.pageSize - 1}">
+    <c:forEach items="${sessionScope.departments}" var="department">
         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
             <h2 class="mb-1">${department.name}</h2>
@@ -29,7 +26,7 @@
         </div>
         </a>
     </c:forEach>
-    <mytag:paginator totalSize="10" pageSize="1"
+    <mytag:paginator totalSize="${sessionScope.totalSize}" pageSize="${pageSize}"
                      currentPage="${sessionScope.page}" pageAttribute="page"
                      url="${pageContext.request.contextPath}/admin/change-department"/>
 </div>

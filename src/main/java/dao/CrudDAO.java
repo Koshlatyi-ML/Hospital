@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface CrudDAO<T extends AbstractDTO> {
     Optional<T> find(long id);
-    List<T> findAll();
+    List<T> findAll(int offset, int limit);
+    long count();
     void create(T dto);
     void update(T dto);
     void delete(T dto);

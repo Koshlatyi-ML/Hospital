@@ -30,9 +30,9 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
     }
 
     @Override
-    public List<T> findAll() {
+    public List<T> findAll(int offset, int limit) {
         try (Connection connection = connectionManager.getConnection()) {
-            return getQueryExecutor().queryFindAll(connection);
+            return getQueryExecutor().queryFindAll(connection, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findAll", e);
             connectionManager.tryRollback();
@@ -73,6 +73,17 @@ public abstract class CrudJdbcDAO<T extends AbstractDTO> implements CrudDAO<T> {
             getQueryExecutor().queryDelete(connection, id);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query delete", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public long count() {
+        try (Connection connection = connectionManager.getConnection()) {
+            return getQueryExecutor().queryCount(connection);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query row count", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }

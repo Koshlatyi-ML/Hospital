@@ -12,8 +12,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 @QueryResource("dao/query/medics.properties")
-public class MedicQueryExecutor extends StuffQueryExecutor<MedicDTO>
-        implements CredentialsHolderQueryExecutor<MedicDTO> {
+public class MedicQueryExecutor extends StuffQueryExecutor<MedicDTO> {
 
     private Properties queries;
     private StuffDtoValueSupplier<MedicDTO> valueSupplier;
@@ -52,23 +51,6 @@ public class MedicQueryExecutor extends StuffQueryExecutor<MedicDTO>
     @Override
     public void queryDelete(Connection connection, long id) throws SQLException {
         queryDeleteStuff(connection, id);
-    }
-
-    @Override
-    public Optional<MedicDTO> queryFindByLoginAndPassword(
-            Connection connection, String login, String password) throws SQLException {
-
-        return CommonQueriesExecutor.findByLoginAndPassword(connection, login, password,
-                queries.getProperty("findByLoginAndPassword"), dtoRetriever);
-
-    }
-
-    @Override
-    public Optional<MedicDTO> queryFindByCredentialsId(Connection connection, long id)
-            throws SQLException {
-
-        return CommonQueriesExecutor.findByCredentialsId(
-                connection, id, queries.getProperty("findByCredentialsId"), dtoRetriever);
     }
 
     @Override

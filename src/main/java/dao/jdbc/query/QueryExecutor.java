@@ -11,10 +11,24 @@ import java.util.Properties;
 
 public abstract class QueryExecutor<T extends AbstractDTO> {
 
-    public List<T> queryFindAll(Connection connection) throws SQLException {
+    public long queryCount(Connection connection) throws SQLException {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(getQueries().getProperty("count"))) {
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
+        }
+    }
+
+    public List<T> queryFindAll(Connection connection, int offset, int limit)
+            throws SQLException {
+
         try (PreparedStatement statement =
                      connection.prepareStatement(getQueries().getProperty("findAll"))) {
 
+            statement.setInt(1, offset);
+            statement.setInt(2, limit);
             ResultSet resultSet = statement.executeQuery();
             return getDtoRetriever().retrieveDtoList(resultSet);
         }

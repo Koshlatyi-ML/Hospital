@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration status="ERROR">
     <Appenders>
-        <File name="ExceptionFile" fileName="exceptions.log">
+        <File name="ExceptionFile" fileName="/usr/local/lib/apache-tomcat-8.5.11/logs/hospital-exceptions.log">
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
         </File>
     </Appenders>

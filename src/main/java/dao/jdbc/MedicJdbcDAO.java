@@ -21,15 +21,4 @@ public class MedicJdbcDAO extends StuffJdbcDAO<MedicDTO> implements MedicDAO {
     protected MedicQueryExecutor getQueryExecutor() {
         return queryExecutor;
     }
-
-    @Override
-    public Optional<MedicDTO> findByLoginAndPassword(String login, String password) {
-        return JdbcDaoCommons.findByLoginAndPassword(connectionManager, queryExecutor,
-                login, password);
-    }
-
-    @Override
-    public Optional<MedicDTO> findByCredentialsId(long id) {
-        return JdbcDaoCommons.findByCredentialsId(connectionManager, queryExecutor, id);
-    }
 }

@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="mytag" uri="/WEB-INF/tld/taglib.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="language.jsp" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="i18n/header" var="headerBundle"/>
 <html>

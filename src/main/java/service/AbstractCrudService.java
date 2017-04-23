@@ -14,8 +14,13 @@ public abstract class AbstractCrudService<T extends AbstractDTO> implements Crud
     }
 
     @Override
-    public List<T> getAll() {
-        return getDAO().findAll();
+    public List<T> getAll(int offset, int limit) {
+        return getDAO().findAll(offset, limit);
+    }
+
+    @Override
+    public long getSize() {
+        return getDAO().count();
     }
 
     @Override

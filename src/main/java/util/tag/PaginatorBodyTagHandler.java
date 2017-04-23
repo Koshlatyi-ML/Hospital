@@ -53,7 +53,7 @@ public class PaginatorBodyTagHandler extends SimpleTagSupport {
     }
 
     private int setStartPage() {
-        int pagesCount = (int) Math.ceil(totalSize / pageSize);
+        int pagesCount = (int) Math.ceil((double) totalSize / pageSize);
         if (pagesCount <= PAGER_LENGTH || currentPage < 2) {
             return 1;
         }
@@ -64,7 +64,7 @@ public class PaginatorBodyTagHandler extends SimpleTagSupport {
     }
 
     private int setEndPage() {
-        int pagesCount = (int) Math.ceil(totalSize / pageSize);
+        int pagesCount = (int) Math.ceil((double) totalSize / pageSize);
         if (pagesCount <= PAGER_LENGTH || pagesCount - currentPage < PAGER_LENGTH - 2) {
             return pagesCount;
         }

@@ -4,6 +4,8 @@ import controller.action.registration.Registrations;
 import dao.DaoManager;
 import dao.DepartmentDAO;
 import domain.DepartmentDTO;
+import service.DepartmentService;
+import service.ServiceFactory;
 import service.dto.PatientRegistrationDTO;
 import service.dto.StuffRegistrationDTO;
 
@@ -16,8 +18,9 @@ public class StuffRegistrations {
     }
 
     public static void loadDepartmentsAttribute(HttpServletRequest request) {
-        DepartmentDAO departmentDao = DaoManager.getInstance().getDepartmentDao();
-        List<DepartmentDTO> allDepartments = departmentDao.findAll();
+        DepartmentService service = ServiceFactory.getInstance().getDepartmentService();
+
+        List<DepartmentDTO> allDepartments = service.getAll(0, (int) service.getSize());
         request.getSession().setAttribute("departments", allDepartments);
     }
 
