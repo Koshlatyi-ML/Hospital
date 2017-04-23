@@ -28,6 +28,23 @@ ul {
     margin: 0 !important;
 }
 
+#therapy-prescription-id {
+    margin-left: 39%;
+    margin-top: 2%;
+}
+
+.therapy-prescription {
+    margin-bottom: 3%;
+}
+
+.input-prescription {
+    width: 300px;
+}
+
+#submit-prescription-btn {
+    width : 300px;
+}
+
 #lang-picker-submit {
     visibility: hidden;
 }
@@ -48,22 +65,29 @@ ul {
     color: #ffffff;
 }
 
+#div2, #div3 {
+    width: 300px;
+}
+
 #success-Msg{
     text-align: center;
     color: green;
     margin-bottom: 4px;
 }
 
-#fail-Msg, #complaints-msg {
+#fail-Msg, #complaints-msg, #description-msg {
     text-align: center;
     color: red;
-    margin-bottom: 4px
+    margin-bottom: 4px;
+    margin-top: 10px;
 }
 .changeDepartmentForm{
     margin-right: 5px;
+    margin-bottom: 0;
 }
 #changeDepartmentsWrapper,
-#chooseDoctorWrapper{
+#chooseDoctorWrapper,
+#choosePatientWrapper{
     display: inline-flex;
 }
 #add-btn {
@@ -78,6 +102,7 @@ ul {
 }
 #loginForm {
     margin-top: 4%;
+    margin-left: 10%;
 }
 #rename-dep-hdr {
     text-align: center;
@@ -104,4 +129,11 @@ ul {
     text-align: center;
     color: red;
     font-size: 50px;
+}
+#prescribe-form{
+    margin-bottom: -10px;
+}
+#prescribe {
+    margin-left: 20px;
+    margin-top: 90px;
 }

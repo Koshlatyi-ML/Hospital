@@ -14,7 +14,10 @@ import java.util.ResourceBundle;
 
 public class LoginPostAction implements Action {
 
-    public LoginPostAction() {
+    private ServiceFactory serviceFactory;
+
+    public LoginPostAction(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
     }
 
     private static class LoginAttributes {
@@ -95,7 +98,6 @@ public class LoginPostAction implements Action {
 
 
     private LoginService getLoginService(String role) {
-        ServiceFactory serviceFactory = ServiceFactory.getInstance();
         switch (role) {
             case "Doctor":
                 return serviceFactory.getDoctorService();

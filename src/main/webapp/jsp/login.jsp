@@ -6,7 +6,14 @@
 <head>
 </head>
 <body>
-<%@include file="header-login.jsp" %>
+<c:choose>
+    <c:when test="${not empty sessionScope.logined}">
+        <%@include file="header-logout.jsp" %>
+    </c:when>
+    <c:otherwise>
+        <%@include file="header-login.jsp" %>
+    </c:otherwise>
+</c:choose>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="i18n/login" var="loginBundle"/>
 <form id="loginForm" class="form-horizontal" action="${pageContext.request.contextPath}/login" method="post">

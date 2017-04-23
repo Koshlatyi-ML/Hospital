@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -16,6 +17,23 @@ public class Actions {
     public static final int PAGE_SIZE = 5;
 
     private Actions() {
+    }
+
+    /**
+     * Define page of requested web-resource and return offset of it elements.
+     *
+     * @param request
+     * @return offset of elements collection if current page
+     */
+    public static int paginateRequset(HttpServletRequest request) {
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+
+        HttpSession session = request.getSession();
+        session.setAttribute("page", page);
+        return  (page - 1) * Actions.PAGE_SIZE;
     }
 
     public static Locale parseLocaleAttribute(Object attribute) {

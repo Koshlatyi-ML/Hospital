@@ -28,6 +28,8 @@ public class WebActions {
                     addAll(publicActions);
                 }});
                 put("Doctor", new ArrayList<String>() {{
+                    add("POST/doctor/applicants");
+                    add("GET/doctor/applicants");
                     add("GET/doctor");
                     addAll(publicActions);
                 }});

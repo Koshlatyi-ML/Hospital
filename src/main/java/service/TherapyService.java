@@ -4,7 +4,11 @@ import dao.CrudDAO;
 import dao.DaoManager;
 import domain.TherapyDTO;
 
+import java.text.DateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TherapyService extends AbstractCrudService<TherapyDTO> {
 

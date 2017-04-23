@@ -14,6 +14,12 @@ import javax.servlet.http.HttpSession;
 
 public class AddMedicPostAction implements Action {
 
+    private ServiceFactory serviceFactory;
+
+    public AddMedicPostAction(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -28,7 +34,7 @@ public class AddMedicPostAction implements Action {
 
         String successMsg = Actions.getFromBundle(request, "i18n/messages", "success");
         session.setAttribute("successfulAddMedic", successMsg);
-        ServiceFactory.getInstance().getMedicService().register(dto);
+        serviceFactory.getMedicService().register(dto);
         Actions.redirectToPage(response, WebPaths.webPaths.get("admin.medic.add"));
         return null;
     }

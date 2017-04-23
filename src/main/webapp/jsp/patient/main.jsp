@@ -16,7 +16,7 @@
                         <h2 class="mb-1">${department.name}</h2>
                     </div>
                     <div id="changeDepartmentsWrapper">
-                        <form class="changeDepartmentForm" method="get"
+                        <form id="prescribe-form" method="get"
                               action="${pageContext.request.contextPath}/patient">
                             <input name="departmentId" value="${department.id}" type="hidden">
                             <button class="mb-1">
@@ -38,8 +38,7 @@
             </h2>
         </c:if>
         <c:if test="${sessionScope.totalSize != 0}">
-            <div id="complaints-msg">
-            </div>
+            <div id="complaints-msg"></div>
             <div class="form-group">
                 <label id="complaints-label" for="complaints"><fmt:message key="complaints"
                                                                            bundle="${patientBundle}"/></label>

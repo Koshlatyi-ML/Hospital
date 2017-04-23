@@ -10,9 +10,9 @@
     <link href="${pageContext.request.contextPath}/css/bootstrap-select.css" rel="stylesheet" type="text/css">
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css">
     <script src="${pageContext.request.contextPath}/js/jQuery.js"></script>
+    <script src="${pageContext.request.contextPath}/js/script.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootstrap-select.js"></script>
-    <script src="${pageContext.request.contextPath}/js/script.js"></script>
 
 </head>
 <body>

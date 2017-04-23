@@ -61,6 +61,11 @@ public class PatientService extends AbstractCrudService<PatientDTO>
                 .findByDoctorIdAndState(doctorId, PatientDTO.State.APPLIED, offset, limit);
     }
 
+    public long getAppliedPatientsOfDoctorSize(long doctorId) {
+        return daoManager.getPatientDao()
+                .findByDoctorIdAndStateCount(doctorId, PatientDTO.State.APPLIED);
+    }
+
     public List<PatientDTO> getTreatedPatientsOfDoctor(long doctorId, int offset, int limit) {
         return daoManager.getPatientDao()
                 .findByDoctorIdAndState(doctorId, PatientDTO.State.TREATED, offset, limit);

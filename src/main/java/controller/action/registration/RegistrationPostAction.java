@@ -14,6 +14,12 @@ import javax.servlet.http.HttpSession;
 
 public class RegistrationPostAction implements Action {
 
+    private ServiceFactory serviceFactory;
+
+    public RegistrationPostAction(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -28,7 +34,7 @@ public class RegistrationPostAction implements Action {
 
         session.setAttribute("logined", "yes");
         session.setAttribute("role", "Patient");
-        session.setAttribute("user", ServiceFactory.getInstance().getPatientService().register(dto));
+        session.setAttribute("user", serviceFactory.getPatientService().register(dto));
         Actions.redirectToPage(response, WebPaths.webPaths.get("patient.main"));
         return null;
     }

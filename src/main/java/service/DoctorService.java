@@ -3,8 +3,12 @@ package service;
 import dao.*;
 import domain.CredentialsDTO;
 import domain.DoctorDTO;
+import domain.PatientDTO;
+import domain.TherapyDTO;
+import service.dto.PatientApplicationDTO;
 import service.dto.PatientRegistrationDTO;
 import service.dto.StuffRegistrationDTO;
+import service.dto.TherapyPrescriptionDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +58,26 @@ public class DoctorService extends AbstractCrudService<DoctorDTO>
 
     public long getByDepartmentIdSize(long id) {
         return daoManager.getDoctorDao().findByDepartmentIdCount(id);
+    }
+
+    public void prescribeTherapy(long doctorId, long patientId, TherapyPrescriptionDTO prescriptionDTO) {
+        TherapyDTO therapyDTO = new TherapyDTO.Builder()
+                .setTitle(prescriptionDTO.getTitle())
+                .setType(TherapyDTO.Type.valueOf(prescriptionDTO.getType()))
+                .setDescription(prescriptionDTO.getDescription())
+                .setAppointmentDateTime(prescriptionDTO.getAppointmentDateTime())
+                .setPatientId(patientId)
+                .setPerformerId(doctorId)
+                .build();
+        TherapyDAO therapyDao = daoManager.getTherapyDao();
+        PatientDAO patientDao = daoManager.getPatientDao();
+
+        daoManager.beginTransaction();
+        therapyDao.create(therapyDTO);
+        PatientDTO patientDTO = patientDao.find(patientId).orElseThrow(IllegalArgumentException::new);
+        patientDTO.setState(PatientDTO.State.TREATED);
+        patientDao.update(patientDTO);
+        daoManager.finishTransaction();
     }
 
     @Override

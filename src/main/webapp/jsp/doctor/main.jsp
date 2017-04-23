@@ -1,5 +1,3 @@
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
-<%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -7,6 +5,18 @@
 </head>
 <body>
     <%@include file="/jsp/header-logout.jsp"%>
-    <p>Doctor's main page</p>
+    <fmt:setBundle basename="/i18n/doctor" var="docHeaderBundle"/>
+    <ul class="nav nav-tabs">
+        <li>
+            <a href="${pageContext.request.contextPath}/doctor/applicants">
+                <fmt:message key="applicants" bundle="${docHeaderBundle}"/>
+            </a>
+        </li>
+        <li>
+            <a href="${pageContext.request.contextPath}/doctor/therapies">
+                <fmt:message key="therapies" bundle="${docHeaderBundle}"/>
+            </a>
+        </li>
+    </ul>
 </body>
 </html>

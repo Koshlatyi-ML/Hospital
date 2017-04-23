@@ -12,17 +12,18 @@ import javax.servlet.http.HttpSession;
 
 public class ChangeDepartmentGetAction implements Action {
 
+    private ServiceFactory serviceFactory;
+
+    public ChangeDepartmentGetAction(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        DepartmentService service = ServiceFactory.getInstance().getDepartmentService();
-        int page = 1;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
-        }
-        int offset = (page - 1) * Actions.PAGE_SIZE;
-
+        int offset = Actions.paginateRequset(request);
         HttpSession session = request.getSession();
-        session.setAttribute("page", page);
+
+        DepartmentService service = serviceFactory.getDepartmentService();
         session.setAttribute("totalSize", service.getSize());
         session.setAttribute("departments",
                 service.getAll(offset, Actions.PAGE_SIZE));

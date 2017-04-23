@@ -10,6 +10,7 @@ public class WebPaths {
         put("registration", "/registration");
         put("patient.main", "/patient");
         put("doctor.main", "/doctor");
+        put("doctor.applicants", "/doctor/applicants");
         put("medic.main", "/medic");
         put("admin.main", "/admin");
         put("admin.department.add", "/admin/add-department");

@@ -10,7 +10,14 @@
 <head>
     <title>Registration</title>
 </head>
-<%@include file="header-login.jsp" %>
+<c:choose>
+    <c:when test="${not empty sessionScope.logined}">
+        <%@include file="header-logout.jsp" %>
+    </c:when>
+    <c:otherwise>
+        <%@include file="header-login.jsp" %>
+    </c:otherwise>
+</c:choose>
 <fmt:setBundle basename="/i18n/admin/stuff" var="stuffBundle"/>
 <form id="deparment-add" class="form-horizontal" action="${pageContext.request.contextPath}/registration" method="post">
     <div id="fail-Msg">

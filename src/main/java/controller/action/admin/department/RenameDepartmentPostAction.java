@@ -15,12 +15,18 @@ import java.util.ResourceBundle;
 
 public class RenameDepartmentPostAction implements Action {
 
+    private ServiceFactory serviceFactory;
+
+    public RenameDepartmentPostAction(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         DepartmentActions.removeMsgAttributes(session);
 
-        DepartmentService service = ServiceFactory.getInstance().getDepartmentService();
+        DepartmentService service = serviceFactory.getDepartmentService();
         String departmentName = request.getParameter("department-name");
         if (!Validations.isValidDepartmentName(departmentName)) {
             Actions.redirectToPage(response, WebPaths.webPaths.get("admin.department.change"));

@@ -14,33 +14,38 @@ import javax.servlet.http.HttpSession;
 
 public class PatientMainpageGetAction implements Action {
 
+    private ServiceFactory serviceFactory;
+
+    public PatientMainpageGetAction(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        int page = 1;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
-        }
-        int offset = (page - 1) * Actions.PAGE_SIZE;
-
+        int offset = Actions.paginateRequset(request);
         HttpSession session = request.getSession();
-        session.setAttribute("page", page);
 
         String departmentIdParameter = request.getParameter("departmentId");
         if (departmentIdParameter == null) {
-            DepartmentService service = ServiceFactory.getInstance().getDepartmentService();
+            DepartmentService service = serviceFactory.getDepartmentService();
             session.setAttribute("totalSize", service.getSize());
             session.setAttribute("departments", service.getAll(offset, Actions.PAGE_SIZE));
-        } else {
-            DoctorService service = ServiceFactory.getInstance().getDoctorService();
-            long departmentId = Long.parseLong(departmentIdParameter);
-            session.setAttribute("totalSize", service.getByDepartmentIdSize(departmentId));
-            session.setAttribute("doctors",
-                    service.getByDepartmentId(departmentId, offset, Actions.PAGE_SIZE));
+            return getPatientMainpage(request);
         }
 
+        DoctorService service = serviceFactory.getDoctorService();
+        long departmentId = Long.parseLong(departmentIdParameter);
+        session.setAttribute("totalSize", service.getByDepartmentIdSize(departmentId));
+        session.setAttribute("doctors",
+                service.getByDepartmentId(departmentId, offset, Actions.PAGE_SIZE));
+        return getPatientMainpage(request);
+    }
+
+    private String getPatientMainpage(HttpServletRequest request) {
         setStateMsg(request);
         return WebResources.webResources.get("patient.main");
     }
+
 
     private void setStateMsg(HttpServletRequest request) {
         HttpSession session = request.getSession();

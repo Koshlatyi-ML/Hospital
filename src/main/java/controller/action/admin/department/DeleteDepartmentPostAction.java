@@ -11,10 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteDepartmentPostAction implements Action {
 
+    private ServiceFactory serviceFactory;
+
+    public DeleteDepartmentPostAction(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+    }
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String departmentId = request.getParameter("departmentId");
-        DepartmentService service = ServiceFactory.getInstance().getDepartmentService();
+        DepartmentService service = serviceFactory.getDepartmentService();
         service.delete(Integer.parseInt(departmentId));
         Actions.redirectToPage(response, WebPaths.webPaths.get("admin.department.change"));
         return null;
