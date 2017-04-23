@@ -37,6 +37,7 @@ public class WebActions {
                 }});
                 put("Patient", new ArrayList<String>() {{
                     add("GET/patient");
+                    add("POST/patient/choose-doctor");
                     addAll(publicActions);
                 }});
             }};

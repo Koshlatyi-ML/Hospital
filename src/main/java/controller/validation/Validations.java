@@ -16,6 +16,10 @@ public class Validations {
         return name.matches("^[a-zA-Zа-яА-ЯёЁ ,.'-]{1,64}$");
     }
 
+    public static boolean isValidText(String name) {
+        return name.matches("^[a-zA-Zа-яА-ЯёЁ ,.-]{1,4096}$");
+    }
+
     public static boolean isValidDepartmentName(String name) {
         return name.matches("^[a-zA-Zа-яА-ЯёЁ0-9 №-]{1,64}$");
     }

@@ -26,7 +26,7 @@ public class LocalizationFilter implements Filter {
             return;
         }
 
-        if (servletRequest.getAttribute("language") == null) {
+        if (session.getAttribute("language") == null) {
             session.setAttribute("language", httpServletRequest.getLocale().toString());
         }
 

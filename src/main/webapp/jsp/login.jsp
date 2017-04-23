@@ -30,7 +30,8 @@
             <fmt:message key="login" bundle="${loginBundle}"/>
         </label>
         <div class="col-sm-8">
-            <input id="div2" name="login" type="text" pattern="^((?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.]){8,20}$"/><br>
+            <%--(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]{8,20}(?<![_.])--%>
+            <input id="div2" name="login" type="text" pattern="^([^_.])(?!.*[_.]{2})[a-zA-Z0-9._]{8,20}(?<![_.])$"/><br>
         </div>
     </div>
     <div class="form-group">

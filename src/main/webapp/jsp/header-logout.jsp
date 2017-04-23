@@ -12,18 +12,27 @@
     <script src="${pageContext.request.contextPath}/js/jQuery.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootstrap-select.js"></script>
-    <script src="${pageContext.request.contextPath}/js/language-select.js"></script>
+    <script src="${pageContext.request.contextPath}/js/script.js"></script>
+
 </head>
 <body>
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/"><fmt:message key="home" bundle="${headerBundle}"/></a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/"><fmt:message key="home"
+                                                                                            bundle="${headerBundle}"/></a>
         </div>
         <ul id="navbar" class="nav navbar-nav navbar-right">
             <li>
-                <form action="${sessionScope.request.getAttribute("javax.servlet.forward.request_uri")}"
+                <form action="${requestScope['javax.servlet.forward.request_uri']}"
                       method="get" id="lang-picker-form" class="navbar-form" role="search">
+                    <c:if test="${not empty param}">
+                        <c:forEach var="p" items="${paramValues}">
+                            <c:if test="${p.key ne 'language'}">
+                                <input type="hidden" name="${p.key}" value="${p.value[0]}">
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
                     <select id="lang-picker-select" name="language" class="selectpicker" data-size="5">
                         <option value="en_US" data-content='<img src="/img/usa.png" class="img-thumbnail icon-small">
                                               <span>    English</span>' ${sessionScope.language == 'en_US' ? 'selected' : ''}></option>

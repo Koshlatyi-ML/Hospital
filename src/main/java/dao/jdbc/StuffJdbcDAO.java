@@ -71,6 +71,26 @@ public abstract class StuffJdbcDAO<T extends AbstractStuffDTO> extends CrudJdbcD
         }
     }
 
+    public long findByFullNameСount(String fullName) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return getQueryExecutor().queryFindByFullNameСount(connection, fullName);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByFullNameСount", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    public long findByDepartmentIdCount(long id) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return getQueryExecutor().queryFindByDepartmentIdCount(connection, id);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByDepartmentIdCount", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
     @Override
     protected abstract StuffQueryExecutor<T> getQueryExecutor();
 }

@@ -28,7 +28,7 @@ public class AddDepartmentPostAction implements Action {
         }
 
         session.setAttribute("submittedAddDepartment", "yes");
-        ResourceBundle bundle = ResourceBundle.getBundle("i18n/admin/add-department",
+        ResourceBundle bundle = ResourceBundle.getBundle("i18n/admin/department",
                 Actions.parseLocaleAttribute(request.getSession().getAttribute("language")));
 
         if (service.getByName(departmentName).isPresent()) {

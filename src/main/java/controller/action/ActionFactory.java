@@ -11,6 +11,7 @@ import controller.action.authorization.LoginGetAction;
 import controller.action.authorization.LoginPostAction;
 import controller.action.doctor.VisitDoctorMainpageAction;
 import controller.action.medic.VisitMedicHomepageAction;
+import controller.action.patient.ChooseDoctorPostAction;
 import controller.action.patient.PatientMainpageGetAction;
 import controller.action.registration.*;
 
@@ -37,7 +38,6 @@ public class ActionFactory {
         actionMap.put("POST/admin/add-department", new AddDepartmentPostAction());
         actionMap.put("GET/admin/change-department", new ChangeDepartmentGetAction());
         actionMap.put("POST/admin/change-department/delete", new DeleteDepartmentPostAction());
-        actionMap.put("GET/admin/change-department/rename", new RenameDepartmentGetAction());
         actionMap.put("POST/admin/change-department/rename", new RenameDepartmentPostAction());
         actionMap.put("GET/admin/add-doctor", new AddDoctorGetAction());
         actionMap.put("POST/admin/add-doctor", new AddDoctorPostAction());
@@ -46,6 +46,7 @@ public class ActionFactory {
         actionMap.put("GET/doctor", new VisitDoctorMainpageAction());
         actionMap.put("GET/medic", new VisitMedicHomepageAction());
         actionMap.put("GET/patient", new PatientMainpageGetAction());
+        actionMap.put("POST/patient/choose-doctor", new ChooseDoctorPostAction());
     }
 
     public static ActionFactory getInstance() {

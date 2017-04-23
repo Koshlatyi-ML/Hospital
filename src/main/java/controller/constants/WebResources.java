@@ -14,11 +14,9 @@ public class WebResources {
         put("doctor.main", "/jsp/doctor/main.jsp");
         put("medic.main", "/jsp/medic/main.jsp");
         put("patient.main", "/jsp/patient/main.jsp");
-        put("patient.choose-department", "/jsp/patient/choose-department.jsp");
         put("admin.main", "/jsp/admin/main.jsp");
         put("admin.department.add", "/jsp/admin/department/add-department.jsp");
         put("admin.department.change", "/jsp/admin/department/change-department.jsp");
-        put("admin.department.change.rename", "/jsp/admin/department/change-department-rename.jsp");
         put("admin.doctor.add", "/jsp/admin/doctor/add-doctor.jsp");
         put("admin.medic.add", "/jsp/admin/medic/add-doctor.jsp");
     }};

@@ -37,13 +37,26 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
     public List<PatientDTO> queryFindByFullName(Connection connection, String fullName,
                                                 int offset, int limit) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement(queries.getProperty("findByDepartment"))) {
+                     connection.prepareStatement(queries.getProperty("findByName"))) {
 
             statement.setString(1, "%" + fullName + "%");
             statement.setInt(2, offset);
             statement.setInt(3, limit);
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDtoList(resultSet);
+        }
+    }
+
+    public long queryFindByFullNameCount(Connection connection, String fullName)
+            throws SQLException {
+
+        try (PreparedStatement statement = connection
+                .prepareStatement(queries.getProperty("findByNameCount"))) {
+
+            statement.setString(1, "%" + fullName + "%");
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         }
     }
 
@@ -84,6 +97,19 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
         }
     }
 
+    public long queryFindByDepartmentIdCount(Connection connection, long id)
+            throws SQLException {
+
+        try (PreparedStatement statement = connection
+                .prepareStatement(queries.getProperty("findByDepartmentIdCount"))) {
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
+        }
+    }
+
     public List<PatientDTO> queryFindByDoctorId(Connection connection, long id,
                                                 int offset, int limit) throws SQLException {
 
@@ -98,6 +124,17 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
         }
     }
 
+    public long queryFindByDoctorIdCount(Connection connection, long id) throws SQLException {
+        try (PreparedStatement statement = connection
+                .prepareStatement(queries.getProperty("findByDoctorIdCount"))) {
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
+        }
+    }
+
     public List<PatientDTO> queryFindByState(Connection connection, PatientDTO.State state,
                                              int offset, int limit) throws SQLException {
 
@@ -109,6 +146,19 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
             statement.setInt(3, limit);
             ResultSet resultSet = statement.executeQuery();
             return dtoRetriever.retrieveDtoList(resultSet);
+        }
+    }
+
+    public long queryFindByStateCount(Connection connection, PatientDTO.State state)
+            throws SQLException {
+
+        try (PreparedStatement statement = connection
+                .prepareStatement(queries.getProperty("findByStateCount"))) {
+
+            statement.setString(1, state.toString());
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         }
     }
 
@@ -128,6 +178,20 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
         }
     }
 
+    public long queryFindByDoctorIdAndStateCount(Connection connection, long doctorId,
+                                                 PatientDTO.State state) throws SQLException {
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                queries.getProperty("findByDoctorIdAndStateCount"))) {
+
+            statement.setLong(1, doctorId);
+            statement.setString(2, state.toString());
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
+        }
+    }
+
     @Override
     protected DtoRetriever<PatientDTO> getDtoRetriever() {
         return dtoRetriever;
@@ -142,5 +206,4 @@ public class PatientQueryExecutor extends QueryExecutor<PatientDTO> {
     protected Properties getQueries() {
         return queries;
     }
-
 }

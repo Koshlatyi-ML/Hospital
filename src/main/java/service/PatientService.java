@@ -1,12 +1,11 @@
 package service;
 
-import dao.CredentialsDAO;
-import dao.CrudDAO;
-import dao.DaoManager;
-import dao.PatientDAO;
+import dao.*;
 import domain.CredentialsDTO;
+import domain.DoctorDTO;
 import domain.PatientDTO;
 import service.dto.AbstractRegistrationDTO;
+import service.dto.PatientApplicationDTO;
 import service.dto.PatientRegistrationDTO;
 
 import java.util.List;
@@ -48,6 +47,13 @@ public class PatientService extends AbstractCrudService<PatientDTO>
 
         daoManager.finishTransaction();
         return patientDTO;
+    }
+
+    public void applyToDoctor(PatientDTO patient, PatientApplicationDTO dto) {
+        patient.setDoctorId(dto.getDoctorId());
+        patient.setComplaints(dto.getComplaints());
+        patient.setState(PatientDTO.State.APPLIED);
+        daoManager.getPatientDao().update(patient);
     }
 
     public List<PatientDTO> getAppliedPatientsOfDoctor(long doctorId, int offset, int limit) {

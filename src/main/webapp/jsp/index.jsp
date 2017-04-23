@@ -1,5 +1,4 @@
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
-<%--<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -12,7 +11,14 @@
 </head>
 
 <body>
-<%@include file="header-login.jsp"%>
+<c:choose>
+    <c:when test="${not empty sessionScope.logined}">
+        <%@include file="header-logout.jsp" %>
+    </c:when>
+    <c:otherwise>
+        <%@include file="header-login.jsp" %>
+    </c:otherwise>
+</c:choose>
 <fmt:setBundle basename="i18n/main" var="mainBundle"/>
 <header class="image-bg-fluid-height">
     <img class="img-responsive img-center" src="${pageContext.request.contextPath}/img/logo.png" alt="">

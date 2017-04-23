@@ -52,12 +52,24 @@ public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends Que
                                        int offset, int limit) throws SQLException {
 
         try (PreparedStatement statement =
-                     connection.prepareStatement(getQueries().getProperty("findByFullName"))) {
+                     connection.prepareStatement(getQueries().getProperty("findByName"))) {
             statement.setString(1, "%" + fullName + "%");
             statement.setInt(2, offset);
             statement.setInt(3, limit);
             ResultSet resultSet = statement.executeQuery();
             return getDtoRetriever().retrieveDtoList(resultSet);
+        }
+    }
+
+    public long queryFindByFullNameСount(Connection connection, String fullName)
+            throws SQLException {
+
+        try (PreparedStatement statement =
+                     connection.prepareStatement(getQueries().getProperty("findByNameCount"))) {
+            statement.setString(1, "%" + fullName + "%");
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         }
     }
 
@@ -71,6 +83,19 @@ public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends Que
             statement.setInt(3, limit);
             ResultSet resultSet = statement.executeQuery();
             return getDtoRetriever().retrieveDtoList(resultSet);
+        }
+    }
+
+    public long queryFindByDepartmentIdCount(Connection connection, long id)
+            throws SQLException {
+
+        try (PreparedStatement statement = connection
+                .prepareStatement(getQueries().getProperty("findByDepartmentIdCount"))) {
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
         }
     }
 

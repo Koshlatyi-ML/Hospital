@@ -37,11 +37,33 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
     }
 
     @Override
+    public long findByFullNameСount(String fullName) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByFullNameCount(connection, fullName);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByFullNameCount", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public List<PatientDTO> findByDepartmentId(long id, int offset, int limit) {
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindByDepartmentId(connection, id, offset, limit);
         } catch (SQLException e) {
-            LOG.log(Level.ERROR, "Can't query findByCredentials", e);
+            LOG.log(Level.ERROR, "Can't query findByDepartmentId", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public long findByDepartmentIdCount(long id) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByDepartmentIdCount(connection, id);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByDepartmentIdCount", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }
@@ -81,11 +103,33 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
     }
 
     @Override
+    public long findByDoctorIdCount(long id) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByDoctorIdCount(connection, id);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByDoctorIdCount", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public List<PatientDTO> findByState(PatientDTO.State state, int offset, int limit) {
         try (Connection connection = connectionManager.getConnection()) {
             return queryExecutor.queryFindByState(connection, state, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findByState", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public long findByStateCount(PatientDTO.State state) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindByStateCount(connection, state);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByStateCount", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }
@@ -100,6 +144,18 @@ public class PatientJdbcDAO extends CrudJdbcDAO<PatientDTO> implements PatientDA
                     .queryFindByDoctorIdAndState(connection, doctorId, state, offset, limit);
         } catch (SQLException e) {
             LOG.log(Level.ERROR, "Can't query findByDoctorIdAndState", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public long findByDoctorIdAndStateCount(long doctorId, PatientDTO.State state) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor
+                    .queryFindByDoctorIdAndStateCount(connection, doctorId, state);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findByDoctorIdAndStateCount", e);
             connectionManager.tryRollback();
             throw new DaoException(e);
         }

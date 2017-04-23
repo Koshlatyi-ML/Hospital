@@ -1,0 +1,39 @@
+package controller.action.patient;
+
+import controller.action.Action;
+import controller.action.Actions;
+import controller.constants.WebPaths;
+import controller.validation.Validations;
+import domain.PatientDTO;
+import service.PatientService;
+import service.ServiceFactory;
+import service.dto.PatientApplicationDTO;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class ChooseDoctorPostAction implements Action {
+
+    @Override
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
+        String complaints = request.getParameter("complaints");
+        if (!Validations.isValidText(complaints)) {
+            Actions.redirectToPage(response, WebPaths.webPaths.get("patient.main"));
+            return null;
+        }
+
+        long doctorId = Long.parseLong(request.getParameter("doctorId"));
+        PatientDTO user = (PatientDTO) request.getSession().getAttribute("user");
+        PatientService service = ServiceFactory.getInstance().getPatientService();
+
+        PatientApplicationDTO dto = new PatientApplicationDTO.Builder()
+                .setDoctorId(doctorId)
+                .setComplaints(complaints)
+                .build();
+
+        service.applyToDoctor(user, dto);
+
+        Actions.redirectToPage(response, WebPaths.webPaths.get("patient.main"));
+        return null;
+    }
+}

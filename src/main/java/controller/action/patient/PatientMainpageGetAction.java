@@ -5,6 +5,7 @@ import controller.action.Actions;
 import controller.constants.WebResources;
 import domain.PatientDTO;
 import service.DepartmentService;
+import service.DoctorService;
 import service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,6 @@ public class PatientMainpageGetAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        DepartmentService service = ServiceFactory.getInstance().getDepartmentService();
         int page = 1;
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
@@ -24,8 +24,20 @@ public class PatientMainpageGetAction implements Action {
 
         HttpSession session = request.getSession();
         session.setAttribute("page", page);
-        session.setAttribute("totalSize", service.getSize());
-        session.setAttribute("departments", service.getAll(offset, Actions.PAGE_SIZE));
+
+        String departmentIdParameter = request.getParameter("departmentId");
+        if (departmentIdParameter == null) {
+            DepartmentService service = ServiceFactory.getInstance().getDepartmentService();
+            session.setAttribute("totalSize", service.getSize());
+            session.setAttribute("departments", service.getAll(offset, Actions.PAGE_SIZE));
+        } else {
+            DoctorService service = ServiceFactory.getInstance().getDoctorService();
+            long departmentId = Long.parseLong(departmentIdParameter);
+            session.setAttribute("totalSize", service.getByDepartmentIdSize(departmentId));
+            session.setAttribute("doctors",
+                    service.getByDepartmentId(departmentId, offset, Actions.PAGE_SIZE));
+        }
+
         setStateMsg(request);
         return WebResources.webResources.get("patient.main");
     }
@@ -35,7 +47,7 @@ public class PatientMainpageGetAction implements Action {
         PatientDTO user = (PatientDTO) session.getAttribute("user");
         final String basename = "i18n/patient";
         switch (user.getState()) {
-            case "REGISTERED" :
+            case "REGISTERED":
                 session.setAttribute("stateMsg",
                         Actions.getFromBundle(request, basename, "state.registered"));
                 break;

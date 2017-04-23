@@ -5,7 +5,8 @@
 <body>
 <%@ include file="../main.jsp"%>
 <fmt:setBundle basename="i18n/admin/department" var="departmentBundle"/>
-<form id="deparment-add" class="form-horizontal" action="${pageContext.request.contextPath}/admin/add-department" method="post">
+<form id="deparment-add" class="form-horizontal" action="${pageContext.request.contextPath}/admin/add-department"
+      method="post">
     <div id="fail-Msg">
         <c:out value="${sessionScope.usedDepartmentNameMsg}"/>
     </div>
@@ -17,7 +18,8 @@
             <fmt:message key="name" bundle="${departmentBundle}"/>
         </label>
         <div class="col-sm-8">
-            <input name="department-name" type="text" class="form-control" id="email" pattern="^[a-zA-Zа-яА-ЯёЁ0-9 №-]{1,64}$">
+            <input name="department-name" type="text" class="form-control" id="email"
+                   pattern="^[a-zA-Zа-яА-ЯёЁ0-9 №-]{1,64}$">
         </div>
     </div>
     <div class="form-group">
