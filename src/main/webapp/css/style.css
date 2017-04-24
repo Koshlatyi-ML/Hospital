@@ -88,6 +88,7 @@ ul {
 #changeDepartmentsWrapper,
 #chooseDoctorWrapper,
 #choosePatientWrapper{
+    margin-top: 1%;
     display: inline-flex;
 }
 #add-btn {
@@ -136,4 +137,47 @@ ul {
 #prescribe {
     margin-left: 20px;
     margin-top: 90px;
+}
+#divider {
+    border-right: 2px solid #101010;
+    margin-left: 3%;
+    margin-right: 5%;
+}
+#redirect {
+    margin-top: 8%;
+    width: 220px;
+}
+#perform {
+    margin-top: 10%;
+    width: 180px;
+}
+#medics {
+    margin-top: 40px;
+}
+#redirect-div{
+    padding-top:7%;
+}
+#doctorActionsDiv{
+    display: inline-flex;
+    margin-right: -180px;
+}
+.diagnosis-input{
+    margin-top: 75px;
+}
+.discharge {
+    margin-top: 18px;
+    width: 180px;
+}
+.diagnosis-label {
+    margin-top: 50px;
+    margin-bottom: -75px;
+}
+.medic-therapy {
+    height: 250px;
+}
+.medic-submit {
+    margin-bottom: 20px;
+}
+.medic-form {
+    margin-top: -150px;
 }

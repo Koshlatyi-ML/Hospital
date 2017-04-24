@@ -7,6 +7,7 @@ import service.dto.PatientRegistrationDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 public class Registrations {
 
@@ -63,7 +64,9 @@ public class Registrations {
             Registrations.setInvalidLogin(request);
             return false;
         }
-        if (ServiceFactory.getInstance().getCredentialsService().hasLogin(login)) {
+        if ("administrator".equals(login)
+                || ServiceFactory.getInstance().getCredentialsService().hasLogin(login)) {
+
             Registrations.setUsedLogin(request);
             return false;
         }

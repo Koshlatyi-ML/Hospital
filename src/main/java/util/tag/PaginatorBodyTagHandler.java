@@ -39,10 +39,11 @@ public class PaginatorBodyTagHandler extends SimpleTagSupport {
         int startPage = setStartPage();
         int endPage = setEndPage();
 
+        String queryAppender = url.contains("?") ? "&" :"?";
         try {
             writer.write("<ul class=\"pagination\">");
             for (int i = startPage; i <= endPage; i++) {
-                writer.write("<li><a href=\"" + url + "?"
+                writer.write("<li><a href=\"" + url + queryAppender
                         + pageAttribute + "=" + i
                         + "\">" + i + "</a></li>");
             }

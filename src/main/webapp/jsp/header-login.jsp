@@ -22,7 +22,8 @@
         </div>
         <ul id="navbar" class="nav navbar-nav navbar-right">
             <li>
-                <form action="${requestScope['javax.servlet.forward.request_uri']}" method="get" id="lang-picker-form" class="navbar-form" role="search">
+                <form action="${requestScope['javax.servlet.forward.request_uri']}" method="get" id="lang-picker-form"
+                      class="navbar-form" role="search">
                     <c:if test="${not empty param}">
                         <c:forEach var="p" items="${paramValues}">
                             <c:if test="${p.key ne 'language'}">
@@ -47,7 +48,7 @@
             <li>
                 <a href="${pageContext.request.contextPath}/login">
                     <span class="glyphicon glyphicon-log-in">
-                    <fmt:message key="login" bundle="${headerBundle}"/>
+                        <fmt:message key="login" bundle="${headerBundle}"/>
                 </a>
             </li>
         </ul>

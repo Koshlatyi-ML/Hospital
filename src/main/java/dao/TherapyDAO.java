@@ -5,6 +5,10 @@ import domain.TherapyDTO;
 import java.util.List;
 
 public interface TherapyDAO extends CrudDAO<TherapyDTO> {
+
+    List<TherapyDTO> findCurrentByPerformerId(long id, int offset, int limit);
+    long findCurrentByPerformerIdCount(long id);
+
     List<TherapyDTO> findCurrentByPerformerIdAndType(long id, TherapyDTO.Type type, int offset, int limit);
     long findCurrentByPerformerIdAndTypeCount(long id, TherapyDTO.Type type);
     List<TherapyDTO> findCurrentByPatientIdAndType(long id, TherapyDTO.Type type, int offset, int limit);

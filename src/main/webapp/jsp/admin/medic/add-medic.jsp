@@ -26,29 +26,29 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="div1">
+        <label class="control-label col-sm-2" for="div11">
             <fmt:message key="login" bundle="${stuffBundle}"/>
         </label>
         <div class="col-sm-8">
-            <input name="login" type="text" class="form-control" id="div1"
+            <input name="login" type="text" class="form-control" id="div11"
                    pattern="^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="div2">
+        <label class="control-label col-sm-2" for="div42">
             <fmt:message key="password" bundle="${stuffBundle}"/>
         </label>
         <div class="col-sm-8">
-            <input name="password" type="password" class="form-control" id="div2"
+            <input name="password" type="password" class="form-control" id="div42"
                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="div3">
+        <label class="control-label col-sm-2" for="div43">
             <fmt:message key="name" bundle="${stuffBundle}"/>
         </label>
         <div class="col-sm-8">
-            <input name="name" type="text" class="form-control" id="div3"
+            <input name="name" type="text" class="form-control" id="div43"
                    pattern="^[a-zA-Zа-яА-ЯёЁ ,.'-]{1,64}$">
         </div>
     </div>

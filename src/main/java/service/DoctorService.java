@@ -60,26 +60,6 @@ public class DoctorService extends AbstractCrudService<DoctorDTO>
         return daoManager.getDoctorDao().findByDepartmentIdCount(id);
     }
 
-    public void prescribeTherapy(long doctorId, long patientId, TherapyPrescriptionDTO prescriptionDTO) {
-        TherapyDTO therapyDTO = new TherapyDTO.Builder()
-                .setTitle(prescriptionDTO.getTitle())
-                .setType(TherapyDTO.Type.valueOf(prescriptionDTO.getType()))
-                .setDescription(prescriptionDTO.getDescription())
-                .setAppointmentDateTime(prescriptionDTO.getAppointmentDateTime())
-                .setPatientId(patientId)
-                .setPerformerId(doctorId)
-                .build();
-        TherapyDAO therapyDao = daoManager.getTherapyDao();
-        PatientDAO patientDao = daoManager.getPatientDao();
-
-        daoManager.beginTransaction();
-        therapyDao.create(therapyDTO);
-        PatientDTO patientDTO = patientDao.find(patientId).orElseThrow(IllegalArgumentException::new);
-        patientDTO.setState(PatientDTO.State.TREATED);
-        patientDao.update(patientDTO);
-        daoManager.finishTransaction();
-    }
-
     @Override
     CrudDAO<DoctorDTO> getDAO() {
         return daoManager.getDoctorDao();

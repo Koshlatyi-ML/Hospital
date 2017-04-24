@@ -57,8 +57,8 @@ public class PatientMainpageGetAction implements Action {
                         Actions.getFromBundle(request, basename, "state.registered"));
                 break;
             case "DISCHARGED":
-                session.setAttribute("stateMsg", Actions.getFromBundle(request,
-                        basename + user.getDiagnosis() + ".", "state.discharged"));
+                String fromBundle = Actions.getFromBundle(request, basename, "state.discharged");
+                session.setAttribute("stateMsg", fromBundle + "\"" + user.getDiagnosis() + "\"" + ".");
                 break;
             case "APPLIED":
                 session.setAttribute("stateMsg",
@@ -66,7 +66,7 @@ public class PatientMainpageGetAction implements Action {
                 break;
             case "TREATED":
                 session.setAttribute("stateMsg",
-                        Actions.getFromBundle(request, basename, "state.treated"));
+                        Actions.getFromBundle(request, basename, "state.applied"));
                 break;
         }
     }

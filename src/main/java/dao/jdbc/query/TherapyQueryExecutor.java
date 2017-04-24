@@ -203,6 +203,31 @@ public class TherapyQueryExecutor extends QueryExecutor<TherapyDTO> {
         }
     }
 
+    public List<TherapyDTO> queryFindCurrentByPerformerId(Connection connection, long id,
+                                                          int offset, int limit) throws SQLException {
+
+        try (PreparedStatement statement = connection.prepareStatement(
+                queries.getProperty("findCurrentByPerformerId"))) {
+
+            statement.setLong(1, id);
+            statement.setInt(2, offset);
+            statement.setInt(3, limit);
+            ResultSet resultSet = statement.executeQuery();
+            return dtoRetriever.retrieveDtoList(resultSet);
+        }
+    }
+
+    public long queryFindCurrentByPerformerIdCount(Connection connection, long id) throws SQLException {
+        try (PreparedStatement statement = connection
+                .prepareStatement(queries.getProperty("findCurrentByPerformerIdCount"))) {
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
+        }
+    }
+
     public List<TherapyDTO> queryFindNotFinishedByPatientId(
             Connection connection, long id, int offset, int limit) throws SQLException {
 

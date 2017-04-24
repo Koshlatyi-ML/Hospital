@@ -9,10 +9,9 @@ import controller.action.admin.medic.AddMedicPostAction;
 import controller.action.authorization.LogOutAction;
 import controller.action.authorization.LoginGetAction;
 import controller.action.authorization.LoginPostAction;
-import controller.action.doctor.DoctorMainpageGetAction;
-import controller.action.doctor.DoctorsApplicantsGetAction;
-import controller.action.doctor.DoctorsApplicantsPostAction;
-import controller.action.medic.VisitMedicHomepageAction;
+import controller.action.doctor.*;
+import controller.action.medic.MedicMainpageGetAction;
+import controller.action.medic.MedicsTherapyPostAction;
 import controller.action.patient.ChooseDoctorPostAction;
 import controller.action.patient.PatientMainpageGetAction;
 import controller.action.registration.*;
@@ -50,7 +49,11 @@ public class ActionFactory {
         actionMap.put("GET/doctor", new DoctorMainpageGetAction(serviceFactory));
         actionMap.put("GET/doctor/applicants", new DoctorsApplicantsGetAction(serviceFactory));
         actionMap.put("POST/doctor/applicants", new DoctorsApplicantsPostAction(serviceFactory));
-        actionMap.put("GET/medic", new VisitMedicHomepageAction(serviceFactory));
+        actionMap.put("GET/doctor/therapies", new DoctorsTherapiesGetAction(serviceFactory));
+        actionMap.put("POST/doctor/therapies", new DoctorsTherapiesPostAction(serviceFactory));
+        actionMap.put("POST/doctor/therapies/redirect", new DoctorsTherapyRedirectGetAction(serviceFactory));
+        actionMap.put("GET/medic", new MedicMainpageGetAction(serviceFactory));
+        actionMap.put("POST/medic", new MedicsTherapyPostAction(serviceFactory));
         actionMap.put("GET/patient", new PatientMainpageGetAction(serviceFactory));
         actionMap.put("POST/patient/choose-doctor", new ChooseDoctorPostAction(serviceFactory));
     }

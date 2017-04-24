@@ -28,6 +28,9 @@ public class WebActions {
                     addAll(publicActions);
                 }});
                 put("Doctor", new ArrayList<String>() {{
+                    add("POST/doctor/therapies/redirect");
+                    add("POST/doctor/therapies");
+                    add("GET/doctor/therapies");
                     add("POST/doctor/applicants");
                     add("GET/doctor/applicants");
                     add("GET/doctor");
@@ -35,6 +38,7 @@ public class WebActions {
                 }});
                 put("Medic", new ArrayList<String>() {{
                     add("GET/medic");
+                    add("POST/medic");
                     addAll(publicActions);
                 }});
                 put("Patient", new ArrayList<String>() {{

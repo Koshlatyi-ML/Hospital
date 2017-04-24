@@ -25,6 +25,28 @@ public class TherapyJdbcDAO extends CrudJdbcDAO<TherapyDTO> implements TherapyDA
     }
 
     @Override
+    public List<TherapyDTO> findCurrentByPerformerId(long id, int offset, int limit) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindCurrentByPerformerId(connection, id, offset, limit);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findCurrentByPerformerId", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public long findCurrentByPerformerIdCount(long id) {
+        try (Connection connection = connectionManager.getConnection()) {
+            return queryExecutor.queryFindCurrentByPerformerIdCount(connection, id);
+        } catch (SQLException e) {
+            LOG.log(Level.ERROR, "Can't query findCurrentByPerformerIdCount", e);
+            connectionManager.tryRollback();
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public List<TherapyDTO> findCurrentByPerformerIdAndType(long id, TherapyDTO.Type type,
                                                             int offset, int limit) {
 

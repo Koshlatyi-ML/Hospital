@@ -70,7 +70,8 @@
                 </label>
             </div>
             <div class="therapy-prescription">
-                <textarea name="therapyDescription" id="therapy-description" class="input-prescription" rows="10"></textarea>
+                <textarea name="therapyDescription" id="therapy-description" class="input-prescription"
+                          rows="10"></textarea>
             </div>
             <div>
                 <label>
@@ -79,6 +80,21 @@
             </div>
             <div class="therapy-prescription">
                 <input name="dateTime" class="input-prescription" type="datetime-local">
+            </div>
+            <div>
+                <label>
+                    <fmt:message key="performer" bundle="${therapyBundle}"/>
+                </label>
+            </div>
+            <div class="therapy-prescription">
+                <select name="performer">
+                    <option value="${sessionScope.user.id}">
+                        <fmt:message key="self" bundle="${docBundle}"/>
+                    </option>
+                    <c:forEach items="${sessionScope.medics}" var="medic">
+                        <option value="${medic.id}">${medic.name} ${medic.surname}</option>
+                    </c:forEach>
+                </select>
             </div>
             <div>
                 <button id="submit-prescription-btn" class="btn bth-primary therapy-prescription" type="submit">

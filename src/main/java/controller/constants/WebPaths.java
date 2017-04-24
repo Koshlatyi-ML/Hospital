@@ -11,6 +11,7 @@ public class WebPaths {
         put("patient.main", "/patient");
         put("doctor.main", "/doctor");
         put("doctor.applicants", "/doctor/applicants");
+        put("doctor.therapies", "/doctor/therapies");
         put("medic.main", "/medic");
         put("admin.main", "/admin");
         put("admin.department.add", "/admin/add-department");

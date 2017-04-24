@@ -10,6 +10,7 @@ public class TherapyPrescriptionDTO {
     private String type;
     private String description;
     private Timestamp appointmentDateTime;
+    private long performerId;
 
     private TherapyPrescriptionDTO() {
     }
@@ -46,6 +47,14 @@ public class TherapyPrescriptionDTO {
         this.appointmentDateTime = appointmentDateTime;
     }
 
+    public long getPerformerId() {
+        return performerId;
+    }
+
+    public void setPerformerId(long performerId) {
+        this.performerId = performerId;
+    }
+
     public static class Builder extends AbstractBuilder<TherapyPrescriptionDTO> {
         public Builder() {
             instance = new TherapyPrescriptionDTO();
@@ -68,6 +77,11 @@ public class TherapyPrescriptionDTO {
 
         public Builder setAppointmentDateTime(Timestamp appointmentDateTime) {
             instance.setAppointmentDateTime(appointmentDateTime);
+            return this;
+        }
+
+        public Builder setPerformerId(long performerId) {
+            instance.setPerformerId(performerId);
             return this;
         }
     }

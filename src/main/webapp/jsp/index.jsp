@@ -28,7 +28,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="section-heading"><fmt:message key="hospital.name" bundle="${mainBundle}"/></h1>
+                 <h1 class="section-heading"><fmt:message key="hospital.name" bundle="${mainBundle}"/></h1>
                 <p class="lead section-lead"><fmt:message key="hospital.slogan" bundle="${mainBundle}"/></p>
             </div>
         </div>

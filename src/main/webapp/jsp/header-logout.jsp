@@ -2,6 +2,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="mytag" uri="/WEB-INF/tld/taglib.tld" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:choose>
+    <c:when test="${sessionScope.role == 'Admin'}">
+        <c:set var="home" value="${pageContext.request.contextPath}/admin" scope="page"/>
+    </c:when>
+    <c:when test="${sessionScope.role == 'Doctor'}">
+        <c:set var="home" value="${pageContext.request.contextPath}/doctor" scope="page"/>
+    </c:when>
+    <c:when test="${sessionScope.role == 'Medic'}">
+        <c:set var="home" value="${pageContext.request.contextPath}/medic" scope="page"/>
+    </c:when>
+    <c:when test="${sessionScope.role == 'Patient'}">
+        <c:set var="home" value="${pageContext.request.contextPath}/patient" scope="page"/>
+    </c:when>
+</c:choose>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="i18n/header" var="headerBundle"/>
 <html>
@@ -19,8 +33,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/"><fmt:message key="home"
-                                                                                            bundle="${headerBundle}"/></a>
+            <a class="navbar-brand" href="${home}"><fmt:message key="home" bundle="${headerBundle}"/></a>
         </div>
         <ul id="navbar" class="nav navbar-nav navbar-right">
             <li>

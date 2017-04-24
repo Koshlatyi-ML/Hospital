@@ -5,6 +5,7 @@ import controller.action.Actions;
 import controller.constants.WebResources;
 import domain.DoctorDTO;
 import domain.TherapyDTO;
+import service.MedicService;
 import service.PatientService;
 import service.ServiceFactory;
 
@@ -28,18 +29,22 @@ public class DoctorsApplicantsGetAction implements Action {
         }
         session.removeAttribute("failedTherapySubmitting");
 
-        PatientService service = serviceFactory.getPatientService();
+        DoctorDTO user = (DoctorDTO) session.getAttribute("user");
         int offset = Actions.paginateRequset(request);
 
-        long userId = ((DoctorDTO) session.getAttribute("user")).getId();
-
+        long userId = user.getId();
         String patientIdParameter = request.getParameter("patientId");
         if (patientIdParameter == null) {
-            session.setAttribute("totalSize", service.getAppliedPatientsOfDoctorSize(userId));
+            PatientService patientService = serviceFactory.getPatientService();
+            session.setAttribute("totalSize", patientService.getAppliedPatientsOfDoctorSize(userId));
             session.setAttribute("patients",
-                    service.getAppliedPatientsOfDoctor(userId, offset, Actions.PAGE_SIZE));
+                    patientService.getAppliedPatientsOfDoctor(userId, offset, Actions.PAGE_SIZE));
             return WebResources.webResources.get("doctor.applicants");
         }
+
+        MedicService medicService = serviceFactory.getMedicService();
+        session.setAttribute("medics",
+                medicService.getByDepartmentId(user.getDepartmentId(), offset, Actions.PAGE_SIZE));
 
         if (session.getAttribute("therapyTypes") == null) {
             session.setAttribute("therapyTypes", TherapyDTO.Type.values());

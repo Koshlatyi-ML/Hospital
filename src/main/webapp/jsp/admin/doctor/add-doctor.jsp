@@ -35,20 +35,20 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="div2">
+        <label class="control-label col-sm-2" for="div22">
             <fmt:message key="password" bundle="${stuffBundle}"/>
         </label>
         <div class="col-sm-8">
-            <input name="password" type="password" class="form-control" id="div2"
+            <input name="password" type="password" class="form-control" id="div22"
                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2" for="div3">
+        <label class="control-label col-sm-2" for="div33">
             <fmt:message key="name" bundle="${stuffBundle}"/>
         </label>
         <div class="col-sm-8">
-            <input name="name" type="text" class="form-control" id="div3"
+            <input name="name" type="text" class="form-control" id="div33"
                    pattern="^[a-zA-Zа-яА-ЯёЁ ,.'-]{1,64}$">
         </div>
     </div>
