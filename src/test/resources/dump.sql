@@ -63,28 +63,6 @@ CREATE FUNCTION check_performer_permissions(id integer, type character varying) 
 ALTER FUNCTION public.check_performer_permissions(id integer, type character varying) OWNER TO postgres_user;
 
 --
--- Name: valid_doctor_credentials_id(bigint); Type: FUNCTION; Schema: public; Owner: postgres_user
---
-
-CREATE FUNCTION valid_doctor_credentials_id(id bigint) RETURNS boolean
-    LANGUAGE sql
-    AS $_$ SELECT role = 'DOCTOR' from credentials WHERE id = $1 $_$;
-
-
-ALTER FUNCTION public.valid_doctor_credentials_id(id bigint) OWNER TO postgres_user;
-
---
--- Name: valid_medic_credentials_id(bigint); Type: FUNCTION; Schema: public; Owner: postgres_user
---
-
-CREATE FUNCTION valid_medic_credentials_id(id bigint) RETURNS boolean
-    LANGUAGE sql
-    AS $_$ SELECT role = 'MEDIC' from credentials WHERE id = $1 $_$;
-
-
-ALTER FUNCTION public.valid_medic_credentials_id(id bigint) OWNER TO postgres_user;
-
---
 -- Name: valid_owner(smallint); Type: FUNCTION; Schema: public; Owner: postgres_user
 --
 
@@ -94,28 +72,6 @@ CREATE FUNCTION valid_owner(owner_id smallint) RETURNS boolean
 
 
 ALTER FUNCTION public.valid_owner(owner_id smallint) OWNER TO postgres_user;
-
---
--- Name: valid_patient_credentials_id(bigint); Type: FUNCTION; Schema: public; Owner: postgres_user
---
-
-CREATE FUNCTION valid_patient_credentials_id(id bigint) RETURNS boolean
-    LANGUAGE sql
-    AS $_$ SELECT role = 'PATIENT' from credentials WHERE id = $1 $_$;
-
-
-ALTER FUNCTION public.valid_patient_credentials_id(id bigint) OWNER TO postgres_user;
-
---
--- Name: valid_role(character varying); Type: FUNCTION; Schema: public; Owner: postgres_user
---
-
-CREATE FUNCTION valid_role(type character varying) RETURNS boolean
-    LANGUAGE sql
-    AS $_$select $1 in ('DOCTOR', 'MEDIC', 'PATIENT') $_$;
-
-
-ALTER FUNCTION public.valid_role(type character varying) OWNER TO postgres_user;
 
 --
 -- Name: valid_state(character varying); Type: FUNCTION; Schema: public; Owner: postgres_user
@@ -164,9 +120,7 @@ SET default_with_oids = false;
 CREATE TABLE credentials (
     id bigint DEFAULT nextval('credentials_id_seq'::regclass) NOT NULL,
     login character varying(255) NOT NULL,
-    user character varying(255) NOT NULL,
-    role character varying(255) NOT NULL,
-    CONSTRAINT check_valid_role CHECK (valid_role(role))
+    password character varying(255) NOT NULL
 );
 
 
@@ -204,8 +158,7 @@ ALTER TABLE departments OWNER TO postgres_user;
 
 CREATE TABLE doctors (
     stuff_id integer NOT NULL,
-    credentials_id bigint NOT NULL,
-    CONSTRAINT check_valid_credentials_id CHECK (valid_doctor_credentials_id(credentials_id))
+    credentials_id bigint NOT NULL
 );
 
 
@@ -217,8 +170,7 @@ ALTER TABLE doctors OWNER TO postgres_user;
 
 CREATE TABLE medics (
     stuff_id integer NOT NULL,
-    credentials_id bigint NOT NULL,
-    CONSTRAINT check_valid_credentials_id CHECK (valid_medic_credentials_id(credentials_id))
+    credentials_id bigint NOT NULL
 );
 
 
@@ -239,7 +191,6 @@ CREATE TABLE patients (
     credentials_id bigint NOT NULL,
     CONSTRAINT check_complaint_logic CHECK (check_compliants_logic(state, complaints)),
     CONSTRAINT check_state_logic CHECK (check_discharged_state_logic(state, diagnosis, doctor_id)),
-    CONSTRAINT check_valid_credentials_id CHECK (valid_patient_credentials_id(credentials_id)),
     CONSTRAINT check_valid_state CHECK (valid_state(state))
 );
 
@@ -370,30 +321,30 @@ ALTER TABLE ONLY therapies ALTER COLUMN id SET DEFAULT nextval('therapies_id_seq
 -- Data for Name: credentials; Type: TABLE DATA; Schema: public; Owner: postgres_user
 --
 
-COPY credentials (id, login, user, role) FROM stdin;
-523	medicLoginSample	medicPasswordSample	MEDIC
-524	patientLoginSample	patientPasswordSample	PATIENT
-1	kopile	1111	DOCTOR
-2	aaa	wadw	DOCTOR
-3	www	scasc	DOCTOR
-4	eee	rrr	DOCTOR
-5	123	123	DOCTOR
-6	gthfghrt	sedfdg	DOCTOR
-7	Nikolay	user	DOCTOR
-8	azazaz	zazazazaz	DOCTOR
-9	tyuio	vbn	MEDIC
-10	dfbdb	vdfdfs	MEDIC
-11	qqqqqqqqqq	wwwwwww	MEDIC
-12	lof	las	MEDIC
-13	pokojon	6666	MEDIC
-14	sdgdsrgm	ijkoiji	MEDIC
-15	jklnm,jk	88329jh	MEDIC
-16	poool	99091	MEDIC
-17	dgdrgg	1123	PATIENT
-18	ppol	6666	PATIENT
-19	pppopds	90098	PATIENT
-20	mamama	omomo	PATIENT
-21	doctorLoginSample	doctorPasswordSample	DOCTOR
+COPY credentials (id, login, password) FROM stdin;
+523	medicLoginSample	medicPasswordSample
+524	patientLoginSample	patientPasswordSample
+1	kopile	1111
+2	aaa	wadw
+3	www	scasc
+4	eee	rrr
+5	123	123
+6	gthfghrt	sedfdg
+7	Nikolay	password
+8	azazaz	zazazazaz
+9	tyuio	vbn
+10	dfbdb	vdfdfs
+11	qqqqqqqqqq	wwwwwww
+12	lof	las
+13	pokojon	6666
+14	sdgdsrgm	ijkoiji
+15	jklnm,jk	88329jh
+16	poool	99091
+17	dgdrgg	1123
+18	ppol	6666
+19	pppopds	90098
+20	mamama	omomo
+21	doctorLoginSample	doctorPasswordSample
 \.
 
 
@@ -401,7 +352,7 @@ COPY credentials (id, login, user, role) FROM stdin;
 -- Name: credentials_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('credentials_id_seq', 539, true);
+SELECT pg_catalog.setval('credentials_id_seq', 1166, true);
 
 
 --
@@ -420,7 +371,7 @@ COPY departments (id, name) FROM stdin;
 -- Name: departments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('departments_id_seq', 705, true);
+SELECT pg_catalog.setval('departments_id_seq', 1335, true);
 
 
 --
@@ -471,7 +422,7 @@ COPY patients (id, name, surname, doctor_id, complaints, diagnosis, state, crede
 -- Name: patients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('patients_id_seq', 634, true);
+SELECT pg_catalog.setval('patients_id_seq', 1264, true);
 
 
 --
@@ -500,6 +451,7 @@ COPY stuff (id, name, surname, department_id) FROM stdin;
 1241	name	surname	95
 1242	name	surname	95
 1243	name	surname	95
+1698	name	surname	95
 62	MedicName1	MedicSurname1	95
 \.
 
@@ -508,7 +460,7 @@ COPY stuff (id, name, surname, department_id) FROM stdin;
 -- Name: stuff_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('stuff_id_seq', 1255, true);
+SELECT pg_catalog.setval('stuff_id_seq', 2514, true);
 
 
 --
@@ -531,7 +483,7 @@ COPY therapies (id, title, type, description, appointment_date, completion_date,
 -- Name: therapies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('therapies_id_seq', 442, true);
+SELECT pg_catalog.setval('therapies_id_seq', 862, true);
 
 
 --
@@ -715,5 +667,4 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
 
