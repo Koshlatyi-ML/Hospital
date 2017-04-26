@@ -78,7 +78,7 @@ public class MedicJdbcDAOTest {
                 .setName("name")
                 .setSurname("surname")
                 .setDepartmentId(95)
-                .setCredentialsId(21)
+                .setCredentialsId(1286)
                 .build();
 
         dao.create(dto);
@@ -94,7 +94,7 @@ public class MedicJdbcDAOTest {
                 .setName("name")
                 .setSurname("surname")
                 .setDepartmentId(95)
-                .setCredentialsId(21)
+                .setCredentialsId(1286)
                 .build();
 
         dao.create(dto);
@@ -110,7 +110,7 @@ public class MedicJdbcDAOTest {
                 .setName("name")
                 .setSurname("surname")
                 .setDepartmentId(95)
-                .setCredentialsId(21)
+                .setCredentialsId(1286)
                 .build();
         dao.create(tested);
 

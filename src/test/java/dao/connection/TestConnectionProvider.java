@@ -3,11 +3,13 @@ package dao.connection;
 import org.postgresql.ds.PGConnectionPoolDataSource;
 import util.PropertyLoader;
 
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class TestConnectionProvider {
+public class TestConnectionProvider extends ConnectionProvider {
+
     private PGConnectionPoolDataSource dataSource;
     private Properties connectionProperies;
     private final String URL_KEY = "url";

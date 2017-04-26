@@ -1,5 +1,6 @@
 package controller.action;
 
+import controller.exception.ControllerException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +34,7 @@ public class Actions {
 
         HttpSession session = request.getSession();
         session.setAttribute("page", page);
-        return  (page - 1) * Actions.PAGE_SIZE;
+        return (page - 1) * Actions.PAGE_SIZE;
     }
 
     public static Locale parseLocaleAttribute(Object attribute) {
@@ -42,7 +43,16 @@ public class Actions {
         }
 
         String[] split = ((String) attribute).split("_");
-        return new Locale(split[0], split[1]);
+        switch (split.length) {
+            case 1:
+                return new Locale(split[0]);
+            case 2:
+                return new Locale(split[0], split[1]);
+            case 3:
+                return new Locale(split[0], split[1], split[2]);
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
     public static void redirectToPage(HttpServletResponse response, String url) {
@@ -50,7 +60,7 @@ public class Actions {
             response.sendRedirect(url);
         } catch (IOException e) {
             LOG.log(Level.ERROR, "Can't redirect to " + url, e);
-            throw new RuntimeException(e);
+            throw new ControllerException(e);
         }
     }
 

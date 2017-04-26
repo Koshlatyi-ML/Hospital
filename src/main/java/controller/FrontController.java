@@ -1,6 +1,7 @@
 package controller;
 
 import controller.action.ActionFactory;
+import controller.exception.ControllerException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,7 +49,7 @@ public class FrontController extends HttpServlet {
             request.getRequestDispatcher(url).forward(request, response);
         } catch (ServletException | IOException e) {
             LOG.log(Level.ERROR, "Can't forward request", e);
-            throw new RuntimeException(e);
+            throw new ControllerException(e);
         }
     }
 }

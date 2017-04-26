@@ -80,11 +80,6 @@ public class TherapyDTO extends AbstractDTO {
     }
 
     public void setCompletionDateTime(Timestamp completionDateTime) {
-        if (this.completionDateTime != null) {
-            LOG.log(Level.ERROR, "Completion datetime attempted to reset a value");
-            throw new IllegalStateException();
-        }
-
         this.completionDateTime = completionDateTime;
     }
 

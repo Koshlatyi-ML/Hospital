@@ -2,6 +2,7 @@ package service;
 
 import dao.*;
 import domain.CredentialsDTO;
+import domain.DoctorDTO;
 import domain.MedicDTO;
 import service.dto.StuffRegistrationDTO;
 
@@ -15,6 +16,20 @@ public class MedicService extends AbstractCrudService<MedicDTO>
 
     MedicService(DaoManager daoManager) {
         this.daoManager = daoManager;
+    }
+
+    @Override
+    public void delete(long id) {
+        CredentialsDAO credentialsDAO = daoManager.getCredentialsDao();
+        MedicDAO medicDAO = daoManager.getMedicDao();
+        Optional<MedicDTO> medicDTO = medicDAO.find(id);
+        medicDTO.ifPresent(medic -> {
+            long credentialsId = medic.getCredentialsId();
+            daoManager.beginTransaction();
+            medicDAO.delete(id);
+            credentialsDAO.delete(credentialsId);
+            daoManager.finishTransaction();
+        });
     }
 
     @Override
@@ -50,6 +65,11 @@ public class MedicService extends AbstractCrudService<MedicDTO>
     public List<MedicDTO> getByDepartmentId(long id, int offset, int limit) {
         return daoManager.getMedicDao().findByDepartmentId(id, offset, limit);
     }
+    public long getByDepartmentIdSize(long id) {
+        return daoManager.getMedicDao().findByDepartmentIdCount(id);
+    }
+
+
 
     @Override
     CrudDAO<MedicDTO> getDAO() {

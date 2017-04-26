@@ -6,11 +6,14 @@ import util.load.ImplementationLoaderFactory;
 
 @Implementation(JdbcDaoManager.class)
 public abstract class DaoManager {
-    private static final DaoManager INSTANCE = ImplementationLoaderFactory.getInstance()
-            .createImplementationLoader().loadInstance(DaoManager.class);
 
+    private static class Holder {
+        static final DaoManager INSTANCE = ImplementationLoaderFactory.getInstance()
+                .createImplementationLoader().loadInstance(DaoManager.class);
+
+    }
     public static DaoManager getInstance() {
-        return INSTANCE;
+        return Holder.INSTANCE;
     }
 
     public abstract void beginTransaction();

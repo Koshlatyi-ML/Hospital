@@ -2,6 +2,8 @@ package service.dto;
 
 import util.AbstractBuilder;
 
+import java.util.Objects;
+
 public class PatientApplicationDTO {
 
     private long doctorId;
@@ -40,5 +42,19 @@ public class PatientApplicationDTO {
             instance.setComplaints(complaints);
             return this;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PatientApplicationDTO)) return false;
+        PatientApplicationDTO that = (PatientApplicationDTO) o;
+        return getDoctorId() == that.getDoctorId() &&
+                Objects.equals(getComplaints(), that.getComplaints());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDoctorId(), getComplaints());
     }
 }

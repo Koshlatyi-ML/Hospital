@@ -40,11 +40,6 @@ public class PatientDTO extends AbstractPersonDTO {
     }
 
     public void setComplaints(String complaints) {
-        if (!State.REGISTERED.toString().equals(state) && complaints != null) {
-            throw new IllegalArgumentException("Complaints attempted to set " +
-                    "a null value in inappropriate patient state");
-        }
-
         this.complaints = complaints;
     }
 

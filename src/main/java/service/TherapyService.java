@@ -116,11 +116,11 @@ public class TherapyService extends AbstractCrudService<TherapyDTO> {
         daoManager.finishTransaction();
     }
 
-    public void changePerformer(long therapyId, long medicId) {
+    public void changePerformer(long therapyId, long performerId) {
         TherapyDAO therapyDao = daoManager.getTherapyDao();
         TherapyDTO therapyDTO =
                 therapyDao.find(therapyId).orElseThrow(IllegalArgumentException::new);
-        therapyDTO.setPerformerId(medicId);
+        therapyDTO.setPerformerId(performerId);
         therapyDao.update(therapyDTO);
     }
 

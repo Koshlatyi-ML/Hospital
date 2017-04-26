@@ -23,6 +23,20 @@ public class DoctorService extends AbstractCrudService<DoctorDTO>
     }
 
     @Override
+    public void delete(long id) {
+        CredentialsDAO credentialsDAO = daoManager.getCredentialsDao();
+        DoctorDAO doctorDAO = daoManager.getDoctorDao();
+        Optional<DoctorDTO> doctorDTO = doctorDAO.find(id);
+        doctorDTO.ifPresent(doc -> {
+            long credentialsId = doc.getCredentialsId();
+            daoManager.beginTransaction();
+            doctorDAO.delete(id);
+            credentialsDAO.delete(credentialsId);
+            daoManager.finishTransaction();
+        });
+    }
+
+    @Override
     public Optional<DoctorDTO> login(String login, String password) {
         return daoManager.getDoctorDao().findByLoginAndPassword(login, password);
     }

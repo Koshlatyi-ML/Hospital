@@ -56,7 +56,6 @@ public class PatientJdbcDAOTest {
                 .setName("PatientName3")
                 .setSurname("PatientSurname3")
                 .setDoctorId(0)
-                .setCompliants("Complaints3")
                 .setDiagnosis("Diagnosis3")
                 .setState(PatientDTO.State.DISCHARGED)
                 .setCredentialsId(19)
@@ -84,7 +83,7 @@ public class PatientJdbcDAOTest {
                 .setCompliants("ccc")
                 .setDiagnosis(null)
                 .setState(PatientDTO.State.APPLIED)
-                .setCredentialsId(21)
+                .setCredentialsId(1286)
                 .build();
 
         dao.create(dto);
@@ -103,7 +102,7 @@ public class PatientJdbcDAOTest {
                 .setCompliants("ccc")
                 .setDiagnosis(null)
                 .setState(PatientDTO.State.APPLIED)
-                .setCredentialsId(21)
+                .setCredentialsId(1286)
                 .build();
 
         dao.create(dto);
@@ -122,7 +121,7 @@ public class PatientJdbcDAOTest {
                 .setCompliants("ccc")
                 .setDiagnosis(null)
                 .setState(PatientDTO.State.APPLIED)
-                .setCredentialsId(21)
+                .setCredentialsId(1286)
                 .build();
         dao.create(tested);
 

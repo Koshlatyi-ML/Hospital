@@ -96,16 +96,6 @@ public class TherapyDTOTest {
         assertEquals(appTime, dto.getCompletionDateTime());
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void setCompleteDateTimeRepeatedly() throws Exception {
-        Timestamp appTime = Timestamp.from(Instant.ofEpochMilli(1000));
-        TherapyDTO dto = new TherapyDTO.Builder()
-                .setCompleteDateTime(appTime)
-                .build();
-
-        dto.setCompletionDateTime(Timestamp.from(Instant.now()));
-    }
-
     @Test
     public void setPatientIdBuilder() throws Exception {
         long patientId = 1000L;

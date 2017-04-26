@@ -2,6 +2,7 @@ package service;
 
 import dao.*;
 import domain.CredentialsDTO;
+import domain.MedicDTO;
 import domain.PatientDTO;
 import domain.TherapyDTO;
 import service.dto.PatientApplicationDTO;
@@ -20,6 +21,20 @@ public class PatientService extends AbstractCrudService<PatientDTO>
 
     PatientService(DaoManager daoManager) {
         this.daoManager = daoManager;
+    }
+
+    @Override
+    public void delete(long id) {
+        CredentialsDAO credentialsDAO = daoManager.getCredentialsDao();
+        PatientDAO patientDAO = daoManager.getPatientDao();
+        Optional<PatientDTO> patientDTO = patientDAO.find(id);
+        patientDTO.ifPresent(medic -> {
+            long credentialsId = medic.getCredentialsId();
+            daoManager.beginTransaction();
+            patientDAO.delete(id);
+            credentialsDAO.delete(credentialsId);
+            daoManager.finishTransaction();
+        });
     }
 
     @Override
@@ -71,6 +86,11 @@ public class PatientService extends AbstractCrudService<PatientDTO>
     public List<PatientDTO> getTreatedPatientsOfDoctor(long doctorId, int offset, int limit) {
         return daoManager.getPatientDao()
                 .findByDoctorIdAndState(doctorId, PatientDTO.State.TREATED, offset, limit);
+    }
+
+    public long getTreatedPatientsOfDoctorSize(long doctorId) {
+        return daoManager.getPatientDao()
+                .findByDoctorIdAndStateCount(doctorId, PatientDTO.State.TREATED);
     }
 
     public void prescribeTherapy(long patientId, TherapyPrescriptionDTO prescriptionDTO) {
