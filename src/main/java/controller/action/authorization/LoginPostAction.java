@@ -37,7 +37,7 @@ public class LoginPostAction implements Action {
 
         LoginAttributes attributes = fetchLoginAttributes(request);
         if (attributes == null) {
-            Actions.redirectToPage(response, WebPaths.webPaths.get("login"));
+            Actions.redirectToPage(response, WebPaths.get("login"));
             return null;
         }
 
@@ -52,13 +52,13 @@ public class LoginPostAction implements Action {
     private String getHomeURL(String role) {
         switch (role) {
             case "Doctor":
-                return WebPaths.webPaths.get("doctor.main");
+                return WebPaths.get("doctor.main");
             case "Medic":
-                return WebPaths.webPaths.get("medic.main");
+                return WebPaths.get("medic.main");
             case "Patient":
-                return WebPaths.webPaths.get("patient.main");
+                return WebPaths.get("patient.main");
             case "Admin":
-                return WebPaths.webPaths.get("admin.main");
+                return WebPaths.get("admin.main");
             default:
                 throw new IllegalStateException();
         }

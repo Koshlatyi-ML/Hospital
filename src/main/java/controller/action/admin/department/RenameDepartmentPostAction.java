@@ -29,7 +29,7 @@ public class RenameDepartmentPostAction implements Action {
         DepartmentService service = serviceFactory.getDepartmentService();
         String departmentName = request.getParameter("department-name");
         if (!Validations.isValidDepartmentName(departmentName)) {
-            Actions.redirectToPage(response, WebPaths.webPaths.get("admin.department.change"));
+            Actions.redirectToPage(response, WebPaths.get("admin.department.change"));
             return null;
         }
 
@@ -39,7 +39,7 @@ public class RenameDepartmentPostAction implements Action {
 
         if (service.getByName(departmentName).isPresent()) {
             session.setAttribute("usedDepartmentNameMsg", bundle.getString("usedName"));
-            Actions.redirectToPage(response, WebPaths.webPaths.get("admin.department.change"));
+            Actions.redirectToPage(response, WebPaths.get("admin.department.change"));
             return null;
         }
 
@@ -49,7 +49,7 @@ public class RenameDepartmentPostAction implements Action {
                         .setId(departmentId)
                         .setName(departmentName)
                         .build());
-        Actions.redirectToPage(response, WebPaths.webPaths.get("admin.department.change"));
+        Actions.redirectToPage(response, WebPaths.get("admin.department.change"));
         return null;
     }
 }

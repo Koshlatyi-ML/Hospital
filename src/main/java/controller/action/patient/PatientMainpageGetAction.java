@@ -43,7 +43,7 @@ public class PatientMainpageGetAction implements Action {
 
     private String getPatientMainpage(HttpServletRequest request) {
         setStateMsg(request);
-        return WebResources.webResources.get("patient.main");
+        return WebResources.get("patient.main");
     }
 
 

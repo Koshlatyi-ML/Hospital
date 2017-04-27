@@ -24,6 +24,6 @@ public class AddDepartmentGetAction implements Action {
         }
 
         session.removeAttribute("submittedAddDepartment");
-        return WebResources.webResources.get("admin.department.add");
+        return WebResources.get("admin.department.add");
     }
 }

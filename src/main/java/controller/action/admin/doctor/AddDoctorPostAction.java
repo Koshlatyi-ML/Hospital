@@ -28,14 +28,14 @@ public class AddDoctorPostAction implements Action {
 
         StuffRegistrationDTO dto = StuffRegistrations.fetchStuffRegistrationDTO(request);
         if (dto == null) {
-            Actions.redirectToPage(response, WebPaths.webPaths.get("admin.doctor.add"));
+            Actions.redirectToPage(response, WebPaths.get("admin.doctor.add"));
             return null;
         }
 
         String successMsg = Actions.getFromBundle(request, "i18n/messages", "success");
         session.setAttribute("successfulAddDoctor", successMsg);
         serviceFactory.getDoctorService().register(dto);
-        Actions.redirectToPage(response, WebPaths.webPaths.get("admin.doctor.add"));
+        Actions.redirectToPage(response, WebPaths.get("admin.doctor.add"));
         return null;
     }
 }

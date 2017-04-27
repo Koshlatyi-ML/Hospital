@@ -44,6 +44,6 @@ public class MedicMainpageGetAction implements Action {
 
         session.setAttribute("therapies", therapies);
         session.setAttribute("patients", patients);
-        return WebResources.webResources.get("medic.main");
+        return WebResources.get("medic.main");
     }
 }

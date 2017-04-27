@@ -21,6 +21,6 @@ public class AddDoctorGetAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         DoctorRegistrations.prepareRegistrationGetAction(request);
         StuffRegistrations.loadDepartmentsAttribute(request);
-        return WebResources.webResources.get("admin.doctor.add");
+        return WebResources.get("admin.doctor.add");
     }
 }

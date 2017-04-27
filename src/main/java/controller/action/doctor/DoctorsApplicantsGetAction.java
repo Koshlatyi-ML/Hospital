@@ -39,7 +39,7 @@ public class DoctorsApplicantsGetAction implements Action {
             session.setAttribute("totalSize", patientService.getAppliedPatientsOfDoctorSize(userId));
             session.setAttribute("patients",
                     patientService.getAppliedPatientsOfDoctor(userId, offset, Actions.PAGE_SIZE));
-            return WebResources.webResources.get("doctor.applicants");
+            return WebResources.get("doctor.applicants");
         }
 
         MedicService medicService = serviceFactory.getMedicService();
@@ -50,6 +50,6 @@ public class DoctorsApplicantsGetAction implements Action {
             session.setAttribute("therapyTypes", TherapyDTO.Type.values());
         }
 
-        return WebResources.webResources.get("doctor.applicants");
+        return WebResources.get("doctor.applicants");
     }
 }

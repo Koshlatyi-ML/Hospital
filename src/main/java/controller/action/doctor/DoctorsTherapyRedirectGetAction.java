@@ -24,7 +24,7 @@ public class DoctorsTherapyRedirectGetAction implements Action {
         long therapyId = Long.parseLong(request.getParameter("therapyId"));
         TherapyService therapyService = serviceFactory.getTherapyService();
         therapyService.changePerformer(therapyId, medicId);
-        Actions.redirectToPage(response, WebPaths.webPaths.get("doctor.therapies"));
+        Actions.redirectToPage(response, WebPaths.get("doctor.therapies"));
         return null;
     }
 }

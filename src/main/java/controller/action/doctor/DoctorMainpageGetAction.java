@@ -17,6 +17,6 @@ public class DoctorMainpageGetAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return WebResources.webResources.get("doctor.main");
+        return WebResources.get("doctor.main");
     }
 }

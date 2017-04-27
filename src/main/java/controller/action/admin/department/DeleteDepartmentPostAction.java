@@ -22,7 +22,7 @@ public class DeleteDepartmentPostAction implements Action {
         String departmentId = request.getParameter("departmentId");
         DepartmentService service = serviceFactory.getDepartmentService();
         service.delete(Integer.parseInt(departmentId));
-        Actions.redirectToPage(response, WebPaths.webPaths.get("admin.department.change"));
+        Actions.redirectToPage(response, WebPaths.get("admin.department.change"));
         return null;
     }
 }

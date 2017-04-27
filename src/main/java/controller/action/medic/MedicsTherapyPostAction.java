@@ -22,7 +22,7 @@ public class MedicsTherapyPostAction implements Action {
         long therapyId = Long.parseLong(request.getParameter("therapyId"));
         TherapyService service = serviceFactory.getTherapyService();
         service.performTherapy(therapyId);
-        Actions.redirectToPage(response, WebPaths.webPaths.get("medic.main"));
+        Actions.redirectToPage(response, WebPaths.get("medic.main"));
         return null;
     }
 }

@@ -29,18 +29,18 @@ public class DoctorsTherapiesPostAction implements Action {
         String diagnosis = request.getParameter("diagnosis");
         if (diagnosis == null) {
             performTherapy(therapyId);
-            Actions.redirectToPage(response, WebPaths.webPaths.get("doctor.therapies"));
+            Actions.redirectToPage(response, WebPaths.get("doctor.therapies"));
             return null;
         }
 
         if (!Validations.isValidTitle(diagnosis)) {
             setInvalidDiagnosisMesage(request);
-            Actions.redirectToPage(response, WebPaths.webPaths.get("doctor.therapies"));
+            Actions.redirectToPage(response, WebPaths.get("doctor.therapies"));
             return null;
         }
 
         dischargePatient(therapyId, diagnosis);
-        Actions.redirectToPage(response, WebPaths.webPaths.get("doctor.therapies"));
+        Actions.redirectToPage(response, WebPaths.get("doctor.therapies"));
         return null;
     }
 

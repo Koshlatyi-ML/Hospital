@@ -34,7 +34,7 @@ public class DoctorsApplicantsPostAction implements Action {
         if (dto == null ||!checkPerformerId(request, dto)) {
             session.setAttribute("failedTherapySubmitting", "yes");
             Actions.redirectToPage(response,
-                    WebPaths.webPaths.get("doctor.applicants") + "?" + request.getQueryString());
+                    WebPaths.get("doctor.applicants") + "?" + request.getQueryString());
             return null;
         }
 
@@ -42,7 +42,7 @@ public class DoctorsApplicantsPostAction implements Action {
         PatientService service = serviceFactory.getPatientService();
         service.prescribeTherapy(patientId, dto);
 
-        Actions.redirectToPage(response, WebPaths.webPaths.get("doctor.applicants"));
+        Actions.redirectToPage(response, WebPaths.get("doctor.applicants"));
         return null;
     }
 
@@ -59,7 +59,7 @@ public class DoctorsApplicantsPostAction implements Action {
 
         String description = request.getParameter("therapyDescription");
         if (!Validations.isValidText(description)) {
-            Actions.redirectToPage(response, WebPaths.webPaths.get("doctor.applicants"));
+            Actions.redirectToPage(response, WebPaths.get("doctor.applicants"));
             return null;
         }
 

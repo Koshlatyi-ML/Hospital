@@ -24,6 +24,6 @@ public class LoginGetAction implements Action {
         }
 
         session.removeAttribute("failedLogin");
-        return WebResources.webResources.get("login");
+        return WebResources.get("login");
     }
 }

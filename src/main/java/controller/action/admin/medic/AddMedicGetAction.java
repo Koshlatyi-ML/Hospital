@@ -20,6 +20,6 @@ public class AddMedicGetAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         MedicRegistrations.prepareRegistrationGetAction(request);
         StuffRegistrations.loadDepartmentsAttribute(request);
-        return WebResources.webResources.get("admin.medic.add");
+        return WebResources.get("admin.medic.add");
     }
 }

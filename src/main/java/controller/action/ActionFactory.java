@@ -6,6 +6,7 @@ import controller.action.admin.doctor.AddDoctorGetAction;
 import controller.action.admin.doctor.AddDoctorPostAction;
 import controller.action.admin.medic.AddMedicGetAction;
 import controller.action.admin.medic.AddMedicPostAction;
+import controller.action.authorization.HomeGetAction;
 import controller.action.authorization.LogOutAction;
 import controller.action.authorization.LoginGetAction;
 import controller.action.authorization.LoginPostAction;
@@ -14,13 +15,14 @@ import controller.action.medic.MedicMainpageGetAction;
 import controller.action.medic.MedicsTherapyPostAction;
 import controller.action.patient.ChooseDoctorPostAction;
 import controller.action.patient.PatientMainpageGetAction;
+import controller.action.proxy.LocalizationActionProxy;
+import controller.action.proxy.RoleSecurityProxy;
 import controller.action.registration.*;
 import service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class ActionFactory {
 
@@ -30,7 +32,7 @@ public class ActionFactory {
     private ActionFactory() {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         actionMap = new HashMap<>();
-        actionMap.put("GET/", new LoginGetAction(serviceFactory));
+        actionMap.put("GET/home", new HomeGetAction(serviceFactory));
         actionMap.put("GET/login", new LoginGetAction(serviceFactory));
         actionMap.put("POST/login", new LoginPostAction(serviceFactory));
         actionMap.put("POST/logout", new LogOutAction(serviceFactory));
@@ -62,8 +64,12 @@ public class ActionFactory {
         return INSTANCE;
     }
 
-    public Optional<Action> getAction(HttpServletRequest request) {
+    private Action getActionProxy(Action action) {
+        return new RoleSecurityProxy(new LocalizationActionProxy(action));
+    }
+
+    public Action getAction(HttpServletRequest request) {
         String path = request.getRequestURI().substring(request.getContextPath().length());
-        return Optional.ofNullable(actionMap.get(request.getMethod() + path));
+        return getActionProxy(actionMap.get(request.getMethod() + path));
     }
 }

@@ -17,6 +17,6 @@ public class AdminMainpageGetAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return WebResources.webResources.get("admin.main");
+        return WebResources.get("admin.main");
     }
 }

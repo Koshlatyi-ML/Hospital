@@ -24,7 +24,7 @@ public class ChooseDoctorPostAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String complaints = request.getParameter("complaints");
         if (!Validations.isValidText(complaints)) {
-            Actions.redirectToPage(response, WebPaths.webPaths.get("patient.main"));
+            Actions.redirectToPage(response, WebPaths.get("patient.main"));
             return null;
         }
 
@@ -38,7 +38,7 @@ public class ChooseDoctorPostAction implements Action {
 
         serviceFactory.getPatientService().applyToDoctor(user, dto);
 
-        Actions.redirectToPage(response, WebPaths.webPaths.get("patient.main"));
+        Actions.redirectToPage(response, WebPaths.get("patient.main"));
         return null;
     }
 }

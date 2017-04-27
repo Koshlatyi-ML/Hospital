@@ -20,6 +20,6 @@ public class RegistrationGetAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         StuffRegistrations.loadDepartmentsAttribute(request);
         PatientRegistrations.prepareRegistrationGetAction(request);
-        return WebResources.webResources.get("registration");
+        return WebResources.get("registration");
     }
 }

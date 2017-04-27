@@ -28,14 +28,14 @@ public class RegistrationPostAction implements Action {
         PatientRegistrationDTO dto = Registrations.fetchPatientRegistrationDTO(request);
         if (dto == null) {
             session.setAttribute("failedRegistration", "yes");
-            Actions.redirectToPage(response, WebPaths.webPaths.get("registration"));
+            Actions.redirectToPage(response, WebPaths.get("registration"));
             return null;
         }
 
         session.setAttribute("logined", "yes");
         session.setAttribute("role", "Patient");
         session.setAttribute("user", serviceFactory.getPatientService().register(dto));
-        Actions.redirectToPage(response, WebPaths.webPaths.get("patient.main"));
+        Actions.redirectToPage(response, WebPaths.get("patient.main"));
         return null;
     }
 }

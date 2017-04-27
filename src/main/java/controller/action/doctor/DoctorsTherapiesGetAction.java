@@ -57,6 +57,6 @@ public class DoctorsTherapiesGetAction implements Action {
         session.setAttribute("medics", departmentMedics);
         session.setAttribute("totalSize", therapyService.getCurrentByDoctorIdCount(user.getId()));
 
-        return WebResources.webResources.get("doctor.therapies");
+        return WebResources.get("doctor.therapies");
     }
 }

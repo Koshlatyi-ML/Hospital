@@ -29,7 +29,7 @@ public class AddDepartmentPostAction implements Action {
         DepartmentService service = serviceFactory.getDepartmentService();
         String departmentName = request.getParameter("department-name");
         if (!Validations.isValidDepartmentName(departmentName)) {
-            Actions.redirectToPage(response, WebPaths.webPaths.get("admin.department.add"));
+            Actions.redirectToPage(response, WebPaths.get("admin.department.add"));
             return null;
         }
 
@@ -39,13 +39,13 @@ public class AddDepartmentPostAction implements Action {
 
         if (service.getByName(departmentName).isPresent()) {
             session.setAttribute("usedDepartmentNameMsg", bundle.getString("usedName"));
-            Actions.redirectToPage(response, WebPaths.webPaths.get("admin.department.add"));
+            Actions.redirectToPage(response, WebPaths.get("admin.department.add"));
             return null;
         }
 
         service.create(new DepartmentDTO.Builder().setName(departmentName).build());
         session.setAttribute("successfulAddDepartment", bundle.getString("success"));
-        Actions.redirectToPage(response, WebPaths.webPaths.get("admin.department.add"));
+        Actions.redirectToPage(response, WebPaths.get("admin.department.add"));
         return null;
     }
 }

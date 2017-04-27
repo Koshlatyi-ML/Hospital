@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -68,5 +69,18 @@ public class Actions {
         Object locale = request.getSession().getAttribute("language");
         ResourceBundle bundle = ResourceBundle.getBundle(baseName, parseLocaleAttribute(locale));
         return bundle.getString(key);
+    }
+
+    public static void forwardRequest(String url, HttpServletRequest request, HttpServletResponse response) {
+        if (url == null) {
+            return;
+        }
+
+        try {
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (ServletException | IOException e) {
+            LOG.log(Level.ERROR, "Can't forward request", e);
+            throw new ControllerException(e);
+        }
     }
 }

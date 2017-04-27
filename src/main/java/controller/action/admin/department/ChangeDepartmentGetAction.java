@@ -41,6 +41,6 @@ public class ChangeDepartmentGetAction implements Action {
             session.setAttribute("departmentName", name);
         }
 
-        return WebResources.webResources.get("admin.department.change");
+        return WebResources.get("admin.department.change");
     }
 }

@@ -18,7 +18,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/"><fmt:message key="home" bundle="${headerBundle}"/></a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/home"><fmt:message key="home" bundle="${headerBundle}"/></a>
         </div>
         <ul id="navbar" class="nav navbar-nav navbar-right">
             <li>

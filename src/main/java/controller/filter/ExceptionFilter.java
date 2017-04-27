@@ -25,7 +25,7 @@ public class ExceptionFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (Throwable e) {
             LOG.log(Level.ERROR, "Error during session", e);
-            servletRequest.getRequestDispatcher(WebResources.webResources.get("error"))
+            servletRequest.getRequestDispatcher(WebResources.get("error"))
                     .forward(servletRequest, servletResponse);
         }
     }
