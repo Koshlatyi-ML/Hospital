@@ -13,6 +13,6 @@ public class WebResources {
     }
 
     public static final List<String> allowedFilenameExtensions =
-            Arrays.asList(".css", ".js", ".js.map", ".png", ".ico",
+            Arrays.asList(".css", ".css.map", ".js", ".js.map", ".png", ".ico",
                     ".woff", ".woff2", "ttf", ".jpg");
 }

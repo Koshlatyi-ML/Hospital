@@ -28,11 +28,11 @@ public class ChangeDepartmentGetAction implements Action {
         session.setAttribute("departments",
                 service.getAll(offset, Actions.PAGE_SIZE));
 
-        if (session.getAttribute("submittedRenameDepartment") == null) {
+        if (session.getAttribute("submittedChangeDepartment") == null) {
             DepartmentActions.removeMsgAttributes(session);
         }
 
-        session.removeAttribute("submittedRenameDepartment");
+        session.removeAttribute("submittedChangeDepartment");
         String departmentIdParameter = request.getParameter("departmentId");
         if (departmentIdParameter != null) {
             String name = service.get(Long.parseLong(departmentIdParameter))

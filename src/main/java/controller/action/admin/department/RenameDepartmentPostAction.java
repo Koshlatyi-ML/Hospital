@@ -33,7 +33,7 @@ public class RenameDepartmentPostAction implements Action {
             return null;
         }
 
-        session.setAttribute("submittedRenameDepartment", "yes");
+        session.setAttribute("submittedChangeDepartment", "yes");
         ResourceBundle bundle = ResourceBundle.getBundle("i18n/admin/department",
                 Actions.parseLocaleAttribute(request.getSession().getAttribute("language")));
 

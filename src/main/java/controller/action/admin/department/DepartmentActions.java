@@ -9,5 +9,6 @@ class DepartmentActions {
     static void removeMsgAttributes(HttpSession session) {
         session.removeAttribute("successfulAddDepartment");
         session.removeAttribute("usedDepartmentNameMsg");
+        session.removeAttribute("notEmptyDepartmentMsg");
     }
 }

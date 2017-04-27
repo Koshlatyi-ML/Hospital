@@ -15,6 +15,7 @@ public class WebActions {
     }
 
     public static final List<String> publicActions = Arrays.asList(
+            bundle.getString("root.get"),
             bundle.getString("home.get"),
             bundle.getString("login.get"),
             bundle.getString("login.post"),

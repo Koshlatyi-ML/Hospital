@@ -13,7 +13,7 @@
     <form id="deparment-rename" class="form-horizontal"
           action="${pageContext.request.contextPath}/admin/change-department/rename" method="post">
         <div id="fail-Msg">
-            <c:out value="${sessionScope.usedDepartmentNameMsg}"/>
+            <c:out value="${sessionScope.notEmptyDepartmentMsg}"/>
         </div>
         <input name="departmentId" value="${param.departmentId}" type="hidden">
         <div class="form-group">
@@ -35,6 +35,9 @@
     </form>
 </c:if>
 <div class="list-group">
+    <div class="fail">
+        <c:out value="${sessionScope.notEmptyDepartmentMsg}"/>
+    </div>
     <c:forEach items="${sessionScope.departments}" var="department">
         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">

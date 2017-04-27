@@ -81,6 +81,12 @@ ul {
     margin-bottom: 4px;
     margin-top: 10px;
 }
+.fail {
+    text-align: center;
+    color: red;
+    margin-bottom: 4px;
+    margin-top: 10px;
+}
 .changeDepartmentForm{
     margin-right: 5px;
     margin-bottom: 0;
