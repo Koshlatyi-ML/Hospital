@@ -25,8 +25,7 @@ public class ChangeDepartmentGetAction implements Action {
 
         DepartmentService service = serviceFactory.getDepartmentService();
         session.setAttribute("totalSize", service.getSize());
-        session.setAttribute("departments",
-                service.getAll(offset, Actions.PAGE_SIZE));
+        session.setAttribute("departments", service.getAll(offset, Actions.PAGE_SIZE));
 
         if (session.getAttribute("submittedChangeDepartment") == null) {
             DepartmentActions.removeMsgAttributes(session);

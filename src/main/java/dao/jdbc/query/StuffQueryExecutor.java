@@ -99,8 +99,32 @@ public abstract class StuffQueryExecutor<T extends AbstractStuffDTO> extends Que
         }
     }
 
+    public List<T> queryFindWithoutDepartmentId(Connection connection,
+                                                  int offset, int limit) throws SQLException {
+        try (PreparedStatement statement = connection
+                .prepareStatement(getQueries().getProperty("findWithoutDepartmentId"))) {
+
+            statement.setInt(1, offset);
+            statement.setInt(2, limit);
+            ResultSet resultSet = statement.executeQuery();
+            return getDtoRetriever().retrieveDtoList(resultSet);
+        }
+    }
+
+    public long queryFindWithoutDepartmentIdCount(Connection connection)
+            throws SQLException {
+
+        try (PreparedStatement statement = connection
+                .prepareStatement(getQueries().getProperty("findWithoutDepartmentIdCount"))) {
+
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getLong(1);
+        }
+    }
+
     public Optional<T> queryFindByLoginAndPassword(Connection connection, String login,
-                                                          String password) throws SQLException {
+                                                   String password) throws SQLException {
 
         try (PreparedStatement statement = connection
                 .prepareStatement(getQueries().getProperty("findByLoginAndPassword"))) {

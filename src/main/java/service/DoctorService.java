@@ -74,6 +74,14 @@ public class DoctorService extends AbstractCrudService<DoctorDTO>
         return daoManager.getDoctorDao().findByDepartmentIdCount(id);
     }
 
+    public List<DoctorDTO> getWithoutDepartmentId(int offset, int limit) {
+        return daoManager.getDoctorDao().findWithoutDepartmentId(offset, limit);
+    }
+
+    public long getWithoutDepartmentIdSize() {
+        return daoManager.getDoctorDao().findWithoutDepartmentIdSize();
+    }
+
     @Override
     CrudDAO<DoctorDTO> getDAO() {
         return daoManager.getDoctorDao();

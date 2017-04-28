@@ -2,8 +2,7 @@ package controller.action;
 
 import controller.action.admin.*;
 import controller.action.admin.department.*;
-import controller.action.admin.doctor.AddDoctorGetAction;
-import controller.action.admin.doctor.AddDoctorPostAction;
+import controller.action.admin.doctor.*;
 import controller.action.admin.medic.AddMedicGetAction;
 import controller.action.admin.medic.AddMedicPostAction;
 import controller.action.authorization.HomeGetAction;
@@ -45,6 +44,10 @@ public class ActionFactory {
         actionMap.put("POST/admin/change-department/delete", new DeleteDepartmentPostAction(serviceFactory));
         actionMap.put("POST/admin/change-department/rename", new RenameDepartmentPostAction(serviceFactory));
         actionMap.put("GET/admin/add-doctor", new AddDoctorGetAction(serviceFactory));
+        actionMap.put("POST/admin/add-doctor", new AddDoctorPostAction(serviceFactory));
+        actionMap.put("GET/admin/change-doctor", new ChangeDoctorGetAction(serviceFactory));
+        actionMap.put("POST/admin/change-doctor/move", new MoveDoctorPostAction(serviceFactory));
+        actionMap.put("POST/admin/change-doctor/retire", new RetireDoctorPostAction(serviceFactory));
         actionMap.put("POST/admin/add-doctor", new AddDoctorPostAction(serviceFactory));
         actionMap.put("GET/admin/add-medic", new AddMedicGetAction(serviceFactory));
         actionMap.put("POST/admin/add-medic", new AddMedicPostAction(serviceFactory));

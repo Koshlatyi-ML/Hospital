@@ -4,9 +4,11 @@ import domain.DoctorDTO;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 
 public class DoctorDtoValueSupplier implements StuffDtoValueSupplier<DoctorDTO> {
-    DoctorDtoValueSupplier() {}
+    DoctorDtoValueSupplier() {
+    }
 
     @Override
     public int supplyValues(PreparedStatement statement, DoctorDTO dto) throws SQLException {
@@ -19,7 +21,11 @@ public class DoctorDtoValueSupplier implements StuffDtoValueSupplier<DoctorDTO> 
     public int supplyStuffValues(PreparedStatement statement, DoctorDTO dto) throws SQLException {
         statement.setString(1, dto.getName());
         statement.setString(2, dto.getSurname());
-        statement.setLong(3, dto.getDepartmentId());
+        if (dto.getDepartmentId() == 0) {
+            statement.setNull(3, Types.INTEGER);
+        } else {
+            statement.setLong(3, dto.getDepartmentId());
+        }
         return 3;
     }
 }

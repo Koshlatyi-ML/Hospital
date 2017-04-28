@@ -47,7 +47,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="${pageContext.request.contextPath}/admin/change-doctor">
                     <fmt:message key="change" bundle="${adminHeaderBundle}"/>
                 </a>
             </li>

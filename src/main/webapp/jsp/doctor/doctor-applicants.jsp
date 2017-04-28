@@ -4,7 +4,7 @@
 </head>
 <body>
 <%@include file="main.jsp" %>
-<fmt:setBundle basename="/i18n/doctor" var="docBundle"/>
+<fmt:setBundle basename="/i18n/doctor" var="stuffBundle"/>
 <c:set var="patientId" value="${not empty param.patientId ? param.patientId : patientId}" scope="page"/>
 <c:set var="pageSize" value="5"/>
 <c:if test="${empty param.patientId and empty sessionScope.invalidInputMsg}">
@@ -20,7 +20,7 @@
                           action="${pageContext.request.contextPath}/doctor/applicants">
                         <input name="patientId" value="${patient.id}" type="hidden">
                         <button type="submit" id="prescribe" class="btn btn-primary mb-1">
-                            <fmt:message key="prescribe" bundle="${docBundle}"/>
+                            <fmt:message key="prescribe" bundle="${stuffBundle}"/>
                         </button>
                     </form>
                 </div>
@@ -89,7 +89,7 @@
             <div class="therapy-prescription">
                 <select name="performer">
                     <option value="${sessionScope.user.id}">
-                        <fmt:message key="self" bundle="${docBundle}"/>
+                        <fmt:message key="self" bundle="${stuffBundle}"/>
                     </option>
                     <c:forEach items="${sessionScope.medics}" var="medic">
                         <option value="${medic.id}">${medic.name} ${medic.surname}</option>

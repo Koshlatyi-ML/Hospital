@@ -91,7 +91,19 @@ ul {
     margin-right: 5px;
     margin-bottom: 0;
 }
+.moveBtn {
+    width: 100px;
+    height: 33px;
+    margin-left: 5px;
+}
+.retireBtn {
+    margin-left: 20px;
+    height: 33px;
+    width: 100px;
+}
+
 #changeDepartmentsWrapper,
+#changeDoctorWrapper,
 #chooseDoctorWrapper,
 #choosePatientWrapper{
     margin-top: 1%;
@@ -148,6 +160,10 @@ ul {
     border-right: 2px solid #101010;
     margin-left: 3%;
     margin-right: 5%;
+}
+.doctorDivider {
+    border-right: 2px solid #101010;
+    margin-left: 17px;
 }
 #redirect {
     margin-top: 8%;

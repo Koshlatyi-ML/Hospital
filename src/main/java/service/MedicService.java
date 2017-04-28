@@ -65,11 +65,19 @@ public class MedicService extends AbstractCrudService<MedicDTO>
     public List<MedicDTO> getByDepartmentId(long id, int offset, int limit) {
         return daoManager.getMedicDao().findByDepartmentId(id, offset, limit);
     }
+
     public long getByDepartmentIdSize(long id) {
         return daoManager.getMedicDao().findByDepartmentIdCount(id);
     }
 
 
+    public List<MedicDTO> getWithoutDepartmentId(int offset, int limit) {
+        return daoManager.getMedicDao().findWithoutDepartmentId(offset, limit);
+    }
+
+    public long getWithoutDepartmentIdSize() {
+        return daoManager.getMedicDao().findWithoutDepartmentIdSize();
+    }
 
     @Override
     CrudDAO<MedicDTO> getDAO() {

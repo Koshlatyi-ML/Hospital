@@ -35,6 +35,9 @@ public class WebActions {
                     add(bundle.getString("admin.change-department.rename.post"));
                     add(bundle.getString("admin.add-doctor.get"));
                     add(bundle.getString("admin.add-doctor.post"));
+                    add(bundle.getString("admin.change-doctor.get"));
+                    add(bundle.getString("admin.change-doctor.move.post"));
+                    add(bundle.getString("admin.change-doctor.retire.post"));
                     add(bundle.getString("admin.add-medic.get"));
                     add(bundle.getString("admin.add-medic.post"));
                     addAll(publicActions);

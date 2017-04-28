@@ -4,7 +4,7 @@
 </head>
 <body>
 <%@include file="main.jsp" %>
-<fmt:setBundle basename="/i18n/doctor" var="docBundle"/>
+<fmt:setBundle basename="/i18n/doctor" var="stuffBundle"/>
 <fmt:setBundle basename="/i18n/therapy" var="therapyBundle"/>
 <c:set var="pageSize" value="5"/>
 <c:out value="${sessionScope.invalidInputMsg}"/>
@@ -25,7 +25,7 @@
                               action="${pageContext.request.contextPath}/doctor/therapies">
                             <input name="therapyId" value="${therapy.id}" type="hidden">
                             <button type="submit" id="perform" class="btn btn-primary mb-1">
-                                <fmt:message key="perform" bundle="${docBundle}"/>
+                                <fmt:message key="perform" bundle="${stuffBundle}"/>
                             </button>
                         </form>
                     </div>
@@ -33,10 +33,10 @@
                         <form class="changeDepartmentForm form-horizontal" method="post"
                               action="${pageContext.request.contextPath}/doctor/therapies">
                             <input name="therapyId" value="${therapy.id}" type="hidden">
-                            <label class="diagnosis-label"><fmt:message key="diagnosis" bundle="${docBundle}"/></label>
+                            <label class="diagnosis-label"><fmt:message key="diagnosis" bundle="${stuffBundle}"/></label>
                             <input class="diagnosis-input" name="diagnosis" pattern="^[a-zA-Zа-яА-ЯёЁ -]{1,128}$" type="text">
                             <button type="submit" class="btn btn-primary mb-1 discharge">
-                                <fmt:message key="discharge" bundle="${docBundle}"/>
+                                <fmt:message key="discharge" bundle="${stuffBundle}"/>
                             </button>
                         </form>
                     </div>
@@ -53,7 +53,7 @@
                                 </c:forEach>
                             </select>
                             <button type="submit" id="redirect" class="btn btn-primary mb-1">
-                                <fmt:message key="redirect" bundle="${docBundle}"/>
+                                <fmt:message key="redirect" bundle="${stuffBundle}"/>
                             </button>
                         </form>
                     </div>
