@@ -58,7 +58,7 @@ public class ActionFactory {
         actionMap.put("POST/doctor/applicants", new DoctorsApplicantsPostAction(serviceFactory));
         actionMap.put("GET/doctor/therapies", new DoctorsTherapiesGetAction(serviceFactory));
         actionMap.put("POST/doctor/therapies", new DoctorsTherapiesPostAction(serviceFactory));
-        actionMap.put("POST/doctor/therapies/redirect", new DoctorsTherapyRedirectGetAction(serviceFactory));
+        actionMap.put("POST/doctor/therapies/redirect", new DoctorsTherapyRedirectPostAction(serviceFactory));
         actionMap.put("GET/medic", new MedicMainpageGetAction(serviceFactory));
         actionMap.put("POST/medic", new MedicsTherapyPostAction(serviceFactory));
         actionMap.put("GET/patient", new PatientMainpageGetAction(serviceFactory));

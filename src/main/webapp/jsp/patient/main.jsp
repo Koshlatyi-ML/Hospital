@@ -19,7 +19,7 @@
                         <form id="prescribe-form" method="get"
                               action="${pageContext.request.contextPath}/patient">
                             <input name="departmentId" value="${medic.id}" type="hidden">
-                            <button class="mb-1">
+                            <button class="mb-1 select-department">
                                 <fmt:message key="choose.department" bundle="${patientBundle}"/>
                             </button>
                         </form>

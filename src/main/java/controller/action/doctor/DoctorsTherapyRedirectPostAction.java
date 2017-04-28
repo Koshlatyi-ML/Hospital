@@ -9,12 +9,11 @@ import service.TherapyService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DoctorsTherapyRedirectGetAction implements Action {
+public class DoctorsTherapyRedirectPostAction implements Action {
 
     private ServiceFactory serviceFactory;
 
-
-    public DoctorsTherapyRedirectGetAction(ServiceFactory serviceFactory) {
+    public DoctorsTherapyRedirectPostAction(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
     }
 

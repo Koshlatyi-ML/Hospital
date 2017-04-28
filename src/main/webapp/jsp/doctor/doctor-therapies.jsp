@@ -29,7 +29,7 @@
                             </button>
                         </form>
                     </div>
-                    <div class="col-sm-4">
+             <%--       <div class="col-sm-4">
                         <form class="changeDepartmentForm form-horizontal" method="post"
                               action="${pageContext.request.contextPath}/doctor/therapies">
                             <input name="therapyId" value="${therapy.id}" type="hidden">
@@ -39,10 +39,10 @@
                                 <fmt:message key="discharge" bundle="${stuffBundle}"/>
                             </button>
                         </form>
-                    </div>
+                    </div>--%>
                 </div>
                 <c:if test="${therapy.type ne 'SURGERY_OPERATION'}">
-                    <div id="divider"></div>
+                    <div id="therapy-bttn"></div>
                     <div class="col-sm-4" id="redirect-div">
                         <form class="changeDepartmentForm" method="post"
                               action="${pageContext.request.contextPath}/doctor/therapies/redirect">

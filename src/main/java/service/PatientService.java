@@ -109,19 +109,20 @@ public class PatientService extends AbstractCrudService<PatientDTO>
         therapyDao.create(therapyDTO);
         PatientDTO patientDTO = patientDao.find(patientId).orElseThrow(IllegalArgumentException::new);
         patientDTO.setState(PatientDTO.State.TREATED);
+        patientDTO.setDiagnosis(null);
         patientDao.update(patientDTO);
         daoManager.finishTransaction();
     }
 
-    public void discharge(long therapyId, String diagnosis) {
-        TherapyDAO therapyDAO = daoManager.getTherapyDao();
+    public void discharge(long patientId, String diagnosis) {
+//        TherapyDAO therapyDAO = daoManager.getTherapyDao();
         PatientDAO patientDAO = daoManager.getPatientDao();
 
-        TherapyDTO therapyDTO =
-                therapyDAO.find(therapyId).orElseThrow(IllegalArgumentException::new);
-        therapyDTO.setCompletionDateTime(Timestamp.from(Instant.now()));
+//        TherapyDTO therapyDTO =
+//                therapyDAO.find(therapyId).orElseThrow(IllegalArgumentException::new);
+//        therapyDTO.setCompletionDateTime(Timestamp.from(Instant.now()));
 
-        long patientId = therapyDTO.getPatientId();
+//        long patientId = therapyDTO.getPatientId();
         PatientDTO patientDTO =
                 patientDAO.find(patientId).orElseThrow(IllegalStateException::new);
 
@@ -130,10 +131,10 @@ public class PatientService extends AbstractCrudService<PatientDTO>
         patientDTO.setDoctorId(0);
         patientDTO.setComplaints(null);
 
-        daoManager.beginTransaction();
-        therapyDAO.update(therapyDTO);
+//        daoManager.beginTransaction();
+//        therapyDAO.update(therapyDTO);
         patientDAO.update(patientDTO);
-        daoManager.finishTransaction();
+//        daoManager.finishTransaction();
     }
     @Override
     CrudDAO<PatientDTO> getDAO() {

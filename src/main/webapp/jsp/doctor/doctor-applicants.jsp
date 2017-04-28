@@ -19,10 +19,24 @@
                     <form class="changeDepartmentForm" method="get"
                           action="${pageContext.request.contextPath}/doctor/applicants">
                         <input name="patientId" value="${patient.id}" type="hidden">
-                        <button type="submit" id="prescribe" class="btn btn-primary mb-1">
+                        <button type="submit" id="prescribe" class="btn btn-primary mb-1 therapy-btn">
                             <fmt:message key="prescribe" bundle="${stuffBundle}"/>
                         </button>
                     </form>
+                    <c:if test="${empty patient.diagnosis}">
+                        <div class="divider"></div>
+                        <div class="col-sm-4">
+                            <form class="changeDepartmentForm form-horizontal" method="post"
+                                  action="${pageContext.request.contextPath}/doctor/therapies">
+                                <input name="patientId" value="${patient.id}" type="hidden">
+                                <label class="diagnosis-label"><fmt:message key="diagnosis" bundle="${stuffBundle}"/></label>
+                                <input class="diagnosis-input" name="diagnosis" pattern="^[a-zA-Zа-яА-ЯёЁ -]{1,128}$" type="text">
+                                <button type="submit" class="btn btn-primary mb-1 discharge">
+                                    <fmt:message key="discharge" bundle="${stuffBundle}"/>
+                                </button>
+                            </form>
+                        </div>
+                    </c:if>
                 </div>
             </a>
         </c:forEach>

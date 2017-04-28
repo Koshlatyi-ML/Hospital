@@ -162,7 +162,8 @@ ul {
 }
 #prescribe {
     margin-left: 20px;
-    margin-top: 90px;
+    margin-top: 118px;
+    margin-right: 20px;
 }
 #divider {
     border-right: 2px solid #101010;
@@ -185,7 +186,7 @@ ul {
     margin-top: 40px;
 }
 #redirect-div{
-    padding-top:7%;
+    padding-top:12%;
 }
 #doctorActionsDiv{
     display: inline-flex;
@@ -210,4 +211,15 @@ ul {
 }
 .medic-form {
     margin-top: -150px;
+}
+.select-department {
+    margin-bottom: 10px;
+}
+.therapy-btn {
+    margin-top: 118px;
+}
+#therapy-bttn {
+    border-right: 2px solid slategray;
+    width: 40px;
+    margin-right: 20px;
 }

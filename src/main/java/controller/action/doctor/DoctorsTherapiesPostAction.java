@@ -25,10 +25,10 @@ public class DoctorsTherapiesPostAction implements Action {
         HttpSession session = request.getSession();
         session.removeAttribute("invalidInputMsg");
 
-        long therapyId = Long.parseLong(request.getParameter("therapyId"));
         String diagnosis = request.getParameter("diagnosis");
         if (diagnosis == null) {
-            performTherapy(therapyId);
+//            long therapyId = Long.parseLong(request.getParameter("therapyId"));
+            performTherapy(Long.parseLong(request.getParameter("therapyId")));
             Actions.redirectToPage(response, WebPaths.get("doctor.therapies"));
             return null;
         }
@@ -39,7 +39,8 @@ public class DoctorsTherapiesPostAction implements Action {
             return null;
         }
 
-        dischargePatient(therapyId, diagnosis);
+        long patientId = Long.parseLong(request.getParameter("patientId"));
+        dischargePatient(patientId, diagnosis);
         Actions.redirectToPage(response, WebPaths.get("doctor.therapies"));
         return null;
     }
@@ -56,7 +57,7 @@ public class DoctorsTherapiesPostAction implements Action {
     }
 
     private void dischargePatient(long therapyId, String diagnosis) {
-         PatientService service = serviceFactory.getPatientService();
+        PatientService service = serviceFactory.getPatientService();
         service.discharge(therapyId, diagnosis);
     }
 }
