@@ -1,12 +1,12 @@
-package controller.action.admin.doctor;
+package controller.action.admin.medic;
 
 import controller.action.Action;
 import controller.action.Actions;
 import controller.constants.WebResources;
 import domain.DepartmentDTO;
-import domain.DoctorDTO;
 import service.DepartmentService;
 import service.DoctorService;
+import service.MedicService;
 import service.ServiceFactory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-public class ChangeDoctorGetAction implements Action {
+public class ChangeMedicGetAction implements Action {
 
     private ServiceFactory serviceFactory;
 
-    public ChangeDoctorGetAction(ServiceFactory serviceFactory) {
+    public ChangeMedicGetAction(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
     }
 
@@ -28,11 +28,11 @@ public class ChangeDoctorGetAction implements Action {
 
         if (departmentId == null) {
             chooseDepartment(request);
-            return WebResources.get("admin.doctor.change");
+            return WebResources.get("admin.medic.change");
         }
 
-        chooseDoctor(request, Long.parseLong(departmentId));
-        return WebResources.get("admin.doctor.change");
+        chooseMedic(request, Long.parseLong(departmentId));
+        return WebResources.get("admin.medic.change");
     }
 
     private void chooseDepartment(HttpServletRequest request) {
@@ -52,7 +52,7 @@ public class ChangeDoctorGetAction implements Action {
         session.setAttribute("departments", allDepartments);
     }
 
-    private void chooseDoctor(HttpServletRequest request, long departmentId) {
+    private void chooseMedic(HttpServletRequest request, long departmentId) {
         HttpSession session = request.getSession();
         int offset = Actions.paginateRequset(request);
 
@@ -60,17 +60,17 @@ public class ChangeDoctorGetAction implements Action {
         session.setAttribute("departments",
                 departmentService.getAll(0, (int) departmentService.getSize()));
 
-        DoctorService doctorService = serviceFactory.getDoctorService();
+        MedicService medicService = serviceFactory.getMedicService();
 
         if (departmentId == -1) {
-            session.setAttribute("doctors",
-                    doctorService.getWithoutDepartmentId(offset, Actions.PAGE_SIZE));
-            session.setAttribute("totalDoctorSize", doctorService.getWithoutDepartmentIdSize());
+            session.setAttribute("medics",
+                    medicService.getWithoutDepartmentId(offset, Actions.PAGE_SIZE));
+            session.setAttribute("totalMedicSize", medicService.getWithoutDepartmentIdSize());
             return;
         }
 
-        session.setAttribute("doctors",
-                doctorService.getByDepartmentId(departmentId, offset, Actions.PAGE_SIZE));
-        session.setAttribute("totalDoctorSize", doctorService.getByDepartmentIdSize(departmentId));
+        session.setAttribute("medics",
+                medicService.getByDepartmentId(departmentId, offset, Actions.PAGE_SIZE));
+        session.setAttribute("totalMedicSize", medicService.getByDepartmentIdSize(departmentId  ));
     }
 }

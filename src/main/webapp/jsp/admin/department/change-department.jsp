@@ -38,22 +38,22 @@
     <div class="fail">
         <c:out value="${sessionScope.notEmptyDepartmentMsg}"/>
     </div>
-    <c:forEach items="${sessionScope.departments}" var="doctor">
+    <c:forEach items="${sessionScope.departments}" var="medic">
         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
-                <h2 class="mb-1">${doctor.name}</h2>
+                <h2 class="mb-1">${medic.name}</h2>
             </div>
             <div id="changeDepartmentsWrapper">
                 <form class="changeDepartmentForm" method="get"
                       action="${pageContext.request.contextPath}/admin/change-department">
-                    <input name="departmentId" value="${doctor.id}" type="hidden">
+                    <input name="departmentId" value="${medic.id}" type="hidden">
                     <button class="mb-1"><fmt:message key="rename" bundle="${departmentBundle}"/></button>
                 </form>
 
                 <form class="changeDepartmentForm" method="post"
                       action="${pageContext.request.contextPath}/admin/change-department/delete">
-                    <input name="departmentId" value="${doctor.id}" type="hidden">
-                    <input name="departmentName" value="${doctor.name}" type="hidden"/>
+                    <input name="departmentId" value="${medic.id}" type="hidden">
+                    <input name="departmentName" value="${medic.name}" type="hidden"/>
                     <button class="mb-1"><fmt:message key="remove" bundle="${departmentBundle}"/></button>
                 </form>
             </div>

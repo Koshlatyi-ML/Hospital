@@ -19,8 +19,8 @@
         </label>
         <div class="col-sm-8">
             <select name="departmentId" id="div5">
-                <c:forEach items="${sessionScope.departments}" var="doctor">
-                    <option value="${doctor.id}">${doctor.name}</option>
+                <c:forEach items="${sessionScope.departments}" var="medic">
+                    <option value="${medic.id}">${medic.name}</option>
                 </c:forEach>
             </select>
         </div>

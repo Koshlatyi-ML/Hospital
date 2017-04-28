@@ -10,15 +10,15 @@
 <c:if test="${sessionScope.user.state eq 'REGISTERED' or sessionScope.user.state eq 'DISCHARGED'}">
     <c:if test="${empty param.departmentId}">
         <div class="list-group">
-            <c:forEach items="${sessionScope.departments}" var="doctor">
+            <c:forEach items="${sessionScope.departments}" var="medic">
                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
-                        <h2 class="mb-1">${doctor.name}</h2>
+                        <h2 class="mb-1">${medic.name}</h2>
                     </div>
                     <div id="changeDepartmentsWrapper">
                         <form id="prescribe-form" method="get"
                               action="${pageContext.request.contextPath}/patient">
-                            <input name="departmentId" value="${doctor.id}" type="hidden">
+                            <input name="departmentId" value="${medic.id}" type="hidden">
                             <button class="mb-1">
                                 <fmt:message key="choose.department" bundle="${patientBundle}"/>
                             </button>
@@ -49,13 +49,13 @@
                 </div>
                 <c:set var="pageSize" value="5"/>
                 <div class="list-group">
-                    <c:forEach items="${sessionScope.doctors}" var="doctor">
+                    <c:forEach items="${sessionScope.doctors}" var="medic">
                     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                            <h2 class="mb-1">${doctor.name} ${doctor.surname}</h2>
+                            <h2 class="mb-1">${medic.name} ${medic.surname}</h2>
                         </div>
                         <div id="chooseDoctorWrapper">
-                            <button type="submit" name="doctorId" value="${doctor.id}" class="mb-1 apply-to-doctor" disabled>
+                            <button type="submit" name="doctorId" value="${medic.id}" class="mb-1 apply-to-doctor" disabled>
                                 <fmt:message key="choose.doctor" bundle="${patientBundle}"/>
                             </button>
                         </div>

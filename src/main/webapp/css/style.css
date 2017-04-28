@@ -92,14 +92,16 @@ ul {
     margin-bottom: 0;
 }
 .moveBtn {
-    width: 100px;
+    text-align: center;
+    min-width: 100px;
     height: 33px;
     margin-left: 5px;
 }
 .retireBtn {
+    text-align: center;
     margin-left: 20px;
     height: 33px;
-    width: 100px;
+    min-width: 100px;
 }
 
 #changeDepartmentsWrapper,
@@ -144,6 +146,12 @@ ul {
     font-size: 25px;
 }
 #empty-department {
+    margin-top: 15%;
+    text-align: center;
+    color: red;
+    font-size: 50px;
+}
+.empty-department {
     margin-top: 15%;
     text-align: center;
     color: red;
