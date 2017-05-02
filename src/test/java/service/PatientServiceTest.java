@@ -226,33 +226,19 @@ public class PatientServiceTest {
     public void discharge() throws Exception {
         DaoManager daoManagerMock = new TestJdbcDaoManager();
         PatientService patientService = new PatientService(daoManagerMock);
-        TherapyService therapyService = new TherapyService(daoManagerMock);
 
         String diagnosis = "diagnosis";
-        TherapyDTO therapyDTO =
-                new TherapyDTO.Builder()
-                .setTitle("Title")
-                .setAppointmentDateTime(Timestamp.from(Instant.now()))
-                .setDescription("description")
-                .setPatientId(7)
-                .setPerformerId(54)
-                .setType(TherapyDTO.Type.SURGERY_OPERATION)
-                .build();
-        therapyService.create(therapyDTO);
 
-        patientService.discharge(therapyDTO.getId(), diagnosis);
-        PatientDTO patientDTO = patientService.get(therapyDTO.getPatientId()).get();
+        patientService.discharge(7, diagnosis);
+        PatientDTO patientDTO = patientService.get(7).get();
 
         assertEquals(diagnosis, patientDTO.getDiagnosis());
-        assertNotNull(therapyService.get(therapyDTO.getId()).get().getCompletionDateTime());
 
         patientDTO.setDoctorId(54);
         patientDTO.setComplaints("Complaints2");
         patientDTO.setState(PatientDTO.State.TREATED);
         patientDTO.setDiagnosis(null);
         patientService.update(patientDTO);
-
-        therapyService.delete(therapyDTO.getId());
     }
 
     @Test

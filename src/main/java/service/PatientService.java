@@ -70,6 +70,7 @@ public class PatientService extends AbstractCrudService<PatientDTO>
         patient.setDoctorId(dto.getDoctorId());
         patient.setComplaints(dto.getComplaints());
         patient.setState(PatientDTO.State.APPLIED);
+        patient.setDiagnosis("");
         daoManager.getPatientDao().update(patient);
     }
 
