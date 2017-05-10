@@ -35,7 +35,7 @@ SET search_path = public, pg_catalog;
 
 CREATE FUNCTION check_compliants_logic(state character varying, complaints character varying) RETURNS boolean
     LANGUAGE sql
-    AS $_$SELECT $1 = 'REGISTERED' OR $2 IS NOT NULL$_$;
+    AS $_$SELECT $1 IN ('REGISTERED','DISCHARGED') OR $2 IS NOT NULL$_$;
 
 
 ALTER FUNCTION public.check_compliants_logic(state character varying, complaints character varying) OWNER TO postgres_user;
@@ -226,7 +226,7 @@ CREATE TABLE stuff (
     id integer NOT NULL,
     name character varying(255) NOT NULL,
     surname character varying(255) NOT NULL,
-    department_id integer NOT NULL
+    department_id integer
 );
 
 
@@ -268,8 +268,7 @@ CREATE TABLE therapies (
     performer_id integer NOT NULL,
     CONSTRAINT check_complete_date CHECK ((completion_date > appointment_date)),
     CONSTRAINT check_is_valid_type CHECK (valid_type(type)),
-    CONSTRAINT check_performer_permissions CHECK (check_performer_permissions(performer_id, type)),
-    CONSTRAINT check_valid_appintment_date CHECK ((appointment_date > (now() - '00:01:00'::interval)))
+    CONSTRAINT check_performer_permissions CHECK (check_performer_permissions(performer_id, type))
 );
 
 
@@ -330,7 +329,6 @@ COPY credentials (id, login, password) FROM stdin;
 4	eee	rrr
 5	123	123
 6	gthfghrt	sedfdg
-7	Nikolay	password
 8	azazaz	zazazazaz
 9	tyuio	vbn
 10	dfbdb	vdfdfs
@@ -344,7 +342,8 @@ COPY credentials (id, login, password) FROM stdin;
 18	ppol	6666
 19	pppopds	90098
 20	mamama	omomo
-21	doctorLoginSample	doctorPasswordSample
+1286	freeLOgin	freePassword
+7	Nikolay	password
 \.
 
 
@@ -352,7 +351,7 @@ COPY credentials (id, login, password) FROM stdin;
 -- Name: credentials_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('credentials_id_seq', 1166, true);
+SELECT pg_catalog.setval('credentials_id_seq', 1758, true);
 
 
 --
@@ -360,10 +359,10 @@ SELECT pg_catalog.setval('credentials_id_seq', 1166, true);
 --
 
 COPY departments (id, name) FROM stdin;
-95	department1
 96	department2
 97	department3
 98	department4
+95	department1
 \.
 
 
@@ -371,7 +370,7 @@ COPY departments (id, name) FROM stdin;
 -- Name: departments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('departments_id_seq', 1335, true);
+SELECT pg_catalog.setval('departments_id_seq', 1535, true);
 
 
 --
@@ -379,7 +378,6 @@ SELECT pg_catalog.setval('departments_id_seq', 1335, true);
 --
 
 COPY doctors (stuff_id, credentials_id) FROM stdin;
-54	1
 55	2
 56	3
 57	4
@@ -387,6 +385,7 @@ COPY doctors (stuff_id, credentials_id) FROM stdin;
 59	6
 60	7
 61	8
+54	1
 \.
 
 
@@ -395,7 +394,6 @@ COPY doctors (stuff_id, credentials_id) FROM stdin;
 --
 
 COPY medics (stuff_id, credentials_id) FROM stdin;
-62	9
 63	10
 64	11
 65	12
@@ -403,6 +401,7 @@ COPY medics (stuff_id, credentials_id) FROM stdin;
 67	14
 68	15
 69	16
+62	9
 \.
 
 
@@ -411,10 +410,10 @@ COPY medics (stuff_id, credentials_id) FROM stdin;
 --
 
 COPY patients (id, name, surname, doctor_id, complaints, diagnosis, state, credentials_id) FROM stdin;
-8	PatientName3	PatientSurname3	\N	Complaints3	Diagnosis3	DISCHARGED	19
-6	PatientName1	PatientSurname1	54	Complaints1	Diagnosis1	APPLIED	17
 7	PatientName2	PatientSurname2	54	Complaints2	\N	TREATED	18
-12	PatientName4	PatientSurname4	55	Complaints4	Diagnosis4	APPLIED	20
+12	PatientName4	PatientSurname4	55	Complaints4	\N	APPLIED	20
+6	PatientName1	PatientSurname1	54	Complaints1	Diagnosis1	APPLIED	17
+8	PatientName3	PatientSurname3	\N	\N		DISCHARGED	19
 \.
 
 
@@ -422,7 +421,7 @@ COPY patients (id, name, surname, doctor_id, complaints, diagnosis, state, crede
 -- Name: patients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('patients_id_seq', 1264, true);
+SELECT pg_catalog.setval('patients_id_seq', 1489, true);
 
 
 --
@@ -430,10 +429,6 @@ SELECT pg_catalog.setval('patients_id_seq', 1264, true);
 --
 
 COPY stuff (id, name, surname, department_id) FROM stdin;
-1235	name	surname	95
-1236	name	surname	95
-1237	name	surname	95
-54	DoctorName1	DoctorSurname1	95
 55	DoctorName2	DoctorSurname2	96
 56	DoctorName3	DoctorSurname3	97
 57	DoctorName4	DoctorSurname4	98
@@ -448,11 +443,8 @@ COPY stuff (id, name, surname, department_id) FROM stdin;
 68	MedicName7	MedicSurname7	97
 69	MedicName8	MedicSurname8	98
 61	DoctorName8	DoctorSurname8	98
-1241	name	surname	95
-1242	name	surname	95
-1243	name	surname	95
-1698	name	surname	95
 62	MedicName1	MedicSurname1	95
+54	DoctorName1	DoctorSurname1	95
 \.
 
 
@@ -460,7 +452,7 @@ COPY stuff (id, name, surname, department_id) FROM stdin;
 -- Name: stuff_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('stuff_id_seq', 2514, true);
+SELECT pg_catalog.setval('stuff_id_seq', 3013, true);
 
 
 --
@@ -471,11 +463,11 @@ COPY therapies (id, title, type, description, appointment_date, completion_date,
 17	Title3	SURGERY_OPERATION	Descroption3	2018-05-01 00:01:01	\N	6	57
 11	Title1	SURGERY_OPERATION	Description1	2017-04-15 16:55:00	2017-04-16 16:00:00	6	55
 45	T8	PHYSIOTHERAPY	d8	2020-01-06 00:00:01	\N	8	69
-14	Title2	SURGERY_OPERATION	Description2	2017-04-15 16:55:00	\N	6	54
 20	Title4	PHYSIOTHERAPY	Description4	2017-04-15 16:55:00	2017-04-16 16:52:00	8	69
 23	Title5	PHARMACOTHERAPY	Description5	2017-04-15 16:55:00	2017-04-15 16:59:00	8	68
 29	Title7	PHYSIOTHERAPY	d7	2017-04-15 16:55:01	\N	6	68
 28	Title6	SURGERY_OPERATION	d6	2017-04-15 16:55:01	\N	7	55
+14	Title2	SURGERY_OPERATION	Description2	2017-04-15 16:55:00	\N	6	54
 \.
 
 
@@ -483,7 +475,7 @@ COPY therapies (id, title, type, description, appointment_date, completion_date,
 -- Name: therapies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('therapies_id_seq', 862, true);
+SELECT pg_catalog.setval('therapies_id_seq', 1042, true);
 
 
 --

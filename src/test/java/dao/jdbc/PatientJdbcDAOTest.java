@@ -56,7 +56,7 @@ public class PatientJdbcDAOTest {
                 .setName("PatientName3")
                 .setSurname("PatientSurname3")
                 .setDoctorId(0)
-                .setDiagnosis("Diagnosis3")
+                .setDiagnosis("")
                 .setState(PatientDTO.State.DISCHARGED)
                 .setCredentialsId(19)
                 .build();

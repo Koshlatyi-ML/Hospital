@@ -226,7 +226,7 @@ CREATE TABLE stuff (
     id integer NOT NULL,
     name character varying(255) NOT NULL,
     surname character varying(255) NOT NULL,
-    department_id integer NOT NULL
+    department_id integer
 );
 
 
@@ -268,8 +268,7 @@ CREATE TABLE therapies (
     performer_id integer NOT NULL,
     CONSTRAINT check_complete_date CHECK ((completion_date > appointment_date)),
     CONSTRAINT check_is_valid_type CHECK (valid_type(type)),
-    CONSTRAINT check_performer_permissions CHECK (check_performer_permissions(performer_id, type)),
-    CONSTRAINT check_valid_appintment_date CHECK (((completion_date > appointment_date) OR (completion_date IS NULL)))
+    CONSTRAINT check_performer_permissions CHECK (check_performer_permissions(performer_id, type))
 );
 
 
@@ -346,6 +345,9 @@ COPY credentials (id, login, password) FROM stdin;
 32	superlogin	Epam1234
 33	qwerty12345	Qwerty1234
 37	MykolaKoshlatyi96	MykolaKoshlatyi96
+38	LoginSample	LoginSample1
+39	cxfbdfxbdxbdxdfbvx	DocGVHvbH124
+40	vladikNikolaev	vladikNikolaev123
 \.
 
 
@@ -353,7 +355,7 @@ COPY credentials (id, login, password) FROM stdin;
 -- Name: credentials_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('credentials_id_seq', 37, true);
+SELECT pg_catalog.setval('credentials_id_seq', 40, true);
 
 
 --
@@ -374,7 +376,7 @@ COPY departments (id, name) FROM stdin;
 -- Name: departments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('departments_id_seq', 17, true);
+SELECT pg_catalog.setval('departments_id_seq', 18, true);
 
 
 --
@@ -387,7 +389,6 @@ COPY doctors (stuff_id, credentials_id) FROM stdin;
 3	5
 4	6
 6	15
-7	16
 8	17
 9	18
 10	21
@@ -395,6 +396,8 @@ COPY doctors (stuff_id, credentials_id) FROM stdin;
 12	24
 13	25
 14	26
+19	39
+7	16
 \.
 
 
@@ -404,10 +407,10 @@ COPY doctors (stuff_id, credentials_id) FROM stdin;
 
 COPY medics (stuff_id, credentials_id) FROM stdin;
 5	10
-15	27
 16	28
-17	32
+15	27
 18	33
+17	32
 \.
 
 
@@ -418,7 +421,9 @@ COPY medics (stuff_id, credentials_id) FROM stdin;
 COPY patients (id, name, surname, doctor_id, complaints, diagnosis, state, credentials_id) FROM stdin;
 12	nhb	kjknj	\N	\N	\N	REGISTERED	20
 11	Микола	Вересень	\N	\N	\N	REGISTERED	19
-13	Николай	Леоненко	\N	\N	Инфаркт	DISCHARGED	31
+17	Владик	Николаев	1	Rigid pain in stomach.	\N	APPLIED	40
+13	Николай	Леоненко	\N	\N	DIAGNOSIS	DISCHARGED	31
+16	Имя	Фамилия	1	complications	DIAGNOSIS	APPLIED	38
 10	a	b	6	Кашель, боль в горле.	\N	APPLIED	14
 15	Николай	Кошлатый-Михно	\N	\N	Воспаление хитрости	DISCHARGED	37
 \.
@@ -428,7 +433,7 @@ COPY patients (id, name, surname, doctor_id, complaints, diagnosis, state, crede
 -- Name: patients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('patients_id_seq', 15, true);
+SELECT pg_catalog.setval('patients_id_seq', 17, true);
 
 
 --
@@ -439,14 +444,10 @@ COPY stuff (id, name, surname, department_id) FROM stdin;
 1	Gregory	House	3
 2	Mykola	Koshlatyi	5
 6	Николай	Кошлатый	3
-7	Omar	Epps	2
 11	Ольга	Кононенко	3
 12	Виктория	Прусик	3
 13	Екатерина	Онегина	3
-15	Ольга	Майстренко	3
 16	Елена	Пирогова	3
-17	Елена	Егорова	17
-18	Олег	Борисенко	4
 3	Антон	Захаров	2
 4	Максим	Нестерук	5
 5	Анна	Артеменко	3
@@ -454,6 +455,11 @@ COPY stuff (id, name, surname, department_id) FROM stdin;
 9	Артур	Прокопчук	2
 10	Инна	Викторчук	4
 14	Борислав	Осокин	3
+19	SDGS	SDRGSG	2
+15	Ольга	Майстренко	3
+18	Олег	Борисенко	4
+17	Елена	Егорова	17
+7	Omar	Epps	2
 \.
 
 
@@ -461,7 +467,7 @@ COPY stuff (id, name, surname, department_id) FROM stdin;
 -- Name: stuff_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('stuff_id_seq', 18, true);
+SELECT pg_catalog.setval('stuff_id_seq', 19, true);
 
 
 --
@@ -474,6 +480,17 @@ COPY therapies (id, title, type, description, appointment_date, completion_date,
 7	Сироп от кашля	PHARMACOTHERAPY	Пить 3 раза в день после еды. Курс лечения - 7 дней.	2017-04-24 06:18:00	2017-04-24 07:17:21.619	10	15
 11	Викодинотерапия	PHARMACOTHERAPY	Пить викодин при каждой удобной возможности.	2017-04-24 08:26:00	2017-04-24 08:28:22.762	15	15
 12	Пункция	SURGERY_OPERATION	Ну куда Доктору Хаусу без неё.	2017-04-24 08:31:00	2017-04-24 08:31:29.83	15	1
+13	Тубус кварц	PHARMACOTHERAPY	Тубус кварц 5 минут.	2017-04-24 16:18:00	2017-04-24 16:19:36.179	16	15
+14	cxbxfbfd	PHARMACOTHERAPY	dfbdbdfbdxb	2017-04-24 16:21:00	2017-04-24 16:21:35.474	16	1
+15	Подорожникотерапия	PHARMACOTHERAPY	Приожить подорожник	2017-04-28 05:35:00	2017-04-28 05:35:29.454	13	15
+25	sfer	PHARMACOTHERAPY	SDFSF	2017-04-28 05:55:47.091	2018-04-28 05:55:48.029	13	15
+16	м рпаогш	PHARMACOTHERAPY	погонпп	2017-04-28 05:37:00	2017-04-28 06:12:44.689	13	1
+26	fgdfhgdg	PHARMACOTHERAPY	fdghfdhdfh	2017-04-28 06:25:00	2017-04-28 06:27:50.84	13	1
+27	пришить	PHYSIOTHERAPY	что еще	2017-04-28 06:31:00	2017-04-28 06:31:04.642	13	15
+28	Therapy	SURGERY_OPERATION	implant brains	2017-04-28 06:35:00	2017-04-28 06:35:20.435	13	1
+29	sdsgsgsgsg	PHARMACOTHERAPY	sdgsgsgs	2017-04-28 06:43:00	2017-04-28 06:49:37.165	13	1
+30	therapy	PHYSIOTHERAPY	descriotion	2017-04-28 17:23:00	2017-04-28 17:23:47.905	16	15
+31	Operation	SURGERY_OPERATION	cut the sarcoma	2017-04-28 17:24:00	2017-04-28 17:24:21.877	13	1
 \.
 
 
@@ -481,7 +498,7 @@ COPY therapies (id, title, type, description, appointment_date, completion_date,
 -- Name: therapies_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres_user
 --
 
-SELECT pg_catalog.setval('therapies_id_seq', 12, true);
+SELECT pg_catalog.setval('therapies_id_seq', 31, true);
 
 
 --
